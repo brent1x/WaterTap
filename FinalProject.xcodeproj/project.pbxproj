@@ -10,6 +10,8 @@
 		8469F9F81B33247100D1FFA6 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469F9F71B33247100D1FFA6 /* HealthKit.framework */; };
 		8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 8469F9F91B33264200D1FFA6 /* water.aiff */; };
 		8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */; };
+		8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */; };
+		8469FA041B33319400D1FFA6 /* HealthKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469FA031B33319400D1FFA6 /* HealthKitViewController.m */; };
 		8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4C1B2BD11C0048A5B7 /* main.m */; };
 		8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */; };
 		8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD511B2BD11C0048A5B7 /* FinalProject.xcdatamodeld */; };
@@ -36,6 +38,10 @@
 		8469F9F91B33264200D1FFA6 /* water.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = water.aiff; sourceTree = "<group>"; };
 		8469F9FB1B3326EB00D1FFA6 /* RemindersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindersViewController.h; sourceTree = "<group>"; };
 		8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindersViewController.m; sourceTree = "<group>"; };
+		8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HKHealthStore+AAPLExtensions.m"; sourceTree = "<group>"; };
+		8469FA001B33313D00D1FFA6 /* HKHealthStore+AAPLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HKHealthStore+AAPLExtensions.h"; sourceTree = "<group>"; };
+		8469FA021B33319400D1FFA6 /* HealthKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthKitViewController.h; sourceTree = "<group>"; };
+		8469FA031B33319400D1FFA6 /* HealthKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthKitViewController.m; sourceTree = "<group>"; };
 		8493AD471B2BD11C0048A5B7 /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493AD4B1B2BD11C0048A5B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8493AD4C1B2BD11C0048A5B7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -71,6 +77,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8469FA011B33315B00D1FFA6 /* Other Views */ = {
+			isa = PBXGroup;
+			children = (
+				8469FA021B33319400D1FFA6 /* HealthKitViewController.h */,
+				8469FA031B33319400D1FFA6 /* HealthKitViewController.m */,
+				8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */,
+				8469FA001B33313D00D1FFA6 /* HKHealthStore+AAPLExtensions.h */,
+				8469F9FB1B3326EB00D1FFA6 /* RemindersViewController.h */,
+				8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */,
+			);
+			name = "Other Views";
+			sourceTree = "<group>";
+		};
 		8493AD3E1B2BD11C0048A5B7 = {
 			isa = PBXGroup;
 			children = (
@@ -93,14 +112,13 @@
 		8493AD491B2BD11C0048A5B7 /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				8469FA011B33315B00D1FFA6 /* Other Views */,
 				8469F9F61B33247100D1FFA6 /* FinalProject.entitlements */,
 				8493AD4E1B2BD11C0048A5B7 /* AppDelegate.h */,
 				8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */,
 				8493AD541B2BD11C0048A5B7 /* ViewController.h */,
 				8493AD551B2BD11C0048A5B7 /* ViewController.m */,
 				8493AD571B2BD11C0048A5B7 /* Main.storyboard */,
-				8469F9FB1B3326EB00D1FFA6 /* RemindersViewController.h */,
-				8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */,
 				8493AD5A1B2BD11C0048A5B7 /* Images.xcassets */,
 				8493AD5C1B2BD11C0048A5B7 /* LaunchScreen.xib */,
 				8493AD511B2BD11C0048A5B7 /* FinalProject.xcdatamodeld */,
@@ -247,6 +265,8 @@
 				8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */,
 				8493AD561B2BD11C0048A5B7 /* ViewController.m in Sources */,
 				8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */,
+				8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */,
+				8469FA041B33319400D1FFA6 /* HealthKitViewController.m in Sources */,
 				8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,17 +1,16 @@
 //
-//  ViewController.h
+//  HealthKitViewController.h
 //  FinalProject
 //
-//  Created by Brent Dady on 6/12/15.
+//  Created by Brent Dady on 6/18/15.
 //  Copyright (c) 2015 Brent Dady. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 @import HealthKit;
 
-@interface ViewController : UIViewController
+@interface HealthKitViewController : UIViewController
 
 @property (nonatomic) HKHealthStore *healthStore;
 
 @end
-
