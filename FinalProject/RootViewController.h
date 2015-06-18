@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @import HealthKit;
 
-@interface ViewController : UIViewController
+@interface RootViewController : UIViewController
 
 @property (nonatomic) HKHealthStore *healthStore;
 

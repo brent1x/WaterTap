@@ -15,7 +15,7 @@
 		8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4C1B2BD11C0048A5B7 /* main.m */; };
 		8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */; };
 		8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD511B2BD11C0048A5B7 /* FinalProject.xcdatamodeld */; };
-		8493AD561B2BD11C0048A5B7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD551B2BD11C0048A5B7 /* ViewController.m */; };
+		8493AD561B2BD11C0048A5B7 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD551B2BD11C0048A5B7 /* RootViewController.m */; };
 		8493AD591B2BD11C0048A5B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493AD571B2BD11C0048A5B7 /* Main.storyboard */; };
 		8493AD5B1B2BD11C0048A5B7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8493AD5A1B2BD11C0048A5B7 /* Images.xcassets */; };
 		8493AD5E1B2BD11C0048A5B7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8493AD5C1B2BD11C0048A5B7 /* LaunchScreen.xib */; };
@@ -48,8 +48,8 @@
 		8493AD4E1B2BD11C0048A5B7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8493AD521B2BD11C0048A5B7 /* FinalProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FinalProject.xcdatamodel; sourceTree = "<group>"; };
-		8493AD541B2BD11C0048A5B7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8493AD551B2BD11C0048A5B7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		8493AD541B2BD11C0048A5B7 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		8493AD551B2BD11C0048A5B7 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		8493AD581B2BD11C0048A5B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8493AD5A1B2BD11C0048A5B7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8493AD5D1B2BD11C0048A5B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 				8469F9F61B33247100D1FFA6 /* FinalProject.entitlements */,
 				8493AD4E1B2BD11C0048A5B7 /* AppDelegate.h */,
 				8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */,
-				8493AD541B2BD11C0048A5B7 /* ViewController.h */,
-				8493AD551B2BD11C0048A5B7 /* ViewController.m */,
+				8493AD541B2BD11C0048A5B7 /* RootViewController.h */,
+				8493AD551B2BD11C0048A5B7 /* RootViewController.m */,
 				8493AD571B2BD11C0048A5B7 /* Main.storyboard */,
 				8493AD5A1B2BD11C0048A5B7 /* Images.xcassets */,
 				8493AD5C1B2BD11C0048A5B7 /* LaunchScreen.xib */,
@@ -263,7 +263,7 @@
 			files = (
 				8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */,
 				8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */,
-				8493AD561B2BD11C0048A5B7 /* ViewController.m in Sources */,
+				8493AD561B2BD11C0048A5B7 /* RootViewController.m in Sources */,
 				8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */,
 				8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */,
 				8469FA041B33319400D1FFA6 /* HealthKitViewController.m in Sources */,
