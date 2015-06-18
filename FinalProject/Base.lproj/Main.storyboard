@@ -42,24 +42,39 @@
                                     <segue destination="Yvk-Nt-GFE" kind="show" id="5mj-YM-FX9"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Segue to Tracker">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="107" y="528" width="117" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="6P9-0D-UAW" kind="show" id="QUK-yp-mfi"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="eSi-zi-Z6M"/>
                                 <exclude reference="kM5-Gr-5vC"/>
+                                <exclude reference="LrZ-B5-DFh"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="eSi-zi-Z6M"/>
                                 <include reference="kM5-Gr-5vC"/>
+                                <include reference="LrZ-B5-DFh"/>
                             </mask>
                         </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-289.5" y="1113"/>
         </scene>
         <!--Health Kit View Controller-->
         <scene sceneID="yUP-Hh-eS7">
@@ -70,6 +85,7 @@
                         <viewControllerLayoutGuide type="bottom" id="bk6-UL-Q1W"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nTo-65-VzA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kCc-za-GOn">
@@ -149,7 +165,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTc-cT-WXG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="324" y="1143"/>
+            <point key="canvasLocation" x="558" y="447"/>
+        </scene>
+        <!--Tracker View Controller-->
+        <scene sceneID="Bl0-OD-Vwe">
+            <objects>
+                <viewController id="6P9-0D-UAW" customClass="TrackerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nGY-MN-3NP"/>
+                        <viewControllerLayoutGuide type="bottom" id="SiG-7I-YgQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6En-2A-YSz">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mGM-u7-PjY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="550.5" y="1808"/>
         </scene>
         <!--Reminders View Controller-->
         <scene sceneID="gxx-jF-wfd">
@@ -160,6 +194,7 @@
                         <viewControllerLayoutGuide type="bottom" id="BAs-Y7-MKb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ch6-jk-tkv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="FZy-w6-TK6">
@@ -167,9 +202,6 @@
                                 <date key="date" timeIntervalSinceReferenceDate="456337643.00352103">
                                     <!--2015-06-18 16:27:23 +0000-->
                                 </date>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="256"/>
-                                </variation>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="iXd-n4-4xy">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -183,9 +215,6 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="300" width="400" height="300"/>
-                                </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="pFJ-k8-SsD" id="xz9-hb-DZm"/>
                                     <outlet property="delegate" destination="pFJ-k8-SsD" id="xWO-Zd-M0R"/>
@@ -206,8 +235,7 @@
                                         <exclude reference="pof-2s-ibR"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="151" y="263" width="99" height="30"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="95Y-XX-4Wo"/>
                                         <include reference="pof-2s-ibR"/>
@@ -285,7 +313,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O9n-2j-0cp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1018.5" y="1143"/>
+            <point key="canvasLocation" x="558" y="1113"/>
         </scene>
     </scenes>
 </document>
