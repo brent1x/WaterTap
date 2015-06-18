@@ -39,11 +39,12 @@
     self.overlayView.alpha = 1;
     self.overlayView.backgroundColor = [UIColor grayColor];
     self.overlayView.text = [self.headerDateFormatter stringFromDate:[NSDate date]];
+    self.navigationItem.title = self.overlayView.text;
 
     //Placeholder view to put behind status bar for it to display
     UIView *placeholderView = [UIView new];
     [self.view addSubview:placeholderView];
-    placeholderView.backgroundColor = [UIColor magentaColor];
+    placeholderView.backgroundColor = self.graphView.backgroundColor; //TODO: check color if it looks good
     [placeholderView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     //Add graphView that will be the graph
@@ -185,6 +186,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [super scrollViewDidScroll:scrollView];
+    self.navigationItem.title = self.overlayView.text;
     //TODO: Hydrategraph with month values
 }
 

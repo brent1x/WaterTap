@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8FE0E271-C0CA-43BF-BB85-3835473F9986</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FinalProject</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1F823918D9DCBBE4A396A787FEA1B433D05EE5EE</key>
+		<string>https://github.com/brent1x/mm_final.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FinalProject.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1F823918D9DCBBE4A396A787FEA1B433D05EE5EE</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/brent1x/mm_final.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1F823918D9DCBBE4A396A787FEA1B433D05EE5EE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1F823918D9DCBBE4A396A787FEA1B433D05EE5EE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FinalProject</string>
+		</dict>
+	</array>
+</dict>
+</plist>

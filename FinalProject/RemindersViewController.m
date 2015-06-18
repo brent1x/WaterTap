@@ -26,6 +26,9 @@
     UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+
+    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    [self.tableView reloadData];
 }
 
 - (IBAction)setReminder:(id)sender {
@@ -37,12 +40,14 @@
     localNotification.soundName = @"water.aiff";
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 
-    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
 
     UILocalNotification *notificationToLog = [self.notifications lastObject];
     NSLog(@"%@", notificationToLog.fireDate);
 
-    // NSLog(@"number: %lu", (unsigned long)self.notifications.count);
+    NSLog(@"number: %lu", (unsigned long)self.notifications.count);
+
+    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    [self.tableView reloadData];
 }
 
 - (void)killAllNotifications {
