@@ -46,6 +46,7 @@
 		8497407B1B335CF90039DCA2 /* ConsumptionEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8497407A1B335CF90039DCA2 /* ConsumptionEvent.m */; };
 		8497407E1B335D6C0039DCA2 /* CustomWaterLevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8497407D1B335D6C0039DCA2 /* CustomWaterLevelView.m */; };
 		849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */; };
+		849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740831B338B3C0039DCA2 /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,8 @@
 		8497407D1B335D6C0039DCA2 /* CustomWaterLevelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomWaterLevelView.m; sourceTree = "<group>"; };
 		8497407F1B335FB10039DCA2 /* LogInAndSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInAndSignUpViewController.h; sourceTree = "<group>"; };
 		849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInAndSignUpViewController.m; sourceTree = "<group>"; };
+		849740821B338B3C0039DCA2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		C7E8A6640CFBD0DBAB544398 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +172,8 @@
 		8469FA011B33315B00D1FFA6 /* Other Views */ = {
 			isa = PBXGroup;
 			children = (
+				849740821B338B3C0039DCA2 /* SettingsViewController.h */,
+				849740831B338B3C0039DCA2 /* SettingsViewController.m */,
 				8469FA021B33319400D1FFA6 /* HealthKitViewController.h */,
 				8469FA031B33319400D1FFA6 /* HealthKitViewController.m */,
 				8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */,
@@ -427,6 +432,7 @@
 				8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */,
 				8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */,
 				8493AD561B2BD11C0048A5B7 /* RootViewController.m in Sources */,
+				849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */,
 				8497407B1B335CF90039DCA2 /* ConsumptionEvent.m in Sources */,
 				8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */,
 				8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */,
