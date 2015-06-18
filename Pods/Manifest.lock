@@ -1,0 +1,13 @@
+PODS:
+  - BEMSimpleLineGraph (4.0)
+  - PDTSimpleCalendar (0.7.1)
+
+DEPENDENCIES:
+  - BEMSimpleLineGraph
+  - PDTSimpleCalendar
+
+SPEC CHECKSUMS:
+  BEMSimpleLineGraph: e706c36c6e7944f6424285478a914d4adb178f92
+  PDTSimpleCalendar: de2964236def053e9cde508ae10e576e61fa5b88
+
+COCOAPODS: 0.37.2
