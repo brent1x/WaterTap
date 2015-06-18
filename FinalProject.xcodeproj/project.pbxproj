@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8469F9F81B33247100D1FFA6 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469F9F71B33247100D1FFA6 /* HealthKit.framework */; };
+		8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 8469F9F91B33264200D1FFA6 /* water.aiff */; };
+		8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */; };
 		8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4C1B2BD11C0048A5B7 /* main.m */; };
 		8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */; };
 		8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8493AD511B2BD11C0048A5B7 /* FinalProject.xcdatamodeld */; };
@@ -31,6 +33,9 @@
 /* Begin PBXFileReference section */
 		8469F9F61B33247100D1FFA6 /* FinalProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FinalProject.entitlements; sourceTree = "<group>"; };
 		8469F9F71B33247100D1FFA6 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		8469F9F91B33264200D1FFA6 /* water.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = water.aiff; sourceTree = "<group>"; };
+		8469F9FB1B3326EB00D1FFA6 /* RemindersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindersViewController.h; sourceTree = "<group>"; };
+		8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindersViewController.m; sourceTree = "<group>"; };
 		8493AD471B2BD11C0048A5B7 /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493AD4B1B2BD11C0048A5B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8493AD4C1B2BD11C0048A5B7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -94,6 +99,8 @@
 				8493AD541B2BD11C0048A5B7 /* ViewController.h */,
 				8493AD551B2BD11C0048A5B7 /* ViewController.m */,
 				8493AD571B2BD11C0048A5B7 /* Main.storyboard */,
+				8469F9FB1B3326EB00D1FFA6 /* RemindersViewController.h */,
+				8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */,
 				8493AD5A1B2BD11C0048A5B7 /* Images.xcassets */,
 				8493AD5C1B2BD11C0048A5B7 /* LaunchScreen.xib */,
 				8493AD511B2BD11C0048A5B7 /* FinalProject.xcdatamodeld */,
@@ -105,6 +112,7 @@
 		8493AD4A1B2BD11C0048A5B7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8469F9F91B33264200D1FFA6 /* water.aiff */,
 				8493AD4B1B2BD11C0048A5B7 /* Info.plist */,
 				8493AD4C1B2BD11C0048A5B7 /* main.m */,
 			);
@@ -215,6 +223,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8493AD591B2BD11C0048A5B7 /* Main.storyboard in Resources */,
+				8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */,
 				8493AD5E1B2BD11C0048A5B7 /* LaunchScreen.xib in Resources */,
 				8493AD5B1B2BD11C0048A5B7 /* Images.xcassets in Resources */,
 			);
@@ -237,6 +246,7 @@
 				8493AD501B2BD11C0048A5B7 /* AppDelegate.m in Sources */,
 				8493AD4D1B2BD11C0048A5B7 /* main.m in Sources */,
 				8493AD561B2BD11C0048A5B7 /* ViewController.m in Sources */,
+				8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */,
 				8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
