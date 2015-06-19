@@ -22,6 +22,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationController.navigationBarHidden = NO;
+
     self.healthStore = [[HKHealthStore alloc] init];
 
     if ([HKHealthStore isHealthDataAvailable]) {

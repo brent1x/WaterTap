@@ -30,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self refreshWaterLevel];
 
 //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
 //    testObject[@"foo"] = @"bar";
@@ -39,6 +40,9 @@
 //    self.waterLevelY = 0;
 
 //    self.waterLevel.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+
+
+
     NSLog(@"DIIICK: %f %f", self.view.frame.size.height,self.view.frame.origin.y);
 
     NSLog(@"self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
@@ -59,6 +63,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
+      [self refreshWaterLevel];
 
 }
 
@@ -130,9 +135,13 @@
         }
         
         NSLog(@"%i", self.totalVolumeSummed);
-        
     }];
 }
 
+-(void)refreshWaterLevel {
 
+    [self changeWaterLevel:-self.waterLevel.frame.origin.y];
+    [self totalVolumeConsumed];
+    [self changeWaterLevel:self.totalVolumeSummed];
+}
 @end

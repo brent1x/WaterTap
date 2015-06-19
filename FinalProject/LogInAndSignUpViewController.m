@@ -107,6 +107,7 @@
         } else if (user.isNew) {
             NSLog(@"User signed up and logged in through Facebook!");
         } else {
+             [self dismissViewControllerAnimated:YES completion:nil];
             NSLog(@"User logged in through Facebook!");
         }
     }];
