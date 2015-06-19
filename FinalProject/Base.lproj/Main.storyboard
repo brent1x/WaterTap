@@ -178,21 +178,39 @@
                                     <segue destination="pFJ-k8-SsD" kind="show" id="LWA-bv-a0w"/>
                                 </connections>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iVH-9B-tvS">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="330" y="82" width="30" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="pFJ-k8-SsD" kind="show" id="5z3-io-RtA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="efU-JU-W7G"/>
                                 <exclude reference="Rkn-oG-uMm"/>
+                                <exclude reference="iVH-9B-tvS"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="efU-JU-W7G"/>
                                 <include reference="Rkn-oG-uMm"/>
+                                <include reference="iVH-9B-tvS"/>
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="notificationButton" destination="iVH-9B-tvS" id="isG-3u-8NJ"/>
+                        <outlet property="notificationSwitch" destination="Rkn-oG-uMm" id="6TP-pN-pRU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QU-ae-3kH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -736,4 +754,7 @@
             <point key="canvasLocation" x="-289.5" y="1113"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="LWA-bv-a0w"/>
+    </inferredMetricsTieBreakers>
 </document>
