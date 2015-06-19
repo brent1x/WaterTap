@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self refreshWaterLevel];
+
 
 //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
 //    testObject[@"foo"] = @"bar";
@@ -54,6 +54,7 @@
 
     PFUser *currentUser = [PFUser currentUser];
     if (currentUser) {
+        [self refreshWaterLevel];
         self.welcomeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Welcome %@!", nil), [[PFUser currentUser] username]];
     } else {
         [self performSegueWithIdentifier:@"LogInOrSignUpSegue" sender:self];
@@ -63,7 +64,13 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
-      [self refreshWaterLevel];
+
+
+    PFUser *currentUser = [PFUser currentUser];
+    if (currentUser) {
+        [self refreshWaterLevel];
+    }
+
 
 }
 
@@ -123,6 +130,9 @@
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query selectKeys:@[@"volumeConsumed"]];
 
+
+
+
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // NSLog(@"%@", objects);
         self.consumptionEvents = objects;
@@ -133,9 +143,11 @@
 
             self.totalVolumeSummed += event.volumeConsumed;
         }
-        
+
         NSLog(@"%i", self.totalVolumeSummed);
     }];
+
+
 }
 
 -(void)refreshWaterLevel {

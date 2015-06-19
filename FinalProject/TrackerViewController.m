@@ -10,9 +10,10 @@
 #import "PDTSimpleCalendarViewHeader.h"
 #import "BEMSimpleLineGraphView.h"
 #import "PDTSimpleCalendarViewFlowLayout.h"
+#import <Parse/Parse.h>
+#import "ConsumptionEvent.h"
 
-
-@interface TrackerViewController () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate>
+@interface TrackerViewController () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, PDTSimpleCalendarViewDelegate>
 
 @property NSMutableArray *waterIntakeValues;
 @property NSMutableArray *dateValues;
@@ -56,7 +57,6 @@
     self.graphView.dataSource = self;
     self.graphView.delegate = self;
 
-    //TODO: Make their heights dynamic. Make sure collectionView's height ends at the bottom of the screen.
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
     float graphViewHeight = screenHeight / 2;
@@ -70,8 +70,10 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[graphView]|" options:0 metrics:nil views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[placeholderView]|" options:0 metrics:nil views:viewsDictionary]];
 
-    //Add space between collection view and top of self.view
+    //Make collectionViews height dynamic
     [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight + placeholderViewHeight + PDTSimpleCalendarFlowLayoutHeaderHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - placeholderViewHeight - PDTSimpleCalendarFlowLayoutHeaderHeight - 20))];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+
 
     // Graph Settings //
     // Create a gradient to apply to the bottom portion of the graph
@@ -116,6 +118,9 @@
     self.graphView.enableBezierCurve = YES;
 
     [self hydrateDatasets];
+
+    self.delegate = self;
+
 }
 
 //To delete
@@ -170,6 +175,53 @@
     }
 }
 
+- (void)hydrateDatasetsForMonth {
+
+    // Reset the arrays of values (Y-Axis points) and dates (X-Axis points / labels)
+    if (!self.waterIntakeValues) self.waterIntakeValues = [[NSMutableArray alloc] init];
+    if (!self.dateValues) self.dateValues = [[NSMutableArray alloc] init];
+    [self.waterIntakeValues removeAllObjects];
+    [self.dateValues removeAllObjects];
+
+
+
+
+
+    self.totalNumber = 0;
+    NSDate *baseDate = [NSDate date];
+    BOOL showNullValue = true;
+
+    // Add objects to the array based on the stepper value
+    for (int i = 0; i < 9; i++) {
+        [self.waterIntakeValues addObject:@([self getRandomFloat])]; // Random values for the graph
+        if (i == 0) {
+            [self.dateValues addObject:baseDate]; // Dates for the X-Axis of the graph
+        } else if (showNullValue && i == 4) {
+            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
+            self.waterIntakeValues[i] = @(BEMNullGraphValue);
+        } else {
+            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
+        }
+
+        self.totalNumber = self.totalNumber + [[self.waterIntakeValues objectAtIndex:i] intValue]; // All of the values added together
+    }
+}
+
+-(void)getAllWaterIntake:(NSString *)month {
+
+    PFQuery *query = [ConsumptionEvent query];
+
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query orderByDescending:@"createdAt"];
+
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+
+
+    }];
+
+
+}
+
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
 
     NSString *label = [self labelForDateAtIndex:index];
@@ -192,7 +244,8 @@
     //TODO: Hydrategraph with month values
 }
 
-//Override these methods so they dont hide the overlay
+// Override these methods //
+//Blank so these dont hide the overlay
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
 }
@@ -200,7 +253,6 @@
 {
 }
 
-//TODO: Call these helpder methods with super somehow?
 - (NSDateFormatter *)headerDateFormatter;
 {
     if (!_headerDateFormatter) {
@@ -218,6 +270,37 @@
     NSString *label = [df stringFromDate:date];
     return label;
 }
+
+#pragma mark - PDTSimpleCalendar Delegate methods
+
+- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date {
+    return YES;
+}
+
+- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
+
+    for (NSDate *aDate in self.dateValues) {
+        if ([date isEqualToDate:[self zeroTimeDate:aDate]]) {
+            return [UIColor blueColor];
+        }
+    }
+    return nil;
+}
+
+-(NSDate *)zeroTimeDate:(NSDate *)date {
+
+    unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth| NSCalendarUnitDay;
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:flags fromDate:date];
+    NSDate* dateOnly = [calendar dateFromComponents:components];
+    
+    return dateOnly;
+    
+}
+
+
+
+
 
 @end
 
