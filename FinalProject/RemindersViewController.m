@@ -35,23 +35,20 @@
 
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     localNotification.fireDate = self.datePicker.date;
+    localNotification.repeatInterval = NSCalendarUnitDay;
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     localNotification.alertBody = @"Time to drink some water.";
     localNotification.soundName = @"water.aiff";
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 
+    //    UILocalNotification *notificationToLog = [self.notifications lastObject];
+    //    NSLog(@"set method: %@", notificationToLog.fireDate);
 
-    UILocalNotification *notificationToLog = [self.notifications lastObject];
-    NSLog(@"%@", notificationToLog.fireDate);
-
-    NSLog(@"number: %lu", (unsigned long)self.notifications.count);
+    //    NSLog(@"number: %lu", (unsigned long)self.notifications.count);
 
     self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    [self.tableView reloadData];
-}
 
-- (void)killAllNotifications {
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -61,19 +58,29 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
     UILocalNotification *notification = [self.notifications objectAtIndex:indexPath.row];
-    NSLog(@"%lu", (unsigned long)self.notifications.count);
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", notification.fireDate.description];
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"hh:mm a"];
+    NSString *stringFromDate = [formatter stringFromDate:notification.fireDate];
+
+    cell.textLabel.text = stringFromDate;
+    cell.detailTextLabel.text = @"Every Day";
     return cell;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)killAllReminders:(id)sender {
+    self.notifications = @[];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
-*/
+
+/*
+ #pragma mark - Navigation
+
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
