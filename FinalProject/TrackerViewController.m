@@ -31,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationController.navigationBarHidden = NO;
+
     //Remove existing constraints made by super
     [self.view removeConstraints:self.view.constraints];
 

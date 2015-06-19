@@ -20,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterLevelHeightConstraint;
 
+@property float waterLevelHeight;
+@property float waterLevelY;
+
 
 @end
 
@@ -32,8 +35,11 @@
 //    testObject[@"foo"] = @"bar";
 //    [testObject saveInBackground];
 
+//    self.waterLevelHeight = 0;
+//    self.waterLevelY = 0;
 
-//    self.waterLevel.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+//    self.waterLevel.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    NSLog(@"DIIICK: %f %f", self.view.frame.size.height,self.view.frame.origin.y);
 
     NSLog(@"self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
@@ -51,6 +57,17 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = YES;
+
+}
+
+//-(void)viewDidAppear:(BOOL)animated {
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.waterLevel.frame = CGRectMake(self.view.frame.origin.x, self.waterLevelY, self.view.frame.size.width, self.waterLevelHeight);
+//    }];
+//}
+
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
@@ -66,7 +83,6 @@
         if(!succeeded) {
             NSLog(@"There was an error and u better check yo shit");
         }
-
         [self totalVolumeConsumed];
     }];
 
@@ -74,22 +90,24 @@
 
 -(void)changeWaterLevel:(int) heightChange{
 
-
-    NSLog(@"self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
+    NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
     CGRect newFrameRect = self.waterLevel.frame;
     newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
 
     newFrameRect.origin.y = self.waterLevel.frame.origin.y - heightChange;
 
+    NSLog(@"2 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
-    NSLog(@"Height is %f and y position is %f", newFrameRect.size.height, newFrameRect.origin.y);
+
+//    NSLog(@"Height is %f and y position is %f", newFrameRect.size.height, newFrameRect.origin.y);
 
     [UIView animateWithDuration:0.5 animations:^{
 
         //        self.waterLevelHeightConstraint.constant += heightChange;
         self.waterLevel.frame = newFrameRect;
-
+        self.waterLevelY = self.waterLevel.frame.origin.y;
+        self.waterLevelHeight = self.waterLevel.frame.size.height;
     }];
 }
 

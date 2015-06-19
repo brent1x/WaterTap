@@ -11,6 +11,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "RootViewController.h"
+#import "User.h"
 
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 
@@ -57,14 +58,6 @@
 
 - (IBAction)onSignUpButtonTapped:(id)sender {
 
-
-    [UIView animateWithDuration:0.5 animations:^{
-        self.fullNameTextField.hidden = NO;
-        self.logInButton.hidden = YES;
-    }];
-
-
-
     // - (CGRect)borderRectForBounds:(CGRect)bounds
 
 //    self.emailTextField.frame = self.passwordTextField.frame;
@@ -74,24 +67,31 @@
 
 //    self.signUpButton.frame = self.logInButton.frame;
 
+    if (!self.fullNameTextField.hidden) {
+        User *newUser = [User new];
+        newUser.username = self.emailTextField.text;
+        newUser.password = self.passwordTextField.text;
+        newUser.email = self.emailTextField.text;
+        newUser.fullName = self.fullNameTextField.text;
 
-    PFUser *newUser = [PFUser user];
-    newUser.username = self.fullNameTextField.text;
-    newUser.password = self.passwordTextField.text;
-    newUser.email = self.emailTextField.text;
+        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+            if(!error){
+                [self dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                NSString *errorString = [error userInfo][@"error"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"There was an error!" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                self.fullNameTextField.text = nil;
+                self.passwordTextField.text = nil;
+                self.emailTextField.text = nil;
+            }
+            
+        }];
+    }
 
-    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
-        if(!error){
-            [self dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            NSString *errorString = [error userInfo][@"error"];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"There was an error!" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            self.fullNameTextField.text = nil;
-            self.passwordTextField.text = nil;
-            self.emailTextField.text = nil;
-        }
-
+    [UIView animateWithDuration:0.5 animations:^{
+        self.fullNameTextField.hidden = NO;
+        self.logInButton.hidden = YES;
     }];
 
 }

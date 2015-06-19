@@ -18,6 +18,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.43132776021957397" green="0.7410774827003479" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <variation key="widthClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
+                                </variation>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM5-Gr-5vC">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Segue to HealthKit">
@@ -42,13 +49,23 @@
                                     <segue destination="6P9-0D-UAW" kind="show" id="QUK-yp-mfi"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXj-9J-mCt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXj-9J-mCt">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="y5c-Pq-c3U"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="135" y="76" width="118" height="21"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="y5c-Pq-c3U"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="y5c-Pq-c3U"/>
+                                    </mask>
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-PA-lib">
@@ -63,13 +80,6 @@
                                     <action selector="onAddWaterButtonTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qDh-MC-sTs"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.43132776021957397" green="0.7410774827003479" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <variation key="widthClass=compact" ambiguous="YES">
-                                    <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
-                                </variation>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Segue to Settings">
@@ -86,43 +96,50 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="-16" id="Jk2-xx-Vf5"/>
+                            <constraint firstAttribute="centerX" secondItem="AXj-9J-mCt" secondAttribute="centerX" id="Lhb-kf-hOT"/>
+                            <constraint firstItem="AXj-9J-mCt" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="12" id="M9N-ts-S29"/>
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="ZYl-ey-YRT"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="fP4-gB-Dpm"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
+                                <exclude reference="VTJ-k2-lQf"/>
                                 <exclude reference="kM5-Gr-5vC"/>
                                 <exclude reference="LrZ-B5-DFh"/>
                                 <exclude reference="AXj-9J-mCt"/>
                                 <exclude reference="cod-PA-lib"/>
-                                <exclude reference="VTJ-k2-lQf"/>
                                 <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="Lhb-kf-hOT"/>
+                                <exclude reference="M9N-ts-S29"/>
+                                <exclude reference="fP4-gB-Dpm"/>
                                 <exclude reference="Jk2-xx-Vf5"/>
                                 <exclude reference="ZYl-ey-YRT"/>
-                                <exclude reference="fP4-gB-Dpm"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
+                                <include reference="VTJ-k2-lQf"/>
                                 <include reference="kM5-Gr-5vC"/>
                                 <include reference="LrZ-B5-DFh"/>
                                 <include reference="AXj-9J-mCt"/>
                                 <include reference="cod-PA-lib"/>
-                                <include reference="VTJ-k2-lQf"/>
                                 <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="Lhb-kf-hOT"/>
+                                <include reference="M9N-ts-S29"/>
+                                <include reference="fP4-gB-Dpm"/>
                                 <include reference="Jk2-xx-Vf5"/>
                                 <include reference="ZYl-ey-YRT"/>
-                                <include reference="fP4-gB-Dpm"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="6o4-tW-As6"/>
                     <connections>
                         <outlet property="addWaterButton" destination="cod-PA-lib" id="des-42-zqm"/>
+                        <outlet property="waterLevel" destination="VTJ-k2-lQf" id="pu3-L5-2iv"/>
                         <outlet property="welcomeLabel" destination="AXj-9J-mCt" id="8Kc-QF-eda"/>
                         <segue destination="4HU-Ec-Ptg" kind="presentation" identifier="LogInOrSignUpSegue" id="is1-zF-tKf"/>
                     </connections>
@@ -140,6 +157,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SQO-P7-aMO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E3O-4B-Drb">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders to Drink Water" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efU-JU-W7G">
@@ -433,6 +451,7 @@
                         <viewControllerLayoutGuide type="bottom" id="HPI-AI-q50"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="F2z-vk-8ev">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Pv-Fb-Fyt">
@@ -599,10 +618,10 @@
                                 <exclude reference="2wh-pe-au1"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="NdW-2j-foJ"/>
-                                <exclude reference="kr9-7o-D5d"/>
                                 <exclude reference="kky-9S-cJ1"/>
                                 <exclude reference="ySZ-Dl-yzg"/>
+                                <exclude reference="NdW-2j-foJ"/>
+                                <exclude reference="kr9-7o-D5d"/>
                                 <exclude reference="MLN-H9-Alt"/>
                                 <exclude reference="rLI-K1-Sdr"/>
                                 <exclude reference="A8N-v8-lhP"/>
@@ -623,10 +642,10 @@
                                 <include reference="2wh-pe-au1"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="NdW-2j-foJ"/>
-                                <include reference="kr9-7o-D5d"/>
                                 <include reference="kky-9S-cJ1"/>
                                 <include reference="ySZ-Dl-yzg"/>
+                                <include reference="NdW-2j-foJ"/>
+                                <include reference="kr9-7o-D5d"/>
                                 <include reference="MLN-H9-Alt"/>
                                 <include reference="rLI-K1-Sdr"/>
                                 <include reference="A8N-v8-lhP"/>
