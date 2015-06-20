@@ -10,30 +10,42 @@
 
 @interface SettingsViewController ()
 
+@property NSArray *notificationCheck;
+
+@property (weak, nonatomic) IBOutlet UIButton *notificationButton;
+@property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
+
 @end
 
 @implementation SettingsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     self.navigationController.navigationBarHidden = NO;
-    // Do any additional setup after loading the view.
+    [self switchLogic];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+    [self switchLogic];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)onSwitchTapped:(id)sender {
+    if (self.notifSwitch.on == NO) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        self.notificationButton.enabled = NO;
+    } else {
+        [self performSegueWithIdentifier:@"reminderSegue" sender:self];
+    }
 }
-*/
+
+- (void)switchLogic {
+    if ([[[UIApplication sharedApplication] scheduledLocalNotifications] count] == 0) {
+        [self.notifSwitch setOn:NO animated:YES];
+        self.notificationButton.enabled = NO;
+    } else {
+        [self.notifSwitch setOn:YES animated:NO];
+        self.notificationButton.enabled = YES;
+    }
+}
 
 @end

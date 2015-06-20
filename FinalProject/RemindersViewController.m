@@ -43,14 +43,12 @@
     localNotification.soundName = @"water.aiff";
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 
-    //    UILocalNotification *notificationToLog = [self.notifications lastObject];
-    //    NSLog(@"set method: %@", notificationToLog.fireDate);
 
-    //    NSLog(@"number: %lu", (unsigned long)self.notifications.count);
 
-    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self hax];
+    });
 
-    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -70,9 +68,35 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+
+        UILocalNotification *notif = [[[UIApplication sharedApplication] scheduledLocalNotifications] objectAtIndex:indexPath.row];
+        [[UIApplication sharedApplication] cancelLocalNotification:notif];
+
+        [self hax];
+    }
+}
+
+- (void)hax {
+    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    [self.tableView reloadData];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"Delete";
+}
+
 - (IBAction)killAllReminders:(id)sender {
-    self.notifications = @[];
+
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self hax];
+    });
 }
 
 /*
