@@ -31,11 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-
-//    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-//    testObject[@"foo"] = @"bar";
-//    [testObject saveInBackground];
-
 //    self.waterLevelHeight = 0;
 //    self.waterLevelY = 0;
 
@@ -85,7 +80,7 @@
 
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
 
-    myConsumptionEvent.volumeConsumed = 10;
+    myConsumptionEvent.volumeConsumed = 40;
     [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = 32;
@@ -102,6 +97,8 @@
 
 -(void)changeWaterLevel:(int) heightChange{
 
+
+
     NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
     CGRect newFrameRect = self.waterLevel.frame;
@@ -114,13 +111,38 @@
 
 //    NSLog(@"Height is %f and y position is %f", newFrameRect.size.height, newFrameRect.origin.y);
 
-    [UIView animateWithDuration:0.5 animations:^{
+    if(self.waterLevel.frame.size.height + heightChange >= 667) {
 
-        //        self.waterLevelHeightConstraint.constant += heightChange;
-        self.waterLevel.frame = newFrameRect;
-        self.waterLevelY = self.waterLevel.frame.origin.y;
-        self.waterLevelHeight = self.waterLevel.frame.size.height;
-    }];
+        newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+
+        [UIView animateWithDuration:0.5 animations:^{
+
+            //        self.waterLevelHeightConstraint.constant += heightChange;
+            self.waterLevel.frame = newFrameRect;
+            self.waterLevelY = self.waterLevel.frame.origin.y;
+            self.waterLevelHeight = self.waterLevel.frame.size.height;
+            self.waterLevel.backgroundColor = [UIColor colorWithRed:0.96 green:0.85 blue:0.27 alpha:1];
+            
+
+        }];
+        NSString *messageString = @"You've reached your water intake goal for the day!!!";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+
+    }
+
+    else{
+         newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+
+        [UIView animateWithDuration:0.5 animations:^{
+
+            //        self.waterLevelHeightConstraint.constant += heightChange;
+            self.waterLevel.frame = newFrameRect;
+            self.waterLevelY = self.waterLevel.frame.origin.y;
+            self.waterLevelHeight = self.waterLevel.frame.size.height;
+        }];
+        
+    }
 }
 
 

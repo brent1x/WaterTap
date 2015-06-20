@@ -86,8 +86,7 @@
                                         <exclude reference="y5c-Pq-c3U"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="141" y="95" width="118" height="21"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="y5c-Pq-c3U"/>
                                     </mask>
