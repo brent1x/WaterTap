@@ -123,12 +123,6 @@
 
 }
 
-//To delete
-- (float)getRandomFloat {
-    float i1 = (float)(arc4random() % 10000) / 1000 ;
-    return i1;
-}
-
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
 
 - (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
@@ -183,13 +177,20 @@
     [self.waterIntakeValues removeAllObjects];
     [self.dateValues removeAllObjects];
 
-
-
-
-
     self.totalNumber = 0;
     NSDate *baseDate = [NSDate date];
     BOOL showNullValue = true;
+
+
+
+////////////////
+
+    
+
+
+
+/////////////////
+
 
     // Add objects to the array based on the stepper value
     for (int i = 0; i < 9; i++) {
@@ -202,25 +203,59 @@
         } else {
             [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
         }
-
         self.totalNumber = self.totalNumber + [[self.waterIntakeValues objectAtIndex:i] intValue]; // All of the values added together
     }
 }
 
--(void)getAllWaterIntake:(NSString *)month {
+-(void)getWaterIntakeForADay:(NSDate *)day {
+
+    NSDate *startDay = [self makeDayStartOfDay:day];
+    NSDate *endDay = [self makeDayNextStartOfDay:day];
 
     PFQuery *query = [ConsumptionEvent query];
+    [query fromLocalDatastore];
 
-    [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query orderByDescending:@"createdAt"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ <= consumedAt > %@", startDay, endDay]];
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)objects.count);
+            // Do something with the found objects
 
-
+            NSLog(@"Objects are: %@", objects);
+            for (ConsumptionEvent *object in objects) {
+                NSLog(@"%@", object.consumedAt);
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
     }];
-
-
 }
+
+
+-(NSDate *)makeDayNextStartOfDay:(NSDate *)day {
+    day = [self zeroTimeDate:day];
+    day = [day dateByAddingTimeInterval:60*60*24];
+    return day;
+}
+
+-(NSDate *)makeDayStartOfDay:(NSDate *)day {
+
+    day = [self zeroTimeDate:day];
+    return day;
+}
+
+
+
+
+
+
+
+
+
+
 
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
 
@@ -233,6 +268,22 @@
     NSTimeInterval secondsInTwentyFourHours = 24 * 60 * 60;
     NSDate *newDate = [date dateByAddingTimeInterval:secondsInTwentyFourHours];
     return newDate;
+}
+
+#pragma mark - PDTSimpleCalendar Delegate methods
+
+- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date {
+    return YES;
+}
+
+- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
+
+    for (NSDate *aDate in self.dateValues) {
+        if ([date isEqualToDate:[self zeroTimeDate:aDate]]) {
+            return [UIColor blueColor];
+        }
+    }
+    return nil;
 }
 
 #pragma mark - PDTSimpleCalendarViewController methods to override
@@ -271,21 +322,7 @@
     return label;
 }
 
-#pragma mark - PDTSimpleCalendar Delegate methods
-
-- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date {
-    return YES;
-}
-
-- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
-
-    for (NSDate *aDate in self.dateValues) {
-        if ([date isEqualToDate:[self zeroTimeDate:aDate]]) {
-            return [UIColor blueColor];
-        }
-    }
-    return nil;
-}
+#pragma mark - PDTSimpleCalendarViewController Helper Methods
 
 -(NSDate *)zeroTimeDate:(NSDate *)date {
 
@@ -295,7 +332,12 @@
     NSDate* dateOnly = [calendar dateFromComponents:components];
     
     return dateOnly;
-    
+}
+
+//To delete
+- (float)getRandomFloat {
+    float i1 = (float)(arc4random() % 10000) / 1000 ;
+    return i1;
 }
 
 

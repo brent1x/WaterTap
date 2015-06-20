@@ -14,6 +14,7 @@
 @dynamic user;
 @dynamic volumeConsumed;
 @dynamic consumptionGoal;
+@dynamic consumedAt;
 
 + (void)load {
     [self registerSubclass];
