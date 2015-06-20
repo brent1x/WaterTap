@@ -169,47 +169,47 @@
                                     <rect key="frame" x="28" y="87" width="197" height="21"/>
                                 </variation>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Rkn-oG-uMm">
-                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="267" y="81" width="51" height="31"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="pFJ-k8-SsD" kind="show" id="LWA-bv-a0w"/>
-                                </connections>
-                            </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iVH-9B-tvS">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZO-Dc-uTh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Edit">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="330" y="82" width="30" height="30"/>
+                                    <rect key="frame" x="338" y="82" width="30" height="30"/>
                                 </variation>
                                 <connections>
-                                    <segue destination="pFJ-k8-SsD" kind="show" id="5z3-io-RtA"/>
+                                    <segue destination="pFJ-k8-SsD" kind="show" identifier="reminderSegue" id="1LG-US-VJU"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G55-yT-tfV">
+                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="262" y="81" width="51" height="31"/>
+                                </variation>
+                                <connections>
+                                    <action selector="onSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="b4i-mz-GNc"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="efU-JU-W7G"/>
-                                <exclude reference="Rkn-oG-uMm"/>
-                                <exclude reference="iVH-9B-tvS"/>
+                                <exclude reference="JZO-Dc-uTh"/>
+                                <exclude reference="G55-yT-tfV"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="efU-JU-W7G"/>
-                                <include reference="Rkn-oG-uMm"/>
-                                <include reference="iVH-9B-tvS"/>
+                                <include reference="JZO-Dc-uTh"/>
+                                <include reference="G55-yT-tfV"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="notificationButton" destination="iVH-9B-tvS" id="isG-3u-8NJ"/>
-                        <outlet property="notificationSwitch" destination="Rkn-oG-uMm" id="6TP-pN-pRU"/>
+                        <outlet property="notifSwitch" destination="G55-yT-tfV" id="2jw-9a-vCP"/>
+                        <outlet property="notificationButton" destination="JZO-Dc-uTh" id="iRb-ed-Ju1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QU-ae-3kH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -399,22 +399,34 @@
                                     <action selector="setReminder:" destination="pFJ-k8-SsD" eventType="touchUpInside" id="HPC-1s-4Ls"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efl-rN-Vhp">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Kill All Reminders">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="killAllReminders:" destination="pFJ-k8-SsD" eventType="touchUpInside" id="UV5-63-YZY"/>
-                                    <action selector="setReminder:" destination="pFJ-k8-SsD" eventType="touchUpInside" id="yoV-TR-PdI"/>
-                                </connections>
-                            </button>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="FZy-w6-TK6">
                                 <rect key="frame" x="-160" y="-81" width="320" height="162"/>
                                 <date key="date" timeIntervalSinceReferenceDate="456337643.00352103">
                                     <!--2015-06-18 16:27:23 +0000-->
                                 </date>
                             </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efl-rN-Vhp">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Rgd-IP-pc3"/>
+                                </constraints>
+                                <state key="normal" title="Clear">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Rgd-IP-pc3"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Rgd-IP-pc3"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="killAllReminders:" destination="pFJ-k8-SsD" eventType="touchUpInside" id="Tdf-Nb-oqa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -422,41 +434,37 @@
                             <constraint firstItem="FZy-w6-TK6" firstAttribute="top" secondItem="ch6-jk-tkv" secondAttribute="topMargin" id="6DF-jN-AUf">
                                 <variation key="widthClass=compact" constant="64"/>
                             </constraint>
+                            <constraint firstItem="iXd-n4-4xy" firstAttribute="top" secondItem="Efl-rN-Vhp" secondAttribute="bottom" constant="8" id="99D-7I-PAu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="FZy-w6-TK6" secondAttribute="trailing" constant="-16" id="Czq-8S-dkE"/>
-                            <constraint firstItem="Efl-rN-Vhp" firstAttribute="trailing" secondItem="ch6-jk-tkv" secondAttribute="trailingMargin" id="EBu-qf-fiH"/>
-                            <constraint firstItem="iXd-n4-4xy" firstAttribute="leading" secondItem="ch6-jk-tkv" secondAttribute="leadingMargin" constant="-16" id="I98-a4-s81"/>
+                            <constraint firstItem="Efl-rN-Vhp" firstAttribute="top" secondItem="FZy-w6-TK6" secondAttribute="bottom" constant="8" id="QmA-ID-B5p"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Efl-rN-Vhp" secondAttribute="trailing" constant="-16" id="S5K-5B-J2M"/>
                             <constraint firstItem="FZy-w6-TK6" firstAttribute="top" secondItem="ch6-jk-tkv" secondAttribute="topMargin" id="Shv-0k-nw9">
                                 <variation key="widthClass=compact" constant="64"/>
                             </constraint>
-                            <constraint firstAttribute="trailingMargin" secondItem="iXd-n4-4xy" secondAttribute="trailing" constant="-16" id="Uy2-4i-ALZ"/>
+                            <constraint firstItem="BAs-Y7-MKb" firstAttribute="top" secondItem="iXd-n4-4xy" secondAttribute="bottom" id="XHq-F7-P3W"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iXd-n4-4xy" secondAttribute="trailing" constant="-16" id="XoJ-h0-g70"/>
                             <constraint firstItem="FZy-w6-TK6" firstAttribute="leading" secondItem="ch6-jk-tkv" secondAttribute="leadingMargin" constant="-16" id="Y8L-ea-5kt"/>
-                            <constraint firstItem="Efl-rN-Vhp" firstAttribute="top" secondItem="iXd-n4-4xy" secondAttribute="bottom" constant="11" id="kff-3l-a18"/>
+                            <constraint firstItem="iXd-n4-4xy" firstAttribute="leading" secondItem="ch6-jk-tkv" secondAttribute="leadingMargin" constant="-16" id="dhs-Hq-msZ"/>
                             <constraint firstItem="ZtZ-rf-CLK" firstAttribute="top" secondItem="FZy-w6-TK6" secondAttribute="bottom" constant="7" id="nhM-Sa-CDm">
                                 <variation key="widthClass=compact" constant="8"/>
                             </constraint>
                             <constraint firstAttribute="centerX" secondItem="ZtZ-rf-CLK" secondAttribute="centerX" id="oRB-kc-nlg"/>
                             <constraint firstItem="FZy-w6-TK6" firstAttribute="leading" secondItem="ch6-jk-tkv" secondAttribute="leadingMargin" constant="-16" id="qBz-aO-BEP"/>
-                            <constraint firstItem="iXd-n4-4xy" firstAttribute="top" secondItem="ZtZ-rf-CLK" secondAttribute="bottom" constant="7" id="uTx-jd-QJE">
-                                <variation key="widthClass=compact" constant="8"/>
-                            </constraint>
-                            <constraint firstItem="Efl-rN-Vhp" firstAttribute="leading" secondItem="ch6-jk-tkv" secondAttribute="leadingMargin" id="v9M-RX-C2m"/>
                             <constraint firstItem="ZtZ-rf-CLK" firstAttribute="top" secondItem="FZy-w6-TK6" secondAttribute="bottom" constant="7" id="x1g-RW-RMu">
                                 <variation key="widthClass=compact" constant="8"/>
                             </constraint>
-                            <constraint firstItem="BAs-Y7-MKb" firstAttribute="top" secondItem="Efl-rN-Vhp" secondAttribute="bottom" constant="8" id="xD4-QN-H5P"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="iXd-n4-4xy"/>
                                 <exclude reference="ZtZ-rf-CLK"/>
-                                <exclude reference="Efl-rN-Vhp"/>
                                 <exclude reference="FZy-w6-TK6"/>
+                                <exclude reference="Efl-rN-Vhp"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="xD4-QN-H5P"/>
-                                <exclude reference="EBu-qf-fiH"/>
-                                <exclude reference="kff-3l-a18"/>
-                                <exclude reference="v9M-RX-C2m"/>
+                                <exclude reference="XHq-F7-P3W"/>
+                                <exclude reference="QmA-ID-B5p"/>
+                                <exclude reference="S5K-5B-J2M"/>
                                 <exclude reference="nhM-Sa-CDm"/>
                                 <exclude reference="oRB-kc-nlg"/>
                                 <exclude reference="x1g-RW-RMu"/>
@@ -466,23 +474,22 @@
                                 <exclude reference="Shv-0k-nw9"/>
                                 <exclude reference="Y8L-ea-5kt"/>
                                 <exclude reference="qBz-aO-BEP"/>
-                                <exclude reference="I98-a4-s81"/>
-                                <exclude reference="Uy2-4i-ALZ"/>
-                                <exclude reference="uTx-jd-QJE"/>
+                                <exclude reference="99D-7I-PAu"/>
+                                <exclude reference="XoJ-h0-g70"/>
+                                <exclude reference="dhs-Hq-msZ"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="iXd-n4-4xy"/>
                                 <include reference="ZtZ-rf-CLK"/>
-                                <include reference="Efl-rN-Vhp"/>
                                 <include reference="FZy-w6-TK6"/>
+                                <include reference="Efl-rN-Vhp"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="xD4-QN-H5P"/>
-                                <include reference="EBu-qf-fiH"/>
-                                <include reference="kff-3l-a18"/>
-                                <include reference="v9M-RX-C2m"/>
+                                <include reference="XHq-F7-P3W"/>
+                                <include reference="QmA-ID-B5p"/>
+                                <include reference="S5K-5B-J2M"/>
                                 <include reference="nhM-Sa-CDm"/>
                                 <include reference="oRB-kc-nlg"/>
                                 <include reference="x1g-RW-RMu"/>
@@ -492,9 +499,9 @@
                                 <include reference="Shv-0k-nw9"/>
                                 <include reference="Y8L-ea-5kt"/>
                                 <include reference="qBz-aO-BEP"/>
-                                <include reference="I98-a4-s81"/>
-                                <include reference="Uy2-4i-ALZ"/>
-                                <include reference="uTx-jd-QJE"/>
+                                <include reference="99D-7I-PAu"/>
+                                <include reference="XoJ-h0-g70"/>
+                                <include reference="dhs-Hq-msZ"/>
                             </mask>
                         </variation>
                     </view>
@@ -754,7 +761,4 @@
             <point key="canvasLocation" x="-289.5" y="1113"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="LWA-bv-a0w"/>
-    </inferredMetricsTieBreakers>
 </document>

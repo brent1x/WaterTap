@@ -11,8 +11,9 @@
 @interface SettingsViewController ()
 
 @property NSArray *notificationCheck;
-@property (weak, nonatomic) IBOutlet UISwitch *notificationSwitch;
+
 @property (weak, nonatomic) IBOutlet UIButton *notificationButton;
+@property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
 
 @end
 
@@ -21,28 +22,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.notificationCheck = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    if (self.notificationCheck.count == 0) {
-        [self.notificationSwitch setOn:NO animated:NO];
-        self.notificationButton.hidden = YES;
+    [self switchLogic];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self switchLogic];
+}
+
+- (IBAction)onSwitchTapped:(id)sender {
+    if (self.notifSwitch.on == NO) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        self.notificationButton.enabled = NO;
     } else {
-        [self.notificationSwitch setOn:YES animated:NO];    }
+        [self performSegueWithIdentifier:@"reminderSegue" sender:self];
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)switchLogic {
+    if ([[[UIApplication sharedApplication] scheduledLocalNotifications] count] == 0) {
+        [self.notifSwitch setOn:NO animated:YES];
+        self.notificationButton.enabled = NO;
+    } else {
+        [self.notifSwitch setOn:YES animated:NO];
+        self.notificationButton.enabled = YES;
+    }
 }
-
-/*
- #pragma mark - Navigation
-
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
-
