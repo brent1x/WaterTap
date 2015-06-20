@@ -194,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				8493AD491B2BD11C0048A5B7 /* FinalProject */,
+				9A11AB301B35FE0900F16CE5 /* LogInAndSignUp(Deprecated) */,
 				8493AD661B2BD11C0048A5B7 /* FinalProjectTests */,
 				8493AD481B2BD11C0048A5B7 /* Products */,
 				04B25D75B0C138BA6B10D91A /* Pods */,
@@ -219,8 +220,6 @@
 				8493AD4F1B2BD11C0048A5B7 /* AppDelegate.m */,
 				8493AD541B2BD11C0048A5B7 /* RootViewController.h */,
 				8493AD551B2BD11C0048A5B7 /* RootViewController.m */,
-				8497407F1B335FB10039DCA2 /* LogInAndSignUpViewController.h */,
-				849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */,
 				12CD3CC21B3393D7005A0291 /* User.h */,
 				12CD3CC31B3393D7005A0291 /* User.m */,
 				849740791B335CF90039DCA2 /* ConsumptionEvent.h */,
@@ -263,6 +262,16 @@
 				8493AD681B2BD11C0048A5B7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9A11AB301B35FE0900F16CE5 /* LogInAndSignUp(Deprecated) */ = {
+			isa = PBXGroup;
+			children = (
+				8497407F1B335FB10039DCA2 /* LogInAndSignUpViewController.h */,
+				849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */,
+			);
+			name = "LogInAndSignUp(Deprecated)";
+			path = FinalProject;
 			sourceTree = "<group>";
 		};
 		CB5EF5A014DC981F5A5C9B07 /* Frameworks */ = {
@@ -347,7 +356,7 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N3P6V95JDD;
+						DevelopmentTeam = 875TN8947E;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;

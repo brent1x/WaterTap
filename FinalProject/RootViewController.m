@@ -48,17 +48,17 @@
     NSLog(@"self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
     self.consumptionEvents = [NSArray new];
-    //need to make self the delegate of the root view controller??
-    //refactor root view controller
-    //make rvc something like "LogInAndSignUpViewController"
 
     PFUser *currentUser = [PFUser currentUser];
     if (currentUser) {
         [self refreshWaterLevel];
         self.welcomeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Welcome %@!", nil), [[PFUser currentUser] username]];
-    } else {
-        [self performSegueWithIdentifier:@"LogInOrSignUpSegue" sender:self];
     }
+
+    //DEPRECATED DUE TO REMOVAL OF LOGIN AND SIGN UP FLOW
+//    else {
+//        [self performSegueWithIdentifier:@"LogInOrSignUpSegue" sender:self];
+//    }
 
 }
 
