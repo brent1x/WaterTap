@@ -599,7 +599,9 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e7fafa4-4b92-4c57-ad09-3db4b52ee65f";
+
+				PROVISIONING_PROFILE = "f3d945bf-dd81-4408-a139-1e29d4d544e5";
+
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -622,7 +624,9 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e7fafa4-4b92-4c57-ad09-3db4b52ee65f";
+
+				PROVISIONING_PROFILE = "f3d945bf-dd81-4408-a139-1e29d4d544e5";
+
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
