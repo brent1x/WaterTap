@@ -13,7 +13,6 @@
 		12CD3CC41B3393D7005A0291 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CD3CC31B3393D7005A0291 /* User.m */; };
 		840F61231B362EEE00A981C8 /* CustomWaterContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F61221B362EEE00A981C8 /* CustomWaterContainerViewController.m */; };
 		840F61261B36301100A981C8 /* WaterIntakeRecommendationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F61251B36301100A981C8 /* WaterIntakeRecommendationViewController.m */; };
-		8469F9F81B33247100D1FFA6 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469F9F71B33247100D1FFA6 /* HealthKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 8469F9F91B33264200D1FFA6 /* water.aiff */; };
 		8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */; };
 		8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */; };
@@ -49,6 +48,7 @@
 		849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */; };
 		849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740831B338B3C0039DCA2 /* SettingsViewController.m */; };
 		9A11AB321B3615D100F16CE5 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A11AB311B3615D100F16CE5 /* HealthKit.framework */; };
+		9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FDBEA1B36620F00266247 /* ContainerButton.m */; };
 		9A9719DE1B33BCC80046A7E1 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */; };
 		9A9719DF1B33BCC80046A7E1 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DC1B33BCC80046A7E1 /* FBSDKLoginKit.framework */; };
 		9A9719E01B33BCC80046A7E1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DD1B33BCC80046A7E1 /* FBSDKShareKit.framework */; };
@@ -125,6 +125,8 @@
 		849740821B338B3C0039DCA2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		9A11AB311B3615D100F16CE5 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		9A8FDBE91B36620F00266247 /* ContainerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerButton.h; sourceTree = "<group>"; };
+		9A8FDBEA1B36620F00266247 /* ContainerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerButton.m; sourceTree = "<group>"; };
 		9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		9A9719DC1B33BCC80046A7E1 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		9A9719DD1B33BCC80046A7E1 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -233,6 +235,8 @@
 				8493AD551B2BD11C0048A5B7 /* RootViewController.m */,
 				12CD3CC21B3393D7005A0291 /* User.h */,
 				12CD3CC31B3393D7005A0291 /* User.m */,
+				9A8FDBE91B36620F00266247 /* ContainerButton.h */,
+				9A8FDBEA1B36620F00266247 /* ContainerButton.m */,
 				849740791B335CF90039DCA2 /* ConsumptionEvent.h */,
 				8497407A1B335CF90039DCA2 /* ConsumptionEvent.m */,
 				8497407C1B335D6C0039DCA2 /* CustomWaterLevelView.h */,
@@ -469,6 +473,7 @@
 				8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */,
 				1288532B1B33382A00E2CA6D /* TrackerViewController.m in Sources */,
 				8469FA041B33319400D1FFA6 /* HealthKitViewController.m in Sources */,
+				9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */,
 				8497407E1B335D6C0039DCA2 /* CustomWaterLevelView.m in Sources */,
 				849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */,
 				8493AD531B2BD11C0048A5B7 /* FinalProject.xcdatamodeld in Sources */,
@@ -635,9 +640,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-
 				PROVISIONING_PROFILE = "f3d945bf-dd81-4408-a139-1e29d4d544e5";
-
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

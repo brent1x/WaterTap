@@ -20,111 +20,158 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Tracker/Calendar">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="235" y="511" width="157" height="30"/>
+                                        </variation>
+                                        <connections>
+                                            <segue destination="6P9-0D-UAW" kind="show" id="QUK-yp-mfi"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXj-9J-mCt">
+                                        <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="y5c-Pq-c3U"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="y5c-Pq-c3U"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="142" y="91" width="117.5" height="21"/>
+                                            <mask key="constraints">
+                                                <include reference="y5c-Pq-c3U"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-PA-lib">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Add Water">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="160" y="504" width="81" height="43"/>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Q-hY-c2P" customClass="ContainerButton">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="268" y="364" width="81" height="85"/>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nyi-sx-6mm" customClass="ContainerButton">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="177" y="364" width="83" height="79"/>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBc-Dg-bWV" customClass="ContainerButton">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="86" y="378" width="80" height="71"/>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Settings">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="30" y="485" width="68" height="56"/>
+                                        </variation>
+                                        <connections>
+                                            <segue destination="0ka-N1-EvE" kind="show" id="Lrt-CR-86G"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" red="0.43132776021957397" green="0.7410774827003479" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <variation key="widthClass=compact" ambiguous="YES">
-                                    <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
-                                </variation>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Tracker/Calendar">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="246" y="541" width="118" height="30"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="6P9-0D-UAW" kind="show" id="QUK-yp-mfi"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-PA-lib">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Add Water">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="158" y="304" width="73" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="onAddWaterButtonTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qDh-MC-sTs"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXj-9J-mCt">
-                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="y5c-Pq-c3U"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
                                 <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="y5c-Pq-c3U"/>
+                                    <mask key="subviews">
+                                        <exclude reference="LrZ-B5-DFh"/>
+                                        <exclude reference="AXj-9J-mCt"/>
+                                        <exclude reference="cod-PA-lib"/>
+                                        <exclude reference="r1Q-hY-c2P"/>
+                                        <exclude reference="Nyi-sx-6mm"/>
+                                        <exclude reference="dBc-Dg-bWV"/>
+                                        <exclude reference="eSi-zi-Z6M"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="y5c-Pq-c3U"/>
+                                    <mask key="subviews">
+                                        <include reference="LrZ-B5-DFh"/>
+                                        <include reference="AXj-9J-mCt"/>
+                                        <include reference="cod-PA-lib"/>
+                                        <include reference="r1Q-hY-c2P"/>
+                                        <include reference="Nyi-sx-6mm"/>
+                                        <include reference="dBc-Dg-bWV"/>
+                                        <include reference="eSi-zi-Z6M"/>
                                     </mask>
                                 </variation>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="40" y="541" width="57" height="30"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="0ka-N1-EvE" kind="show" id="Lrt-CR-86G"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="8ik-IO-6b8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="-16" id="Jk2-xx-Vf5"/>
-                            <constraint firstAttribute="centerX" secondItem="AXj-9J-mCt" secondAttribute="centerX" id="Lhb-kf-hOT"/>
-                            <constraint firstItem="AXj-9J-mCt" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="12" id="M9N-ts-S29"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="-16" id="Vql-BF-M1B"/>
+                            <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Ydg-8p-K9m"/>
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="ZYl-ey-YRT"/>
+                            <constraint firstItem="VTJ-k2-lQf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="b8w-sm-JsW"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="fP4-gB-Dpm"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="VTJ-k2-lQf"/>
-                                <exclude reference="LrZ-B5-DFh"/>
-                                <exclude reference="cod-PA-lib"/>
-                                <exclude reference="AXj-9J-mCt"/>
-                                <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="fP4-gB-Dpm"/>
-                                <exclude reference="Lhb-kf-hOT"/>
-                                <exclude reference="M9N-ts-S29"/>
                                 <exclude reference="Jk2-xx-Vf5"/>
+                                <exclude reference="Vql-BF-M1B"/>
+                                <exclude reference="Ydg-8p-K9m"/>
                                 <exclude reference="ZYl-ey-YRT"/>
+                                <exclude reference="b8w-sm-JsW"/>
+                                <exclude reference="8ik-IO-6b8"/>
+                                <exclude reference="fP4-gB-Dpm"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="VTJ-k2-lQf"/>
-                                <include reference="LrZ-B5-DFh"/>
-                                <include reference="cod-PA-lib"/>
-                                <include reference="AXj-9J-mCt"/>
-                                <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="fP4-gB-Dpm"/>
-                                <include reference="Lhb-kf-hOT"/>
-                                <include reference="M9N-ts-S29"/>
                                 <include reference="Jk2-xx-Vf5"/>
+                                <include reference="Vql-BF-M1B"/>
+                                <include reference="Ydg-8p-K9m"/>
                                 <include reference="ZYl-ey-YRT"/>
+                                <include reference="b8w-sm-JsW"/>
+                                <include reference="8ik-IO-6b8"/>
+                                <include reference="fP4-gB-Dpm"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="6o4-tW-As6"/>
                     <connections>
                         <outlet property="addWaterButton" destination="cod-PA-lib" id="des-42-zqm"/>
+                        <outlet property="menuButton1" destination="r1Q-hY-c2P" id="JRi-rG-M0i"/>
+                        <outlet property="menuButton2" destination="Nyi-sx-6mm" id="ufd-bd-3FO"/>
+                        <outlet property="menuButton3" destination="dBc-Dg-bWV" id="W7N-WN-nte"/>
                         <outlet property="waterLevel" destination="VTJ-k2-lQf" id="pu3-L5-2iv"/>
                         <outlet property="welcomeLabel" destination="AXj-9J-mCt" id="8Kc-QF-eda"/>
                     </connections>
