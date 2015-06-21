@@ -13,8 +13,9 @@
 @property (nonatomic, strong) PFUser *user;
 @property int volumeConsumed;
 @property int consumptionGoal;
-
+@property NSDate *consumedAt;
 
 + (NSString *)parseClassName;
+
 @end
 

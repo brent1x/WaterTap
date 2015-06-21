@@ -31,76 +31,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-
-//    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-//    testObject[@"foo"] = @"bar";
-//    [testObject saveInBackground];
-
-//    self.waterLevelHeight = 0;
-//    self.waterLevelY = 0;
-
-//    self.waterLevel.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
-
-
-
-    NSLog(@"DIIICK: %f %f", self.view.frame.size.height,self.view.frame.origin.y);
-
-    NSLog(@"self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
-
+ self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
 
-    PFUser *currentUser = [PFUser currentUser];
-    if (currentUser) {
-        [self refreshWaterLevel];
-        self.welcomeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Welcome %@!", nil), [[PFUser currentUser] username]];
-    }
-
-    //DEPRECATED DUE TO REMOVAL OF LOGIN AND SIGN UP FLOW
-//    else {
-//        [self performSegueWithIdentifier:@"LogInOrSignUpSegue" sender:self];
-//    }
-
+//    PFUser *currentUser = [PFUser currentUser];
+    NSLog(@"ANON: %@", [PFUser currentUser]);
 }
-
--(void)viewWillAppear:(BOOL)animated {
-    self.navigationController.navigationBarHidden = YES;
-
-
-    PFUser *currentUser = [PFUser currentUser];
-    if (currentUser) {
-        [self refreshWaterLevel];
-    }
-
-
-}
-
-//-(void)viewDidAppear:(BOOL)animated {
-//    [UIView animateWithDuration:0.5 animations:^{
-//        self.waterLevel.frame = CGRectMake(self.view.frame.origin.x, self.waterLevelY, self.view.frame.size.width, self.waterLevelHeight);
-//    }];
-//}
-
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
 
     myConsumptionEvent.volumeConsumed = 10;
-    [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
+
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = 32;
+    myConsumptionEvent.consumedAt = [NSDate date];
+    [myConsumptionEvent pinInBackground];
 
-    [myConsumptionEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
-
-        if(!succeeded) {
-            NSLog(@"There was an error and u better check yo shit");
-        }
-        [self totalVolumeConsumed];
-    }];
-
+    [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
 }
 
 -(void)changeWaterLevel:(int) heightChange{
+
+
 
     NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
@@ -111,16 +65,41 @@
 
     NSLog(@"2 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
-
 //    NSLog(@"Height is %f and y position is %f", newFrameRect.size.height, newFrameRect.origin.y);
 
-    [UIView animateWithDuration:0.5 animations:^{
+    if(self.waterLevel.frame.size.height + heightChange >= 667) {
 
-        //        self.waterLevelHeightConstraint.constant += heightChange;
-        self.waterLevel.frame = newFrameRect;
-        self.waterLevelY = self.waterLevel.frame.origin.y;
-        self.waterLevelHeight = self.waterLevel.frame.size.height;
-    }];
+
+        newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+
+        [UIView animateWithDuration:0.5 animations:^{
+
+            //        self.waterLevelHeightConstraint.constant += heightChange;
+            self.waterLevel.frame = newFrameRect;
+            self.waterLevelY = self.waterLevel.frame.origin.y;
+            self.waterLevelHeight = self.waterLevel.frame.size.height;
+            self.waterLevel.backgroundColor = [UIColor colorWithRed:0.96 green:0.85 blue:0.27 alpha:1];
+            
+
+        }];
+        NSString *messageString = @"You've reached your water intake goal for the day!!!";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+
+    }
+
+    else{
+         newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+
+        [UIView animateWithDuration:0.5 animations:^{
+
+            //        self.waterLevelHeightConstraint.constant += heightChange;
+            self.waterLevel.frame = newFrameRect;
+            self.waterLevelY = self.waterLevel.frame.origin.y;
+            self.waterLevelHeight = self.waterLevel.frame.size.height;
+        }];
+        
+    }
 }
 
 
@@ -129,10 +108,6 @@
 
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query selectKeys:@[@"volumeConsumed"]];
-
-
-
-
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // NSLog(@"%@", objects);
         self.consumptionEvents = objects;
