@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.title = @"Settings";
     [self switchLogic];
 }
 
@@ -32,7 +33,7 @@
 - (IBAction)onSwitchTapped:(id)sender {
     if (self.notifSwitch.on == NO) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
-        self.notificationButton.enabled = NO;
+        self.notificationButton.hidden = YES;
     } else {
         [self performSegueWithIdentifier:@"reminderSegue" sender:self];
     }
@@ -41,10 +42,10 @@
 - (void)switchLogic {
     if ([[[UIApplication sharedApplication] scheduledLocalNotifications] count] == 0) {
         [self.notifSwitch setOn:NO animated:YES];
-        self.notificationButton.enabled = NO;
+        self.notificationButton.hidden = YES;
     } else {
         [self.notifSwitch setOn:YES animated:NO];
-        self.notificationButton.enabled = YES;
+        self.notificationButton.hidden = NO;
     }
 }
 

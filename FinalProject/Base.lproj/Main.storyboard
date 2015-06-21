@@ -25,18 +25,6 @@
                                     <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
                                 </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM5-Gr-5vC">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="HealthKit">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="36" y="541" width="63" height="30"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="Yvk-Nt-GFE" kind="show" id="5mj-YM-FX9"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Tracker/Calendar">
@@ -61,18 +49,6 @@
                                     <action selector="onAddWaterButtonTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qDh-MC-sTs"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="141" y="541" width="57" height="30"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="0ka-N1-EvE" kind="show" id="Lrt-CR-86G"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXj-9J-mCt">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <constraints>
@@ -86,13 +62,24 @@
                                         <exclude reference="y5c-Pq-c3U"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="141" y="95" width="118" height="21"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="y5c-Pq-c3U"/>
                                     </mask>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="40" y="541" width="57" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="0ka-N1-EvE" kind="show" id="Lrt-CR-86G"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -105,11 +92,10 @@
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="VTJ-k2-lQf"/>
-                                <exclude reference="kM5-Gr-5vC"/>
                                 <exclude reference="LrZ-B5-DFh"/>
                                 <exclude reference="cod-PA-lib"/>
-                                <exclude reference="eSi-zi-Z6M"/>
                                 <exclude reference="AXj-9J-mCt"/>
+                                <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="fP4-gB-Dpm"/>
@@ -122,11 +108,10 @@
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="VTJ-k2-lQf"/>
-                                <include reference="kM5-Gr-5vC"/>
                                 <include reference="LrZ-B5-DFh"/>
                                 <include reference="cod-PA-lib"/>
-                                <include reference="eSi-zi-Z6M"/>
                                 <include reference="AXj-9J-mCt"/>
+                                <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="fP4-gB-Dpm"/>
@@ -166,7 +151,45 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="28" y="87" width="197" height="21"/>
+                                    <rect key="frame" x="28" y="221" width="197" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKy-4B-2Xi">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <string key="text">Get a personalized water 
+intake recommendation</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="28" y="280" width="219" height="41"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use a custom water container" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3A-fu-rBH">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="28" y="355" width="230" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Goal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpm-L8-j6U">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="28" y="102" width="79" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Units" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYT-IW-NU0">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="28" y="166" width="40" height="21"/>
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZO-Dc-uTh">
@@ -175,35 +198,87 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="338" y="82" width="30" height="30"/>
+                                    <rect key="frame" x="253" y="217" width="30" height="30"/>
                                 </variation>
                                 <connections>
                                     <segue destination="pFJ-k8-SsD" kind="show" identifier="reminderSegue" id="1LG-US-VJU"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="B9g-IY-Yc2">
+                                <rect key="frame" x="-61" y="-14" width="123" height="29"/>
+                                <segments>
+                                    <segment title="mL"/>
+                                    <segment title="Oz"/>
+                                </segments>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="243" y="159" width="110" height="29"/>
+                                </variation>
+                            </segmentedControl>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G55-yT-tfV">
                                 <rect key="frame" x="-25" y="-15" width="51" height="31"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="262" y="81" width="51" height="31"/>
+                                    <rect key="frame" x="304" y="216" width="51" height="31"/>
                                 </variation>
                                 <connections>
                                     <action selector="onSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="b4i-mz-GNc"/>
                                 </connections>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xN0-sr-AGf">
+                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="304" y="285" width="51" height="31"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="Yvk-Nt-GFE" kind="show" id="QyL-va-cLY"/>
+                                </connections>
+                            </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AFe-KR-f47">
+                                <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="304" y="350" width="51" height="31"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="vL5-Ca-gFJ" kind="show" identifier="waterContainerSegue" id="58N-uO-eEe"/>
+                                </connections>
+                            </switch>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
+                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="256" y="99" width="97" height="30"/>
+                                </variation>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="efU-JU-W7G"/>
+                                <exclude reference="NKy-4B-2Xi"/>
+                                <exclude reference="E3A-fu-rBH"/>
+                                <exclude reference="Rpm-L8-j6U"/>
+                                <exclude reference="vYT-IW-NU0"/>
                                 <exclude reference="JZO-Dc-uTh"/>
+                                <exclude reference="B9g-IY-Yc2"/>
                                 <exclude reference="G55-yT-tfV"/>
+                                <exclude reference="xN0-sr-AGf"/>
+                                <exclude reference="AFe-KR-f47"/>
+                                <exclude reference="IqW-jg-e74"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="efU-JU-W7G"/>
+                                <include reference="NKy-4B-2Xi"/>
+                                <include reference="E3A-fu-rBH"/>
+                                <include reference="Rpm-L8-j6U"/>
+                                <include reference="vYT-IW-NU0"/>
                                 <include reference="JZO-Dc-uTh"/>
+                                <include reference="B9g-IY-Yc2"/>
                                 <include reference="G55-yT-tfV"/>
+                                <include reference="xN0-sr-AGf"/>
+                                <include reference="AFe-KR-f47"/>
+                                <include reference="IqW-jg-e74"/>
                             </mask>
                         </variation>
                     </view>
@@ -275,6 +350,14 @@
                                     <rect key="frame" x="133" y="328" width="135" height="30"/>
                                 </variation>
                             </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v3A-Ce-3P6">
+                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="152" y="272" width="97" height="30"/>
+                                </variation>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -284,6 +367,7 @@
                                 <exclude reference="Z7I-Sn-elY"/>
                                 <exclude reference="H7P-Cu-Pt5"/>
                                 <exclude reference="SSe-gk-q7O"/>
+                                <exclude reference="v3A-Ce-3P6"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -293,19 +377,21 @@
                                 <include reference="Z7I-Sn-elY"/>
                                 <include reference="H7P-Cu-Pt5"/>
                                 <include reference="SSe-gk-q7O"/>
+                                <include reference="v3A-Ce-3P6"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="ageLabel" destination="kCc-za-GOn" id="klk-QO-k6v"/>
                         <outlet property="heightLabel" destination="Z7I-Sn-elY" id="4cr-3r-IUY"/>
+                        <outlet property="heightTextField" destination="v3A-Ce-3P6" id="xw0-Ts-ZsK"/>
                         <outlet property="proteinText" destination="SSe-gk-q7O" id="Kzj-h4-vr9"/>
                         <outlet property="weightLabel" destination="SPr-zp-BBA" id="uRs-xm-5ep"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTc-cT-WXG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="864" y="201"/>
+            <point key="canvasLocation" x="1801.5" y="847"/>
         </scene>
         <!--Tracker View Controller-->
         <scene sceneID="Bl0-OD-Vwe">
@@ -512,7 +598,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O9n-2j-0cp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1657.5" y="923"/>
+            <point key="canvasLocation" x="1801.5" y="176"/>
+        </scene>
+        <!--Custom Water Container View Controller-->
+        <scene sceneID="Zb4-UL-i6a">
+            <objects>
+                <viewController id="vL5-Ca-gFJ" customClass="CustomWaterContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P6i-fU-y6P"/>
+                        <viewControllerLayoutGuide type="bottom" id="1ca-o6-MgG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f8O-sa-6vA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ngq-g8-9dv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1801.5" y="1522"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nQ2-K5-fCR">

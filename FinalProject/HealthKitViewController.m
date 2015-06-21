@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *heightLabel;
 @property (weak, nonatomic) IBOutlet UITextField *proteinText;
+@property (weak, nonatomic) IBOutlet UITextField *heightTextField;
 
 @end
 
@@ -62,9 +63,8 @@
     HKQuantityType *heightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
     HKQuantityType *weightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
     HKCharacteristicType *birthdayType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
-    HKCharacteristicType *biologicalSexType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBiologicalSex];
 
-    return [NSSet setWithObjects:heightType, weightType, birthdayType, biologicalSexType, nil];
+    return [NSSet setWithObjects:heightType, weightType, birthdayType, nil];
 }
 
 #pragma mark // Update Labels With User's Data from HealthKit
@@ -95,7 +95,9 @@
     NSString *heightUnitString = [lengthFormatter unitStringFromValue:10 unit:heightFormatterUnit];
     NSString *localizedHeightUnitDescriptionFormat = NSLocalizedString(@"Height (%@)", nil);
 
-    self.heightLabel.text = [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
+    self.heightTextField.text = [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
+
+
 
     HKQuantityType *heightType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
 
@@ -105,7 +107,7 @@
             NSLog(@"Either an error occured fetching the user's height information or none has been stored yet.");
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.heightLabel.text = NSLocalizedString(@"Not available.", nil);
+                self.heightTextField.text = NSLocalizedString(@"Not available.", nil);
             });
         }
 
@@ -116,7 +118,7 @@
 
             // Update the user interface.
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.heightLabel.text = [NSNumberFormatter localizedStringFromNumber:@(usersHeight) numberStyle:NSNumberFormatterNoStyle];
+                self.heightTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersHeight) numberStyle:NSNumberFormatterNoStyle];
             });
         }
     }];
