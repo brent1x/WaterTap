@@ -18,7 +18,8 @@
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
 @property NSMutableArray *menuButtons;
-@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+//removed Welcome Label from Storyboard
+//@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property NSArray *consumptionEvents;
 @property int totalVolumeSummed;
 
@@ -42,11 +43,13 @@
 
     [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
 
-//    self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
-//    for (ContainerButton *button in self.menuButtons) {
+   self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
+    for (ContainerButton *button in self.menuButtons) {
+
+        button.center = self.addWaterButton.center;
 //        [self.view addSubview:button];
 ////        [button addTarget:self action:@selector(onAddWaterButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//    }
+    }
 
  self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
