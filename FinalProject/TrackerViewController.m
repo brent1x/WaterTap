@@ -121,6 +121,8 @@
 
     self.delegate = self;
 
+    [self getWaterIntakeForADay:[NSDate date]];
+
 }
 
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
@@ -155,7 +157,7 @@
 
     // Add objects to the array based on the stepper value
     for (int i = 0; i < 9; i++) {
-        [self.waterIntakeValues addObject:@([self getRandomFloat])]; // Random values for the graph
+        //[self.waterIntakeValues addObject:@([self getRandomFloat])]; // Random values for the graph
         if (i == 0) {
             [self.dateValues addObject:baseDate]; // Dates for the X-Axis of the graph
         } else if (showNullValue && i == 4) {
@@ -164,7 +166,6 @@
         } else {
             [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
         }
-
         self.totalNumber = self.totalNumber + [[self.waterIntakeValues objectAtIndex:i] intValue]; // All of the values added together
     }
 }
@@ -212,28 +213,33 @@
     NSDate *startDay = [self makeDayStartOfDay:day];
     NSDate *endDay = [self makeDayNextStartOfDay:day];
 
-    PFQuery *query = [ConsumptionEvent query];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(%@ <= consumedAt) && (consumedAt < %@)", startDay, endDay];
+
+    PFQuery *query = [PFQuery queryWithClassName:@"ConsumptionEvent" predicate:predicate];
     [query fromLocalDatastore];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ <= consumedAt > %@", startDay, endDay]];
-
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)objects.count);
+            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)events.count);
             // Do something with the found objects
 
-            NSLog(@"Objects are: %@", objects);
-            for (ConsumptionEvent *object in objects) {
-                NSLog(@"%@", object.consumedAt);
+            int dayTotal = 0;
+            NSLog(@"Objects are: %@", events);
+            for (ConsumptionEvent *event in events) {
+
+                dayTotal += event.volumeConsumed;
+                NSLog(@"%@", event.consumedAt);
             }
+            [self.waterIntakeValues  removeAllObjects];
+            [self.waterIntakeValues addObject:[NSNumber numberWithInt:dayTotal]];
+            [self hydrateDatasets];
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
 }
-
 
 -(NSDate *)makeDayNextStartOfDay:(NSDate *)day {
     day = [self zeroTimeDate:day];
@@ -329,6 +335,9 @@
     unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth| NSCalendarUnitDay;
     NSCalendar* calendar = [NSCalendar currentCalendar];
     NSDateComponents* components = [calendar components:flags fromDate:date];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
     NSDate* dateOnly = [calendar dateFromComponents:components];
     
     return dateOnly;
