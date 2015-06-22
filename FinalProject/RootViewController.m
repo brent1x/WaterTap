@@ -109,7 +109,7 @@
 
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
 
-    myConsumptionEvent.volumeConsumed = 10;
+    myConsumptionEvent.volumeConsumed = 150;
 
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = 32;
@@ -117,6 +117,7 @@
     [myConsumptionEvent pinInBackground];
 
     [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
+    [self toggleFan];
 }
 
 
@@ -134,15 +135,15 @@
 }
 
 -(void)fanOut{
-    CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x - 50, self.addWaterButton.frame.origin.y + 20);
+    CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
     UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
 
-    point = CGPointMake(self.addWaterButton.frame.origin.x - 45, self.addWaterButton.frame.origin.y - 45);
+    point = CGPointMake(self.addWaterButton.frame.origin.x+30, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
 
-    point = CGPointMake(self.addWaterButton.frame.origin.x + 20, self.addWaterButton.frame.origin.y - 50);
+    point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
 
