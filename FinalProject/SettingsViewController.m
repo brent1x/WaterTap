@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *notificationButton;
 @property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
 
 @end
 
@@ -23,6 +25,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
+    self.dailyGoalTextField.text = @"64";
     [self switchLogic];
 }
 
@@ -48,5 +51,21 @@
         self.notificationButton.hidden = NO;
     }
 }
+
+- (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
+    if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
+        double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735;
+        int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
+        self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
+    } else if (self.segmentedUnitSelector.selectedSegmentIndex == 0) {
+        double convertMLToCounce = [self.dailyGoalTextField.text doubleValue] * 0.0338;
+        int convToInt = (int)(convertMLToCounce + (convertMLToCounce > 0 ? 0.5 : -0.5));
+        self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
+    }
+
+    // TO BUILD LOGIC HERE THAT WILL MAKE METHOD CALLS TO CONSUMPTION EVENT, DAILY GOAL, PEROSONALIZED RECOMMENDATION, AND CUSTOM WATER CONTAINER TO CONVERT UNITS BETWEEN OUNCES AND MILLILETERS
+
+}
+
 
 @end
