@@ -40,7 +40,7 @@
 
         [self.healthStore requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
             if (!success) {
-                NSLog(@"errored out, homie: %@", error);
+                NSLog(@"Error: %@", error);
                 return;
             }
 
@@ -65,7 +65,7 @@
 }
 
 #pragma mark // Read Data Permissions from HealthKit
-// Returns the types of data that Fit wishes to read from HealthKit.
+
 - (NSSet *)dataTypesToRead {
     HKQuantityType *heightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
     HKQuantityType *weightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
@@ -76,7 +76,6 @@
 
 #pragma mark // Update Labels With User's Data from HealthKit
 - (void)updateUsersAgeLabel {
-    // self.ageTextField.text = NSLocalizedString(@"Age (yrs)", nil);
     NSError *error;
     NSDate *dateOfBirth = [self.healthStore dateOfBirthWithError:&error];
     if (!dateOfBirth) {
@@ -229,28 +228,27 @@
 }
 
 
-/* ADD WATER METHOD INCLUDING WRITING TO HEALTHKIT
- - (IBAction)addWater:(UIButton *)sender {
+// - (IBAction)addWater:(UIButton *)sender {
+//
+//     double waterInOunces = [self.proteinText.text doubleValue];
+//
+//     NSDate *now = [NSDate date];
+//     HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryWater];
+//     HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit ounceUnit] doubleValue:waterInOunces];
+//
+//     HKQuantitySample *drinkSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
+//                                                                     quantity:hkQuantity
+//                                                                    startDate:now
+//                                                                      endDate:now];
+//
+//     [self.healthStore saveObject:drinkSample withCompletion:^(BOOL success, NSError *error) {
+//         if (!success) {
+//            NSLog(@"An error occured saving the drink sample %@. The error was: %@.", drinkSample, error);
+//             abort();
+//        }
+//     }];
+//
+// }
 
- double waterInOunces = [self.proteinText.text doubleValue];
-
- NSDate *now = [NSDate date];
- HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryWater];
- HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit ounceUnit] doubleValue:waterInOunces];
-
- HKQuantitySample *drinkSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
- quantity:hkQuantity
- startDate:now
- endDate:now];
-
- [self.healthStore saveObject:drinkSample withCompletion:^(BOOL success, NSError *error) {
- if (!success) {
- NSLog(@"An error occured saving the drink sample %@. The error was: %@.", drinkSample, error);
- abort();
- }
- }];
-
- }
- */
 
 @end
