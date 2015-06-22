@@ -9,11 +9,17 @@
 #import "RootViewController.h"
 #import "ConsumptionEvent.h"
 #import "CustomWaterLevelView.h"
+#import "ContainerButton.h"
 
 @interface RootViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
-@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+@property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
+@property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
+@property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
+@property NSMutableArray *menuButtons;
+//removed Welcome Label from Storyboard
+//@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property NSArray *consumptionEvents;
 @property int totalVolumeSummed;
 
@@ -22,6 +28,8 @@
 
 @property float waterLevelHeight;
 @property float waterLevelY;
+@property UIDynamicAnimator *animator;
+@property BOOL isFannedOut;
 
 
 @end
@@ -31,18 +39,77 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+
+    [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
+
+   self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
+    for (ContainerButton *button in self.menuButtons) {
+
+        button.center = self.addWaterButton.center;
+//        [self.view addSubview:button];
+////        [button addTarget:self action:@selector(onAddWaterButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
  self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
 
 //    PFUser *currentUser = [PFUser currentUser];
     NSLog(@"ANON: %@", [PFUser currentUser]);
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        // app already launched
+        //do nothing
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome to Water Tap"
+                                                                       message:@"Everything you could want in a water-consumption-tracking-kickass-better-than-the-rest mobile app for your iPhone. !!!"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Show me this fucking sweet app" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+
+        // This is the first launch ever
+        //Take user through tutorial
+    }
 }
+
+
+
+//-(void)beginTutorial {
+//
+//
+//
+//
+//}
+
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+//{
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+//    {
+//        // app already launched
+//    }
+//    else
+//    {
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        // This is the first launch ever
+//    }
+//}
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
 
-    myConsumptionEvent.volumeConsumed = 10;
+    myConsumptionEvent.volumeConsumed = 150;
 
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = 32;
@@ -50,7 +117,53 @@
     [myConsumptionEvent pinInBackground];
 
     [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
+    [self toggleFan];
 }
+
+
+- (void)toggleFan {
+
+    [self.animator removeAllBehaviors];
+    if (self.isFannedOut){
+        [self fanIn];
+    }
+    else {
+        [self fanOut];
+    }
+
+    self.isFannedOut = !self.isFannedOut;
+}
+
+-(void)fanOut{
+    CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
+    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+
+    point = CGPointMake(self.addWaterButton.frame.origin.x+30, self.addWaterButton.frame.origin.y - 50);
+    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+
+    point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
+    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+
+}
+
+-(void)fanIn{
+
+    CGPoint point = self.addWaterButton.center;
+
+    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+
+    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+
+    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
+    [self.animator addBehavior:snapBehavior];
+    
+}
+
 
 -(void)changeWaterLevel:(int) heightChange{
 
