@@ -49,7 +49,7 @@
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self updateUsersAgeLabel];
+                // [self updateUsersAgeLabel];
                 [self updateUsersHeightLabel];
                 [self updateUsersWeightLabel];
             });
@@ -60,8 +60,8 @@
 #pragma mark // Write Data Permissions to HealthKit
 - (NSSet *)dataTypesToWrite {
 
-    HKQuantityType *proteinType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
-    return [NSSet setWithObjects:proteinType, nil];
+    // HKQuantityType *proteinType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
+    return [NSSet setWithObjects:nil];
 
     /* THESE TWO LINES WILL LET ME WRITE WATER QUANTITY TYPES TO HEALTHKIT UPON iOS9 RELEASE */
     // HKQuantityType *waterType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryWater];
@@ -73,28 +73,28 @@
 - (NSSet *)dataTypesToRead {
     HKQuantityType *heightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
     HKQuantityType *weightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
-    HKCharacteristicType *birthdayType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
+    // HKCharacteristicType *birthdayType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
 
-    return [NSSet setWithObjects:heightType, weightType, birthdayType, nil];
+    return [NSSet setWithObjects:heightType, weightType, nil];
 }
 
 #pragma mark // Update Labels With User's Data from HealthKit
-- (void)updateUsersAgeLabel {
-    NSError *error;
-    NSDate *dateOfBirth = [self.healthStore dateOfBirthWithError:&error];
-    if (!dateOfBirth) {
-        NSLog(@"Either an error occured fetching the user's age information or none has been stored yet.");
-        self.ageTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your age.", nil);
-    }
-
-    else {
-        // This will compute the age of the user if age isn't provided
-        NSDate *now = [NSDate date];
-        NSDateComponents *ageComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitYear fromDate:dateOfBirth toDate:now options:NSCalendarWrapComponents];
-        NSUInteger usersAge = [ageComponents year];
-        self.ageTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersAge) numberStyle:NSNumberFormatterNoStyle];
-    }
-}
+//- (void)updateUsersAgeLabel {
+//    NSError *error;
+//    NSDate *dateOfBirth = [self.healthStore dateOfBirthWithError:&error];
+//    if (!dateOfBirth) {
+//        NSLog(@"Either an error occured fetching the user's age information or none has been stored yet.");
+//        self.ageTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your age.", nil);
+//    }
+//
+//    else {
+//        // This will compute the age of the user if age isn't provided
+//        NSDate *now = [NSDate date];
+//        NSDateComponents *ageComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitYear fromDate:dateOfBirth toDate:now options:NSCalendarWrapComponents];
+//        NSUInteger usersAge = [ageComponents year];
+//        self.ageTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersAge) numberStyle:NSNumberFormatterNoStyle];
+//    }
+//}
 
 - (void)updateUsersHeightLabel {
     // Fetch user's default height unit in inches.
@@ -167,30 +167,30 @@
     }];
 }
 
-- (IBAction)addProtein:(UIButton *)sender {
-    // Some weight in gram
-    double proteinInGrams = [self.proteinText.text doubleValue];
-
-    // Create an instance of HKQuantityType and HKQuantity to specify the data type and value you want to update
-    NSDate *now = [NSDate date];
-    HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
-    HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:proteinInGrams];
-
-    // Create the concrete sample
-    HKQuantitySample *proteinSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
-                                                                      quantity:hkQuantity
-                                                                     startDate:now
-                                                                       endDate:now];
-
-    // Update the protein consumed in the health store
-    [self.healthStore saveObject:proteinSample withCompletion:^(BOOL success, NSError *error) {
-        if (!success) {
-            NSLog(@"you crashed, homie: %@. this is your proteinSample data: %@", error, proteinSample);
-            abort();
-        }
-    }];
-
-}
+//- (IBAction)addProtein:(UIButton *)sender {
+//    // Some weight in gram
+//    double proteinInGrams = [self.proteinText.text doubleValue];
+//
+//    // Create an instance of HKQuantityType and HKQuantity to specify the data type and value you want to update
+//    NSDate *now = [NSDate date];
+//    HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
+//    HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:proteinInGrams];
+//
+//    // Create the concrete sample
+//    HKQuantitySample *proteinSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
+//                                                                      quantity:hkQuantity
+//                                                                     startDate:now
+//                                                                       endDate:now];
+//
+//    // Update the protein consumed in the health store
+//    [self.healthStore saveObject:proteinSample withCompletion:^(BOOL success, NSError *error) {
+//        if (!success) {
+//            NSLog(@"you crashed, homie: %@. this is your proteinSample data: %@", error, proteinSample);
+//            abort();
+//        }
+//    }];
+//
+//}
 
 - (IBAction)onCalculateTapped:(id)sender {
 
