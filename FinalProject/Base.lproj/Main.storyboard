@@ -18,6 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone 6" translatesAutoresizingMaskIntoConstraints="NO" id="4PS-Oj-jV4">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Tracker/Calendar">
@@ -163,6 +166,7 @@
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
+                                <exclude reference="4PS-Oj-jV4"/>
                                 <exclude reference="LrZ-B5-DFh"/>
                                 <exclude reference="r1Q-hY-c2P"/>
                                 <exclude reference="Nyi-sx-6mm"/>
@@ -172,14 +176,6 @@
                                 <exclude reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Nj1-Kb-qFo"/>
-                                <exclude reference="wdc-9k-obB"/>
-                                <exclude reference="BBe-5x-5Ka"/>
-                                <exclude reference="qjW-QG-Yp4"/>
-                                <exclude reference="43U-ha-au9"/>
-                                <exclude reference="sFB-Mj-mH4"/>
-                                <exclude reference="Ro2-zI-LcI"/>
-                                <exclude reference="tiG-49-LYe"/>
                                 <exclude reference="4q5-ty-lfq"/>
                                 <exclude reference="Js8-lI-1SX"/>
                                 <exclude reference="Lp6-Wk-JPi"/>
@@ -190,12 +186,21 @@
                                 <exclude reference="niY-Fk-O38"/>
                                 <exclude reference="p2S-Ln-Ecp"/>
                                 <exclude reference="zCa-Zq-hLq"/>
+                                <exclude reference="43U-ha-au9"/>
+                                <exclude reference="sFB-Mj-mH4"/>
+                                <exclude reference="Nj1-Kb-qFo"/>
+                                <exclude reference="wdc-9k-obB"/>
                                 <exclude reference="9tO-Lq-ah9"/>
                                 <exclude reference="oEK-EQ-nVd"/>
+                                <exclude reference="qjW-QG-Yp4"/>
+                                <exclude reference="BBe-5x-5Ka"/>
+                                <exclude reference="Ro2-zI-LcI"/>
+                                <exclude reference="tiG-49-LYe"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
+                                <include reference="4PS-Oj-jV4"/>
                                 <include reference="LrZ-B5-DFh"/>
                                 <include reference="r1Q-hY-c2P"/>
                                 <include reference="Nyi-sx-6mm"/>
@@ -205,14 +210,6 @@
                                 <include reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Nj1-Kb-qFo"/>
-                                <include reference="wdc-9k-obB"/>
-                                <include reference="BBe-5x-5Ka"/>
-                                <include reference="qjW-QG-Yp4"/>
-                                <include reference="43U-ha-au9"/>
-                                <include reference="sFB-Mj-mH4"/>
-                                <include reference="Ro2-zI-LcI"/>
-                                <include reference="tiG-49-LYe"/>
                                 <include reference="4q5-ty-lfq"/>
                                 <include reference="Js8-lI-1SX"/>
                                 <include reference="Lp6-Wk-JPi"/>
@@ -223,18 +220,28 @@
                                 <include reference="niY-Fk-O38"/>
                                 <include reference="p2S-Ln-Ecp"/>
                                 <include reference="zCa-Zq-hLq"/>
+                                <include reference="43U-ha-au9"/>
+                                <include reference="sFB-Mj-mH4"/>
+                                <include reference="Nj1-Kb-qFo"/>
+                                <include reference="wdc-9k-obB"/>
                                 <include reference="9tO-Lq-ah9"/>
                                 <include reference="oEK-EQ-nVd"/>
+                                <include reference="qjW-QG-Yp4"/>
+                                <include reference="BBe-5x-5Ka"/>
+                                <include reference="Ro2-zI-LcI"/>
+                                <include reference="tiG-49-LYe"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="6o4-tW-As6"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="addWaterButton" destination="eqb-UO-Xah" id="Mdx-Ng-hLk"/>
                         <outlet property="menuButton1" destination="r1Q-hY-c2P" id="JRi-rG-M0i"/>
                         <outlet property="menuButton2" destination="Nyi-sx-6mm" id="ufd-bd-3FO"/>
                         <outlet property="menuButton3" destination="dBc-Dg-bWV" id="W7N-WN-nte"/>
                         <outlet property="waterLevel" destination="VTJ-k2-lQf" id="pu3-L5-2iv"/>
+                        <outlet property="waterMarkImageView" destination="4PS-Oj-jV4" id="Tkk-ca-BPx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -864,5 +871,6 @@ intake recommendation</string>
     <resources>
         <image name="add" width="120" height="120"/>
         <image name="amount" width="80" height="80"/>
+        <image name="iPhone 6" width="375" height="667"/>
     </resources>
 </document>

@@ -14,6 +14,7 @@
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *waterMarkImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
@@ -40,6 +41,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+
+      [self.view sendSubviewToBack:self.waterLevel];
+
+  //  [self.view sendSubviewToBack:self.waterMarkImageView];
+
     self.unitTypeSelected = @"ounce";
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
 
@@ -88,6 +95,14 @@
 - (void)viewDidAppear:(BOOL)animated {
         NSLog(@"%i", self.currentDailyGoal);
         NSLog(@"viewdidappear %@", self.unitTypeSelected);
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+    [self.view sendSubviewToBack:self.waterMarkImageView];
+    [self.view sendSubviewToBack:self.waterLevel];
+
+
 }
 
 #pragma MARK - Change Daily Goal Methods
@@ -177,8 +192,10 @@
 
 - (void)changeWaterLevel:(int) heightChange {
 
-    int adjustedHeightForDailyGoal = (self.view.frame.size.height/self.currentDailyGoal);
-    int height = heightChange*adjustedHeightForDailyGoal;
+    NSLog(@"the view height is %f", self.view.frame.size.height);
+    float adjustedHeightForDailyGoal = (float)(self.view.frame.size.height/self.currentDailyGoal);
+
+    float height = (float)(heightChange*adjustedHeightForDailyGoal);
 
     CGRect newFrameRect = self.waterLevel.frame;
 
@@ -186,10 +203,10 @@
 
     newFrameRect.origin.y = self.waterLevel.frame.origin.y - (height);
 
-    if(self.waterLevel.frame.size.height + height >= 667) {
+    if(self.waterLevel.frame.size.height + height >= 667.0) {
 
 
-        newFrameRect.size.height = self.waterLevel.frame.size.height + height;
+       // newFrameRect.size.height = self.waterLevel.frame.size.height + height;
 
         [UIView animateWithDuration:0.5 animations:^{
 
@@ -208,7 +225,7 @@
     }
 
     else {
-        newFrameRect.size.height = self.waterLevel.frame.size.height + height;
+       // newFrameRect.size.height = self.waterLevel.frame.size.height + height;
 
         [UIView animateWithDuration:0.5 animations:^{
 
