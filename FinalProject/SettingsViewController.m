@@ -8,8 +8,9 @@
 
 #import "SettingsViewController.h"
 #import "RootViewController.h"
+#import "HealthKitViewController.h"
 
-@interface SettingsViewController ()
+@interface SettingsViewController () 
 
 @property NSArray *notificationCheck;
 @property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
@@ -28,20 +29,24 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
     [self switchLogic];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"%@", self.dailyGoalTextField.text);
     [self switchLogic];
 
 }
 
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+    
 }
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
     if (self.recoTotal != nil) {
         self.dailyGoalTextField.text = self.recoTotal;
+        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
     }
 }
 

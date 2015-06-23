@@ -51,6 +51,10 @@
             button.center = self.addWaterButton.center;
         }
 
+    self.menuButton1.customAmount = 10;
+    self.menuButton2.customAmount = 10;
+    self.menuButton3.customAmount = 10;
+
     self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
 
@@ -111,14 +115,18 @@
 
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
 
-    myConsumptionEvent.volumeConsumed = 150;
+    ContainerButton *button = sender;
+    myConsumptionEvent.volumeConsumed = button.customAmount;
 
     myConsumptionEvent.user = [PFUser currentUser];
-    myConsumptionEvent.consumptionGoal = 32;
+    myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
     myConsumptionEvent.consumedAt = [NSDate date];
     [myConsumptionEvent pinInBackground];
 
+
+     NSLog(@"changing the water level by %i", myConsumptionEvent.volumeConsumed);
     [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
+
     [self toggleFan];
 }
 
@@ -169,21 +177,19 @@
 
 - (void)changeWaterLevel:(int) heightChange {
 
-    // NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
+    int adjustedHeightForDailyGoal = (self.view.frame.size.height/self.currentDailyGoal);
+    int height = heightChange*adjustedHeightForDailyGoal;
 
     CGRect newFrameRect = self.waterLevel.frame;
-    newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
 
-    newFrameRect.origin.y = self.waterLevel.frame.origin.y - heightChange;
+    newFrameRect.size.height = self.waterLevel.frame.size.height + (height);
 
-    NSLog(@"2 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
+    newFrameRect.origin.y = self.waterLevel.frame.origin.y - (height);
 
-//    NSLog(@"Height is %f and y position is %f", newFrameRect.size.height, newFrameRect.origin.y);
-
-    if(self.waterLevel.frame.size.height + heightChange >= 667) {
+    if(self.waterLevel.frame.size.height + height >= 667) {
 
 
-        newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+        newFrameRect.size.height = self.waterLevel.frame.size.height + height;
 
         [UIView animateWithDuration:0.5 animations:^{
 
@@ -202,7 +208,7 @@
     }
 
     else {
-        newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+        newFrameRect.size.height = self.waterLevel.frame.size.height + height;
 
         [UIView animateWithDuration:0.5 animations:^{
 
