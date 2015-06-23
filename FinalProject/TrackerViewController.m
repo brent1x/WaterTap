@@ -17,6 +17,7 @@
 
 @property NSMutableArray *waterIntakeValues;
 @property NSMutableArray *dateValues;
+@property NSMutableArray *goalPrecentageValues;
 @property int totalNumber;
 
 @property BEMSimpleLineGraphView *graphView;
@@ -117,13 +118,39 @@
     // Setup initial curve selection segment
     self.graphView.enableBezierCurve = YES;
 
-    [self hydrateDatasets];
+    [self hydrateDataSetsForMonth:self.overlayView.text];
 
     self.delegate = self;
 
-    [self getWaterIntakeForADay:[NSDate date]];
+    // Calendar Settings //
+//    [self setFirstDateAs6MonthBeforeFirstIntake];
+
 
 }
+
+
+//-(NSDate *)setFirstDateAs6MonthBeforeFirstIntake {
+//    PFQuery *query = [PFQuery queryWithClassName:@"ConsumptionEvent"];
+//    [query fromLocalDatastore];
+//    [query orderByAscending:@"consumedAt"];
+//    [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
+//        if (!error) {
+//            if ([events firstObject]) {
+//                self.firstDate = [events firstObject];
+//                NSLog(@"first date: %@", self.firstDate);
+//            } else {
+//
+//            }
+//        } else {
+//            // Log details of the failure
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//        }
+//    }];
+//    return [NSDate date];
+//}
+
+
+// Graph //
 
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
 
@@ -135,80 +162,59 @@
     return [[self.waterIntakeValues objectAtIndex:index] doubleValue];
 }
 
+#pragma mark - PDTSimpleLineGraph methods to override
+- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
+
+    NSString *label = [self labelForDateAtIndex:index];
+    return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
+}
+
 #pragma mark - PDTSimpleLineGraph Helpers
 
-//- (NSInteger)numberOfGapsBetweenLabelsOnLineGraph:(BEMSimpleLineGraphView *)graph {
-//    return 2;
-//}
-
-- (void)hydrateDatasets {
-
-    //TODO:Implement monthValues array data
-
-    // Reset the arrays of values (Y-Axis points) and dates (X-Axis points / labels)
+-(void)hydrateDataSetsForMonth:(NSString *)month {
+    //Initialize data arrays and totalNumber
     if (!self.waterIntakeValues) self.waterIntakeValues = [[NSMutableArray alloc] init];
     if (!self.dateValues) self.dateValues = [[NSMutableArray alloc] init];
+    if (!self.goalPrecentageValues) self.goalPrecentageValues = [[NSMutableArray alloc] init];
     [self.waterIntakeValues removeAllObjects];
     [self.dateValues removeAllObjects];
-
+    [self.goalPrecentageValues removeAllObjects];
     self.totalNumber = 0;
-    NSDate *baseDate = [NSDate date];
-    BOOL showNullValue = true;
 
-    // Add objects to the array based on the stepper value
-    for (int i = 0; i < 9; i++) {
-        //[self.waterIntakeValues addObject:@([self getRandomFloat])]; // Random values for the graph
-        if (i == 0) {
-            [self.dateValues addObject:baseDate]; // Dates for the X-Axis of the graph
-        } else if (showNullValue && i == 4) {
-            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
-            self.waterIntakeValues[i] = @(BEMNullGraphValue);
+    //Load dateValues and waterIntakeValues in loadWaterIntakeForADay
+    unsigned int comps = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDate *dateOfInterest = [NSDate new];
+    NSDateComponents* dayComponent = [NSDateComponents new];
+    NSInteger amountOfDaysInMonth  = 0;
+    //Edge case current month
+    if ([month isEqualToString:[self.headerDateFormatter stringFromDate:[NSDate date]]]) {
+        dateOfInterest = [NSDate date];
+        dayComponent = [calendar components:comps fromDate:dateOfInterest];
+        amountOfDaysInMonth = [dayComponent day]; //Last Day
+    } else {
+        //Get month NSDate from overlayView.text
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        [dateFormatter setDateFormat:@"MMMM yyyy"];
+        dateOfInterest = [dateFormatter dateFromString:self.navigationItem.title];
+        //Get how many days there are in that month from calendar
+        NSRange rng = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:dateOfInterest];
+        amountOfDaysInMonth = rng.length;
+        dayComponent = [calendar components:comps fromDate:dateOfInterest];
+    }
+    for (int i = 1; i <= amountOfDaysInMonth; i++) {
+        [dayComponent setDay:i];
+        if (i == amountOfDaysInMonth) {
+            [self loadWaterIntakeForADay:[calendar dateFromComponents:dayComponent] shouldReloadGraph:YES];
         } else {
-            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
+            [self loadWaterIntakeForADay:[calendar dateFromComponents:dayComponent] shouldReloadGraph:NO];
         }
-        self.totalNumber = self.totalNumber + [[self.waterIntakeValues objectAtIndex:i] intValue]; // All of the values added together
     }
 }
 
-- (void)hydrateDatasetsForMonth {
+-(void)loadWaterIntakeForADay:(NSDate *)day shouldReloadGraph:(BOOL)shouldReload{
 
-    // Reset the arrays of values (Y-Axis points) and dates (X-Axis points / labels)
-    if (!self.waterIntakeValues) self.waterIntakeValues = [[NSMutableArray alloc] init];
-    if (!self.dateValues) self.dateValues = [[NSMutableArray alloc] init];
-    [self.waterIntakeValues removeAllObjects];
-    [self.dateValues removeAllObjects];
-
-    self.totalNumber = 0;
-    NSDate *baseDate = [NSDate date];
-    BOOL showNullValue = true;
-
-
-
-////////////////
-
-    
-
-
-
-/////////////////
-
-
-    // Add objects to the array based on the stepper value
-    for (int i = 0; i < 9; i++) {
-        [self.waterIntakeValues addObject:@([self getRandomFloat])]; // Random values for the graph
-        if (i == 0) {
-            [self.dateValues addObject:baseDate]; // Dates for the X-Axis of the graph
-        } else if (showNullValue && i == 4) {
-            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
-            self.waterIntakeValues[i] = @(BEMNullGraphValue);
-        } else {
-            [self.dateValues addObject:[self dateForGraphAfterDate:self.dateValues[i-1]]]; // Dates for the X-Axis of the graph
-        }
-        self.totalNumber = self.totalNumber + [[self.waterIntakeValues objectAtIndex:i] intValue]; // All of the values added together
-    }
-}
-
--(void)getWaterIntakeForADay:(NSDate *)day {
+    [self.dateValues addObject:day];
 
     NSDate *startDay = [self makeDayStartOfDay:day];
     NSDate *endDay = [self makeDayNextStartOfDay:day];
@@ -217,23 +223,23 @@
 
     PFQuery *query = [PFQuery queryWithClassName:@"ConsumptionEvent" predicate:predicate];
     [query fromLocalDatastore];
-
+    [query orderByAscending:@"consumedAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)events.count);
             // Do something with the found objects
-
             int dayTotal = 0;
-            NSLog(@"Objects are: %@", events);
+            int goal = 0;
             for (ConsumptionEvent *event in events) {
-
                 dayTotal += event.volumeConsumed;
-                NSLog(@"%@", event.consumedAt);
+                goal = event.consumptionGoal;
             }
-            [self.waterIntakeValues  removeAllObjects];
             [self.waterIntakeValues addObject:[NSNumber numberWithInt:dayTotal]];
-            [self hydrateDatasets];
+            self.totalNumber += dayTotal;
+//            int goalPrecentage = dayTotal/goal;
+//            [self.goalPrecentageValues addObject:[NSNumber numberWithInt:goalPrecentage]];
+            if (shouldReload) {
+                [self.graphView reloadGraph];
+            }
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -253,28 +259,13 @@
     return day;
 }
 
-
-
-
-
-
-
-
-
-
-
-- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
-
-    NSString *label = [self labelForDateAtIndex:index];
-    return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
-}
-
-//TODO: Call it somehow from super ?
-- (NSDate *)dateForGraphAfterDate:(NSDate *)date {
-    NSTimeInterval secondsInTwentyFourHours = 24 * 60 * 60;
+- (NSDate *)dateForGraphBeforeDate:(NSDate *)date {
+    NSTimeInterval secondsInTwentyFourHours = -24 * 60 * 60;
     NSDate *newDate = [date dateByAddingTimeInterval:secondsInTwentyFourHours];
     return newDate;
 }
+
+// Calendar //
 
 #pragma mark - PDTSimpleCalendar Delegate methods
 
@@ -297,12 +288,13 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [super scrollViewDidScroll:scrollView];
-    self.navigationItem.title = self.overlayView.text;
-    //TODO: Hydrategraph with month values
+    if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
+        self.navigationItem.title = self.overlayView.text;
+        [self hydrateDataSetsForMonth:self.overlayView.text];
+    }
 }
 
-// Override these methods //
-//Blank so these dont hide the overlay
+//Blank so these dont hide the overlay when not srcolling
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
 }
@@ -342,16 +334,6 @@
     
     return dateOnly;
 }
-
-//To delete
-- (float)getRandomFloat {
-    float i1 = (float)(arc4random() % 10000) / 1000 ;
-    return i1;
-}
-
-
-
-
 
 @end
 

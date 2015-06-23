@@ -446,7 +446,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     }];
 }
 
-#pragma mark -
 #pragma mark - Calendar calculations
 
 - (NSDate *)clampDate:(NSDate *)date toComponents:(NSUInteger)unitFlags
