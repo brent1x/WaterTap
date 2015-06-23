@@ -10,7 +10,7 @@
 #import "HKHealthStore+AAPLExtensions.h"
 #import "SettingsViewController.h"
 
-@interface HealthKitViewController () <SettingsViewControllerDelegate>
+@interface HealthKitViewController () // <SettingsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *proteinButton;
 @property (weak, nonatomic) IBOutlet UITextField *proteinText;

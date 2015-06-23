@@ -12,6 +12,8 @@
 #import "ContainerButton.h"
 #import "SettingsViewController.h"
 
+#define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+
 @interface RootViewController () <SettingsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *waterMarkImageView;
@@ -20,19 +22,15 @@
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
 @property NSMutableArray *menuButtons;
-//removed Welcome Label from Storyboard
 //@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property NSArray *consumptionEvents;
 @property int currentTotalAmountConsumedToday;
-
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterLevelHeightConstraint;
-
 @property float waterLevelHeight;
 @property float waterLevelY;
 @property UIDynamicAnimator *animator;
 @property BOOL isFannedOut;
-
 @property NSString *unitTypeSelected;
 
 @end
@@ -42,10 +40,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+//      [self.view sendSubviewToBack:self.waterLevel];
 
-      [self.view sendSubviewToBack:self.waterLevel];
+   [self.view sendSubviewToBack:self.waterMarkImageView];
 
-  //  [self.view sendSubviewToBack:self.waterMarkImageView];
+    [self loadGoalFromUserDefaults];
+
+    if (self.currentDailyGoal == 0) {
+        self.currentDailyGoal = 64;
+        [self saveGoalToUserDefaults];
+    }
+
 
     self.unitTypeSelected = @"ounce";
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -54,9 +59,9 @@
 
     self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
 
-        for (ContainerButton *button in self.menuButtons) {
-            button.center = self.addWaterButton.center;
-        }
+    for (ContainerButton *button in self.menuButtons) {
+        button.center = self.addWaterButton.center;
+    }
 
     self.menuButton1.customAmount = 10;
     self.menuButton2.customAmount = 10;
@@ -69,23 +74,12 @@
     NSLog(@"ANON: %@", [PFUser currentUser]);
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
-        // app already launched
-        //do nothing
+
     }
 
     else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome to Water Tap"
-                                                                       message:@"I LOVE TAYLOR SWIFT!!! MY NAME IS ANDERSSSSSS!"
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Show me this fucking sweet app" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
-
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
 
         // This is the first launch ever
         //Take user through tutorial
@@ -93,8 +87,9 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-        NSLog(@"%i", self.currentDailyGoal);
-        NSLog(@"viewdidappear %@", self.unitTypeSelected);
+
+    NSLog(@"%i", self.currentDailyGoal);
+    NSLog(@"viewdidappear %@", self.unitTypeSelected);
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -114,11 +109,22 @@
     }
 }
 
-
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
     self.currentDailyGoal = dailyGoalAmount;
+    [self saveGoalToUserDefaults];
 }
 
+- (void)saveGoalToUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *string = [NSString stringWithFormat:@"%i", self.currentDailyGoal];
+    [userDefaults setObject:string forKey:kNSUserDailyGoalKey];
+} 
+
+- (void)loadGoalFromUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
+    self.currentDailyGoal = [goalFromDefault intValue];
+}
 - (void)unitTypeSelected:(NSString *)unitType {
     self.unitTypeSelected = unitType;
     NSLog(@"unittypeselected %@", unitType);

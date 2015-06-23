@@ -10,6 +10,8 @@
 #import "RootViewController.h"
 #import "HealthKitViewController.h"
 
+#define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+
 @interface SettingsViewController () 
 
 @property NSArray *notificationCheck;
@@ -29,24 +31,28 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
     [self switchLogic];
+    [self loadGoalFromUserDefaults];
 
+    if ([self.dailyGoalTextField.text isEqualToString:@""]) {
+        self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"%@", self.dailyGoalTextField.text);
     [self switchLogic];
-
+    [self loadGoalFromUserDefaults];
 }
 
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
-    
+    [self saveGoalToUserDefaults];
 }
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
     if (self.recoTotal != nil) {
         self.dailyGoalTextField.text = self.recoTotal;
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+        [self saveGoalToUserDefaults];
     }
 }
 
@@ -62,8 +68,6 @@
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
         [self.delegate unitTypeSelected:@"ounce"];
     }
-
-    // TO BUILD LOGIC HERE THAT WILL MAKE METHOD CALLS TO CONSUMPTION EVENT, DAILY GOAL, PEROSONALIZED RECOMMENDATION, AND CUSTOM WATER CONTAINER TO CONVERT UNITS BETWEEN OUNCES AND MILLILETERS
 }
 
 - (IBAction)onSwitchTapped:(id)sender {
@@ -83,6 +87,17 @@
         [self.notifSwitch setOn:YES animated:NO];
         self.notificationButton.hidden = NO;
     }
+}
+
+- (void)saveGoalToUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:self.dailyGoalTextField.text forKey:kNSUserDailyGoalKey];
+}
+
+- (void)loadGoalFromUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
+    self.dailyGoalTextField.text = goalFromDefault;
 }
 
 @end
