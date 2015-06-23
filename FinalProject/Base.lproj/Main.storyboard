@@ -18,10 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.11559902465262506" green="0.79544498511050976" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone 6" translatesAutoresizingMaskIntoConstraints="NO" id="4PS-Oj-jV4">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Tracker/Calendar">
@@ -137,39 +136,44 @@
                                     <segue destination="0ka-N1-EvE" kind="show" identifier="settingsSegue" id="Lrt-CR-86G"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.11559902465262506" green="0.79544498511050976" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.70063471773725605" green="0.94574253419089371" blue="0.96436352318705254" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="LrZ-B5-DFh" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="43U-ha-au9"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="eSi-zi-Z6M" secondAttribute="bottom" constant="20" id="4q5-ty-lfq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="-16" id="8Vj-5g-gjB"/>
                             <constraint firstItem="eSi-zi-Z6M" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="486" id="9tO-Lq-ah9"/>
                             <constraint firstAttribute="centerX" secondItem="r1Q-hY-c2P" secondAttribute="centerX" id="BBe-5x-5Ka"/>
-                            <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Cb3-xu-cbc"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Nyi-sx-6mm" secondAttribute="bottom" constant="20" id="Js8-lI-1SX"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Nyi-sx-6mm" secondAttribute="bottom" constant="35" id="Lp6-Wk-JPi"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="r1Q-hY-c2P" secondAttribute="bottom" constant="20" id="N2m-N4-xuF"/>
                             <constraint firstAttribute="centerX" secondItem="Nyi-sx-6mm" secondAttribute="centerX" id="Nj1-Kb-qFo"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="dBc-Dg-bWV" secondAttribute="bottom" constant="20" id="Qmg-BB-qSE"/>
+                            <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Ro2-zI-LcI"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="LrZ-B5-DFh" secondAttribute="bottom" constant="20" id="TMC-cb-6nZ"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="YHh-Rg-VMi"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="dBc-Dg-bWV" secondAttribute="bottom" constant="35" id="niY-Fk-O38"/>
                             <constraint firstItem="eSi-zi-Z6M" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="oEK-EQ-nVd"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="eqb-UO-Xah" secondAttribute="bottom" constant="20" id="p2S-Ln-Ecp"/>
                             <constraint firstAttribute="centerX" secondItem="eqb-UO-Xah" secondAttribute="centerX" id="qjW-QG-Yp4"/>
                             <constraint firstItem="LrZ-B5-DFh" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="486" id="sFB-Mj-mH4"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="tL6-Af-A2J"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="-16" id="tiG-49-LYe"/>
                             <constraint firstAttribute="centerX" secondItem="dBc-Dg-bWV" secondAttribute="centerX" id="wdc-9k-obB"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="r1Q-hY-c2P" secondAttribute="bottom" constant="35" id="zCa-Zq-hLq"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="VTJ-k2-lQf"/>
+                                <exclude reference="4PS-Oj-jV4"/>
                                 <exclude reference="LrZ-B5-DFh"/>
                                 <exclude reference="r1Q-hY-c2P"/>
                                 <exclude reference="Nyi-sx-6mm"/>
                                 <exclude reference="dBc-Dg-bWV"/>
                                 <exclude reference="eqb-UO-Xah"/>
                                 <exclude reference="eSi-zi-Z6M"/>
+                                <exclude reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="4q5-ty-lfq"/>
@@ -178,9 +182,9 @@
                                 <exclude reference="N2m-N4-xuF"/>
                                 <exclude reference="Qmg-BB-qSE"/>
                                 <exclude reference="TMC-cb-6nZ"/>
+                                <exclude reference="YHh-Rg-VMi"/>
                                 <exclude reference="niY-Fk-O38"/>
                                 <exclude reference="p2S-Ln-Ecp"/>
-                                <exclude reference="tL6-Af-A2J"/>
                                 <exclude reference="zCa-Zq-hLq"/>
                                 <exclude reference="43U-ha-au9"/>
                                 <exclude reference="sFB-Mj-mH4"/>
@@ -190,19 +194,20 @@
                                 <exclude reference="oEK-EQ-nVd"/>
                                 <exclude reference="qjW-QG-Yp4"/>
                                 <exclude reference="BBe-5x-5Ka"/>
-                                <exclude reference="8Vj-5g-gjB"/>
-                                <exclude reference="Cb3-xu-cbc"/>
+                                <exclude reference="Ro2-zI-LcI"/>
+                                <exclude reference="tiG-49-LYe"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="VTJ-k2-lQf"/>
+                                <include reference="4PS-Oj-jV4"/>
                                 <include reference="LrZ-B5-DFh"/>
                                 <include reference="r1Q-hY-c2P"/>
                                 <include reference="Nyi-sx-6mm"/>
                                 <include reference="dBc-Dg-bWV"/>
                                 <include reference="eqb-UO-Xah"/>
                                 <include reference="eSi-zi-Z6M"/>
+                                <include reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="4q5-ty-lfq"/>
@@ -211,9 +216,9 @@
                                 <include reference="N2m-N4-xuF"/>
                                 <include reference="Qmg-BB-qSE"/>
                                 <include reference="TMC-cb-6nZ"/>
+                                <include reference="YHh-Rg-VMi"/>
                                 <include reference="niY-Fk-O38"/>
                                 <include reference="p2S-Ln-Ecp"/>
-                                <include reference="tL6-Af-A2J"/>
                                 <include reference="zCa-Zq-hLq"/>
                                 <include reference="43U-ha-au9"/>
                                 <include reference="sFB-Mj-mH4"/>
@@ -223,18 +228,20 @@
                                 <include reference="oEK-EQ-nVd"/>
                                 <include reference="qjW-QG-Yp4"/>
                                 <include reference="BBe-5x-5Ka"/>
-                                <include reference="8Vj-5g-gjB"/>
-                                <include reference="Cb3-xu-cbc"/>
+                                <include reference="Ro2-zI-LcI"/>
+                                <include reference="tiG-49-LYe"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="6o4-tW-As6"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="addWaterButton" destination="eqb-UO-Xah" id="Mdx-Ng-hLk"/>
                         <outlet property="menuButton1" destination="r1Q-hY-c2P" id="JRi-rG-M0i"/>
                         <outlet property="menuButton2" destination="Nyi-sx-6mm" id="ufd-bd-3FO"/>
                         <outlet property="menuButton3" destination="dBc-Dg-bWV" id="W7N-WN-nte"/>
                         <outlet property="waterLevel" destination="VTJ-k2-lQf" id="pu3-L5-2iv"/>
+                        <outlet property="waterMarkImageView" destination="4PS-Oj-jV4" id="Tkk-ca-BPx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -330,7 +337,7 @@ intake recommendation</string>
                                     <rect key="frame" x="256" y="99" width="97" height="30"/>
                                 </variation>
                                 <connections>
-                                    <action selector="onDailyGoalDidChange:" destination="0ka-N1-EvE" eventType="editingChanged" id="DA5-E1-83Z"/>
+                                    <action selector="onDailyGoalDidChange:" destination="0ka-N1-EvE" eventType="editingChanged" id="XHk-mt-o8O"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders to Drink Water" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efU-JU-W7G">
@@ -548,6 +555,17 @@ intake recommendation</string>
                                     <rect key="frame" x="8" y="139" width="384" height="30"/>
                                 </variation>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIY-8S-lfs">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Go"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                    <rect key="frame" x="274" y="473" width="30" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="gnj-Ji-kPY" kind="unwind" unwindAction="unwindFromSegue:" id="LbT-Ut-ynN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -566,6 +584,7 @@ intake recommendation</string>
                                 <exclude reference="H7P-Cu-Pt5"/>
                                 <exclude reference="km6-oX-XkV"/>
                                 <exclude reference="hGi-0H-frP"/>
+                                <exclude reference="eIY-8S-lfs"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -584,6 +603,7 @@ intake recommendation</string>
                                 <include reference="H7P-Cu-Pt5"/>
                                 <include reference="km6-oX-XkV"/>
                                 <include reference="hGi-0H-frP"/>
+                                <include reference="eIY-8S-lfs"/>
                             </mask>
                         </variation>
                     </view>
@@ -591,6 +611,7 @@ intake recommendation</string>
                         <outlet property="ageTextField" destination="hGi-0H-frP" id="d6S-ZB-AAQ"/>
                         <outlet property="calculateTextField" destination="km6-oX-XkV" id="96B-wd-UVY"/>
                         <outlet property="climateSelectedSegment" destination="CWH-qc-DM0" id="IXI-HK-9bm"/>
+                        <outlet property="goButton" destination="eIY-8S-lfs" id="i1q-B9-UPa"/>
                         <outlet property="heightTextField" destination="v3A-Ce-3P6" id="xw0-Ts-ZsK"/>
                         <outlet property="proteinButton" destination="H7P-Cu-Pt5" id="FC3-wY-gNO"/>
                         <outlet property="proteinText" destination="SSe-gk-q7O" id="Kzj-h4-vr9"/>
@@ -599,6 +620,7 @@ intake recommendation</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTc-cT-WXG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="gnj-Ji-kPY" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1801.5" y="847"/>
         </scene>
@@ -849,5 +871,6 @@ intake recommendation</string>
     <resources>
         <image name="add" width="120" height="120"/>
         <image name="amount" width="80" height="80"/>
+        <image name="iPhone 6" width="375" height="667"/>
     </resources>
 </document>

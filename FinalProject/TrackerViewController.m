@@ -94,29 +94,32 @@
     self.graphView.enablePopUpReport = YES;
     self.graphView.enableYAxisLabel = YES;
     self.graphView.autoScaleYAxis = YES;
-    self.graphView.alwaysDisplayDots = NO;
-    self.graphView.enableReferenceXAxisLines = YES;
-    self.graphView.enableReferenceYAxisLines = YES;
+    self.graphView.alwaysDisplayDots = YES;
+//    self.graphView.enableReferenceXAxisLines = YES;
+//    self.graphView.enableRefe renceYAxisLines = YES;
     self.graphView.enableReferenceAxisFrame = YES;
 
     // Draw an average line
-    self.graphView.averageLine.enableAverageLine = YES;
-    self.graphView.averageLine.alpha = 0.6;
-    self.graphView.averageLine.color = [UIColor darkGrayColor];
-    self.graphView.averageLine.width = 2.5;
-    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
+//    self.graphView.averageLine.enableAverageLine = YES;
+//    self.graphView.averageLine.alpha = 0.6;
+//    self.graphView.averageLine.color = [UIColor darkGrayColor];
+//    self.graphView.averageLine.width = 2.5;
+//    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
 
     // Set the graph's animation style to draw, fade, or none
     self.graphView.animationGraphStyle = BEMLineAnimationDraw;
 
     // Dash the y reference lines
-    self.graphView.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
+//    self.graphView.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
 
     // Show the y axis values with this format string
     self.graphView.formatStringForValues = @"%.1f";
 
     // Setup initial curve selection segment
     self.graphView.enableBezierCurve = YES;
+
+    //Get rid of lines in background
+    self.graphView.alphaLine = 1;
 
     [self hydrateDataSetsForMonth:self.overlayView.text];
 
