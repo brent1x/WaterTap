@@ -43,6 +43,7 @@
 
     if (self.currentDailyGoal == 0) {
         self.currentDailyGoal = 64;
+        [self saveGoalToUserDefaults];
     }
 
     self.unitTypeSelected = @"ounce";

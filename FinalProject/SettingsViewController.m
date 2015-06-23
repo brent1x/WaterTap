@@ -32,6 +32,10 @@
     self.navigationItem.title = @"Settings";
     [self switchLogic];
     [self loadGoalFromUserDefaults];
+
+    if ([self.dailyGoalTextField.text isEqualToString:@""]) {
+        self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
