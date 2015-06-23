@@ -10,7 +10,7 @@
 
 IB_DESIGNABLE
 @interface ContainerButton : UIButton
-
+@property int customAmount;
 @end
 
 //

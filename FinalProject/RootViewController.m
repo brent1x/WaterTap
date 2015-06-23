@@ -10,8 +10,9 @@
 #import "ConsumptionEvent.h"
 #import "CustomWaterLevelView.h"
 #import "ContainerButton.h"
+#import "SettingsViewController.h"
 
-@interface RootViewController ()
+@interface RootViewController () <SettingsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
@@ -21,7 +22,7 @@
 //removed Welcome Label from Storyboard
 //@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property NSArray *consumptionEvents;
-@property int totalVolumeSummed;
+@property int currentTotalAmountConsumedToday;
 
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterLevelHeightConstraint;
@@ -31,6 +32,7 @@
 @property UIDynamicAnimator *animator;
 @property BOOL isFannedOut;
 
+@property NSString *unitTypeSelected;
 
 @end
 
@@ -38,37 +40,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.unitTypeSelected = @"ounce";
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
 
     [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
 
-   self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
-    for (ContainerButton *button in self.menuButtons) {
+    self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
 
-        button.center = self.addWaterButton.center;
-//        [self.view addSubview:button];
-////        [button addTarget:self action:@selector(onAddWaterButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    }
+        for (ContainerButton *button in self.menuButtons) {
+            button.center = self.addWaterButton.center;
+        }
 
- self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
 
 //    PFUser *currentUser = [PFUser currentUser];
     NSLog(@"ANON: %@", [PFUser currentUser]);
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
-    {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
         // app already launched
         //do nothing
     }
-    else
-    {
+
+    else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome to Water Tap"
-                                                                       message:@"Everything you could want in a water-consumption-tracking-kickass-better-than-the-rest mobile app for your iPhone. !!!"
+                                                                       message:@"I LOVE TAYLOR SWIFT!!! MY NAME IS ANDERSSSSSS!"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
 
         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Show me this fucking sweet app" style:UIAlertActionStyleDefault
@@ -82,28 +81,31 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+        NSLog(@"%i", self.currentDailyGoal);
+        NSLog(@"viewdidappear %@", self.unitTypeSelected);
+}
+
+#pragma MARK - Change Daily Goal Methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"settingsSegue"]) {
+        SettingsViewController *sVC = segue.destinationViewController;
+        sVC.delegate = self;
+    }
+}
 
 
-//-(void)beginTutorial {
-//
-//
-//
-//
-//}
+- (void)dailyGoalChanged:(int)dailyGoalAmount {
+    self.currentDailyGoal = dailyGoalAmount;
+}
 
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-//{
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
-//    {
-//        // app already launched
-//    }
-//    else
-//    {
-//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//        // This is the first launch ever
-//    }
-//}
+- (void)unitTypeSelected:(NSString *)unitType {
+    self.unitTypeSelected = unitType;
+    NSLog(@"unittypeselected %@", unitType);
+}
+
+#pragma MARK -ADDING WATER METHODS
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
@@ -134,7 +136,7 @@
     self.isFannedOut = !self.isFannedOut;
 }
 
--(void)fanOut{
+-(void)fanOut {
     CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
     UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
@@ -149,7 +151,7 @@
 
 }
 
--(void)fanIn{
+- (void)fanIn {
 
     CGPoint point = self.addWaterButton.center;
 
@@ -165,11 +167,9 @@
 }
 
 
--(void)changeWaterLevel:(int) heightChange{
+- (void)changeWaterLevel:(int) heightChange {
 
-
-
-    NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
+    // NSLog(@"1 self.waterLevel height is %f and self.waterLevel y position is %f", self.waterLevel.frame.size.height, self.waterLevel.frame.origin.y);
 
     CGRect newFrameRect = self.waterLevel.frame;
     newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
@@ -201,8 +201,8 @@
 
     }
 
-    else{
-         newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
+    else {
+        newFrameRect.size.height = self.waterLevel.frame.size.height + heightChange;
 
         [UIView animateWithDuration:0.5 animations:^{
 
@@ -215,33 +215,4 @@
     }
 }
 
-
-- (void)totalVolumeConsumed {
-    PFQuery *query = [ConsumptionEvent query];
-
-    [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query selectKeys:@[@"volumeConsumed"]];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        // NSLog(@"%@", objects);
-        self.consumptionEvents = objects;
-
-        self.totalVolumeSummed = 0;
-
-        for (ConsumptionEvent *event in self.consumptionEvents) {
-
-            self.totalVolumeSummed += event.volumeConsumed;
-        }
-
-        NSLog(@"%i", self.totalVolumeSummed);
-    }];
-
-
-}
-
--(void)refreshWaterLevel {
-
-    [self changeWaterLevel:-self.waterLevel.frame.origin.y];
-    [self totalVolumeConsumed];
-    [self changeWaterLevel:self.totalVolumeSummed];
-}
 @end

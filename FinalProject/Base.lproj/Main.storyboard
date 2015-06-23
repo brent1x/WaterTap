@@ -21,9 +21,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" red="0.11559902465262506" green="0.79544498511050976" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <variation key="widthClass=compact" ambiguous="YES">
-                                    <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
-                                </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -32,15 +29,6 @@
                                 </state>
                                 <connections>
                                     <segue destination="6P9-0D-UAW" kind="show" id="QUK-yp-mfi"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="0ka-N1-EvE" kind="show" id="Lrt-CR-86G"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Q-hY-c2P" customClass="ContainerButton">
@@ -140,6 +128,15 @@
                                     </mask>
                                 </variation>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-zi-Z6M">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="0ka-N1-EvE" kind="show" identifier="settingsSegue" id="Lrt-CR-86G"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.70063471773725605" green="0.94574253419089371" blue="0.96436352318705254" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -168,11 +165,11 @@
                             <mask key="subviews">
                                 <exclude reference="VTJ-k2-lQf"/>
                                 <exclude reference="LrZ-B5-DFh"/>
-                                <exclude reference="eSi-zi-Z6M"/>
                                 <exclude reference="r1Q-hY-c2P"/>
                                 <exclude reference="Nyi-sx-6mm"/>
                                 <exclude reference="dBc-Dg-bWV"/>
                                 <exclude reference="eqb-UO-Xah"/>
+                                <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="4q5-ty-lfq"/>
@@ -201,11 +198,11 @@
                             <mask key="subviews">
                                 <include reference="VTJ-k2-lQf"/>
                                 <include reference="LrZ-B5-DFh"/>
-                                <include reference="eSi-zi-Z6M"/>
                                 <include reference="r1Q-hY-c2P"/>
                                 <include reference="Nyi-sx-6mm"/>
                                 <include reference="dBc-Dg-bWV"/>
                                 <include reference="eqb-UO-Xah"/>
+                                <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="4q5-ty-lfq"/>
@@ -328,10 +325,13 @@ intake recommendation</string>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="256" y="99" width="97" height="30"/>
                                 </variation>
+                                <connections>
+                                    <action selector="onDailyGoalDidChange:" destination="0ka-N1-EvE" eventType="editingChanged" id="DA5-E1-83Z"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders to Drink Water" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efU-JU-W7G">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -397,7 +397,7 @@ intake recommendation</string>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="dailyGoalTextField" destination="IqW-jg-e74" id="RHv-O7-lXz"/>
+                        <outlet property="dailyGoalTextField" destination="IqW-jg-e74" id="ORR-a5-5Nm"/>
                         <outlet property="notifSwitch" destination="G55-yT-tfV" id="2jw-9a-vCP"/>
                         <outlet property="notificationButton" destination="JZO-Dc-uTh" id="iRb-ed-Ju1"/>
                         <outlet property="segmentedUnitSelector" destination="B9g-IY-Yc2" id="6Au-NH-bEK"/>

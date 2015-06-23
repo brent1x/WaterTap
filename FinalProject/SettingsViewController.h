@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UIViewController
+@protocol SettingsViewControllerDelegate
+
+- (void)dailyGoalChanged:(int)dailyGoalAmount;
+- (void)unitTypeSelected:(NSString *)unitType;
 
 @end
+
+@interface SettingsViewController : UIViewController
+
+@property id <SettingsViewControllerDelegate> delegate;
+
+@end
+

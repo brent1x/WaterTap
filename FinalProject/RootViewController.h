@@ -14,6 +14,8 @@
 @interface RootViewController : UIViewController
 
 @property (nonatomic) HKHealthStore *healthStore;
+@property int currentDailyGoal;
+@property BOOL *isTypeOz;
 
 @end
 
