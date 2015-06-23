@@ -10,7 +10,7 @@
 #import "RootViewController.h"
 #import "HealthKitViewController.h"
 
-#define kNSUserDefaultsLastSavedKey @"kNSUserDefaultsLastSavedKey"
+#define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
 
 @interface SettingsViewController () 
 
@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
     [self switchLogic];
@@ -87,12 +88,12 @@
 
 - (void)saveGoalToUserDefaults {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:self.dailyGoalTextField.text forKey:kNSUserDefaultsLastSavedKey];
+    [userDefaults setObject:self.dailyGoalTextField.text forKey:kNSUserDailyGoalKey];
 }
 
 - (void)loadGoalFromUserDefaults {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDefaultsLastSavedKey];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
     self.dailyGoalTextField.text = goalFromDefault;
 }
 

@@ -12,6 +12,8 @@
 #import "ContainerButton.h"
 #import "SettingsViewController.h"
 
+#define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+
 @interface RootViewController () <SettingsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
@@ -40,6 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+        [self loadGoalFromUserDefaults];
     self.unitTypeSelected = @"ounce";
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
 
@@ -86,8 +89,11 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-        NSLog(@"%i", self.currentDailyGoal);
-        NSLog(@"viewdidappear %@", self.unitTypeSelected);
+
+
+
+    NSLog(@"%i", self.currentDailyGoal);
+    NSLog(@"viewdidappear %@", self.unitTypeSelected);
 }
 
 #pragma MARK - Change Daily Goal Methods
@@ -102,8 +108,19 @@
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
     self.currentDailyGoal = dailyGoalAmount;
+        [self saveGoalToUserDefaults];
 }
+- (void)saveGoalToUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *string = [NSString stringWithFormat:@"%i", self.currentDailyGoal];
+    [userDefaults setObject:string forKey:kNSUserDailyGoalKey];
+} 
 
+- (void)loadGoalFromUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
+    self.currentDailyGoal = [goalFromDefault intValue];
+}
 - (void)unitTypeSelected:(NSString *)unitType {
     self.unitTypeSelected = unitType;
     NSLog(@"unittypeselected %@", unitType);
