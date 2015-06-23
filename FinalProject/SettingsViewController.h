@@ -18,6 +18,7 @@
 @interface SettingsViewController : UIViewController
 
 @property id <SettingsViewControllerDelegate> delegate;
+@property NSString *recoTotal;
 
 @end
 

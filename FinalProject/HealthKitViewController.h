@@ -12,5 +12,6 @@
 @interface HealthKitViewController : UIViewController
 
 @property (nonatomic) HKHealthStore *healthStore;
+// @property NSString *recoTotal;
 
 @end

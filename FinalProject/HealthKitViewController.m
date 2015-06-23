@@ -8,8 +8,9 @@
 
 #import "HealthKitViewController.h"
 #import "HKHealthStore+AAPLExtensions.h"
+#import "SettingsViewController.h"
 
-@interface HealthKitViewController ()
+@interface HealthKitViewController () <SettingsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *proteinButton;
 @property (weak, nonatomic) IBOutlet UITextField *proteinText;
@@ -19,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *strenousActivityTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *climateSelectedSegment;
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
+@property (weak, nonatomic) IBOutlet UIButton *goButton;
 
 @end
 
@@ -29,6 +31,8 @@
 
     self.proteinButton.hidden = YES;
     self.proteinText.hidden = YES;
+
+    self.goButton.hidden = YES;
 
     self.navigationController.navigationBarHidden = NO;
 
@@ -225,8 +229,16 @@
     int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
+    self.goButton.hidden = NO;
+
 }
 
+#pragma mark // Prepare for Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    SettingsViewController *destVC = segue.destinationViewController;
+    destVC.recoTotal = self.calculateTextField.text;
+}
 
 // - (IBAction)addWater:(UIButton *)sender {
 //
@@ -249,6 +261,5 @@
 //     }];
 //
 // }
-
 
 @end

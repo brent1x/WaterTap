@@ -35,9 +35,14 @@
 
 }
 
-
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+}
+
+- (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
+    if (self.recoTotal != nil) {
+        self.dailyGoalTextField.text = self.recoTotal;
+    }
 }
 
 - (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
