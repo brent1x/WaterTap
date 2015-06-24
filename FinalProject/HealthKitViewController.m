@@ -168,7 +168,7 @@
 #pragma mark // Calculate Recommended Water Intake
 
 - (IBAction)onCalculateTapped:(id)sender {
-    // this method calculates the amount of water the user should use as a goal to consume per day
+    // this method calculates the recommended amount of water the user should consume per day
 
     // normalizing for climate
     double climateMultiplier = 1;
@@ -209,25 +209,26 @@
         self.mlMultiplier = 1;
     }
 
-    // this section is the patented algorithm, along with TRACKER, that makes this app a uni- or decacorn
+    // this section is the patented algorithm, along with TRACKER, that makes this app a decacorn
     double strenous = ([self.strenousActivityTextField.text doubleValue] * .6);
     double goal = ((((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier) * self.mlMultiplier);
     int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
-    self.goButton.hidden = NO;
+    self.goButton.hidden = FALSE;
 }
 
 #pragma mark // Prepare for Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // this just passing the value I calculated in the above method back to the Settings VC when we segue back
-    // I'm also setting a bool to true, indicating a recommendation has been made – this was created to persist the
+    // this is just passing the value I calculated in the above method back to the Settings VC when we segue back
+    // also setting a bool to true, indicating a recommendation has been made – this was created to persist the
     // state of a switch on the Settings page
+
     SettingsViewController *destVC = segue.destinationViewController;
+    destVC.recoTotal = self.calculateTextField.text;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setBool:TRUE forKey:kNSUserReceivedRecommendation];
-    destVC.recoTotal = self.calculateTextField.text;
 }
 
 #pragma mark // To Be Used To Write Water Data To HealthKit on iOS9
