@@ -30,11 +30,12 @@
     [super viewDidLoad];
 
     self.goButton.hidden = YES;
-
     self.navigationController.navigationBarHidden = NO;
 
+    // this initializes the healthStore (db provided by HealthKit)
     self.healthStore = [[HKHealthStore alloc] init];
 
+    // since HK isn't on iPad or older iOS versions, I check to see if it's available to the user
     if ([HKHealthStore isHealthDataAvailable]) {
         NSSet *writeDataTypes = [self dataTypesToWrite];
         NSSet *readDataTypes = [self dataTypesToRead];
@@ -46,18 +47,13 @@
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{
+                // if HK is available, I call the following methods, which will grab values from HK to use in the app
                 // [self updateUsersAgeLabel];
                 [self updateUsersHeightLabel];
                 [self updateUsersWeightLabel];
             });
         }];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
-    NSLog(@"user defaults type: %@", goalFromDefault);
 }
 
 #pragma mark // Write Data Permissions to HealthKit
@@ -72,7 +68,6 @@
 }
 
 #pragma mark // Read Data Permissions from HealthKit
-
 - (NSSet *)dataTypesToRead {
     HKQuantityType *heightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
     HKQuantityType *weightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
@@ -172,6 +167,7 @@
 #pragma mark // Calculate Recommended Water Intake
 
 - (IBAction)onCalculateTapped:(id)sender {
+    // this method calculates the amount of water the user should use as a goal to consume per day
 
     // normalizing for climate
     double climateMultiplier = 1;
@@ -203,6 +199,7 @@
         weightMultiplier = 0.9;
     }
 
+    // this section checks whether they have mL set as the preferred unit type; if so I convert from ounces to mLs
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
     if ([goalFromDefault isEqualToString:@"milliliter"]) {
@@ -211,6 +208,7 @@
         self.mlMultiplier = 1;
     }
 
+    // this section is the patented algorithm, along with TRACKER, that makes this app a uni- or decacorn
     double strenous = ([self.strenousActivityTextField.text doubleValue] * .6);
     double goal = ((((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier) * self.mlMultiplier);
     int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
@@ -222,6 +220,7 @@
 #pragma mark // Prepare for Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // this is just passing the value I calculated in the above method back to the Settings VC when we segue back
     SettingsViewController *destVC = segue.destinationViewController;
     destVC.recoTotal = self.calculateTextField.text;
 }

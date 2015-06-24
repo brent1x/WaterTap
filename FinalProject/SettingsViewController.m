@@ -30,11 +30,8 @@
     [super viewDidLoad];
 
     self.navigationController.navigationBarHidden = NO;
-
     self.navigationItem.title = @"Settings";
-
     [self switchLogic];
-
     [self loadGoalFromUserDefaults];
 
     // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
@@ -46,7 +43,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self switchLogic];
     [self loadGoalFromUserDefaults];
-
 
     // this section checks whether mL has been set as the default unit type; if so, it lights up the correct segment in the UISegCtrl
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -75,6 +71,10 @@
 }
 
 - (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
+    // this piece of logic checks whether the user has selected imperial or metric unit types
+    // if they choose metric, I convert from ounces (default) to milliliters and round the result to the nearest whole number,
+    // then I update the daily goal text field and call the delegate method that is listening for any changes to the daily goal
+    // finally, I save the selected unit type to NSUserDefaults
     if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
         double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735;
         int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
@@ -82,7 +82,6 @@
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"milliliter" forKey:kNSUserUnitTypeSelected];
-        // [self.delegate unitTypeSelected:@"milliliter"];
     } else if (self.segmentedUnitSelector.selectedSegmentIndex == 0) {
         double convertMLToCounce = [self.dailyGoalTextField.text doubleValue] * 0.0338;
         int convToInt = (int)(convertMLToCounce + (convertMLToCounce > 0 ? 0.5 : -0.5));
@@ -90,11 +89,13 @@
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"ounce" forKey:kNSUserUnitTypeSelected];
-        // [self.delegate unitTypeSelected:@"ounce"];
     }
 }
 
 - (IBAction)onSwitchTapped:(id)sender {
+    // this method checks to see if user flips reminders switch. if it's *on* and the user flips it to *off*, then all of the
+    // reminders are cancelled. conversely, if the switch is *off* and the user flips it to *on", it segues to the reminders
+    // view controller
     if (self.notifSwitch.on == NO) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         self.notificationButton.hidden = YES;
@@ -104,6 +105,8 @@
 }
 
 - (void)switchLogic {
+    // this method checks to see if notifications have been set. if so, the switch is set *on* and the *edit* button appears,
+    // which will segue the user to the reminders view controller where they can edit the reminders
     if ([[[UIApplication sharedApplication] scheduledLocalNotifications] count] == 0) {
         [self.notifSwitch setOn:NO animated:YES];
         self.notificationButton.hidden = YES;
