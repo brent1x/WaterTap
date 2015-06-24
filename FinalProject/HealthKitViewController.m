@@ -216,15 +216,17 @@
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
     self.goButton.hidden = NO;
-
-
 }
 
 #pragma mark // Prepare for Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // this is just passing the value I calculated in the above method back to the Settings VC when we segue back
+    // this just passing the value I calculated in the above method back to the Settings VC when we segue back
+    // I'm also setting a bool to true, indicating a recommendation has been made – this was created to persist the
+    // state of a switch on the Settings page
     SettingsViewController *destVC = segue.destinationViewController;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:TRUE forKey:kNSUserReceivedRecommendation];
     destVC.recoTotal = self.calculateTextField.text;
 }
 

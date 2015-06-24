@@ -61,19 +61,18 @@
     }
 
     // this line checks to see if a user has previously received a recommendation
+    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
     [self recommendationSwitchLogic];
 }
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
     if (self.recoTotal != nil) {
         // this method checks, upon the unwind from the Recommendation (aka HealthKit) view controller, if we received a recoomendation
-        // if it does have a recommendation, it loads it into the daily goal and calls the delegate method
+        // if it does have a recommendation, it loads it into the daily goal and calls the delegate method. I am setting an NSUserDefault
+        // toggle to true so the switch on the VC indicates *yes* if a personalized recommendation has been made
         self.dailyGoalTextField.text = self.recoTotal;
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         [self saveGoalToUserDefaults];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setBool:TRUE forKey:kNSUserReceivedRecommendation];
-        self.recoReceived = [userDefaults objectForKey:kNSUserUnitTypeSelected];
     }
 }
 
