@@ -10,17 +10,17 @@
 #import "HKHealthStore+AAPLExtensions.h"
 #import "SettingsViewController.h"
 
-@interface HealthKitViewController () // <SettingsViewControllerDelegate>
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
-@property (weak, nonatomic) IBOutlet UIButton *proteinButton;
-@property (weak, nonatomic) IBOutlet UITextField *proteinText;
+@interface HealthKitViewController ()
+
 @property (weak, nonatomic) IBOutlet UITextField *heightTextField;
 @property (weak, nonatomic) IBOutlet UITextField *weightTextField;
-@property (weak, nonatomic) IBOutlet UITextField *ageTextField;
 @property (weak, nonatomic) IBOutlet UITextField *strenousActivityTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *climateSelectedSegment;
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
+@property double mlMultiplier;
 
 @end
 
@@ -28,9 +28,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.proteinButton.hidden = YES;
-    self.proteinText.hidden = YES;
 
     self.goButton.hidden = YES;
 
@@ -55,6 +52,12 @@
             });
         }];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
 }
 
 #pragma mark // Write Data Permissions to HealthKit
@@ -149,7 +152,6 @@
     [self.healthStore aapl_mostRecentQuantitySampleOfType:weightType predicate:nil completion:^(HKQuantity *mostRecentQuantity, NSError *error) {
         if (!mostRecentQuantity) {
             NSLog(@"Either an error occured fetching the user's height information or none has been stored yet.");
-
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.weightTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your weight in pounds.", nil);
             });
@@ -166,6 +168,65 @@
         }
     }];
 }
+
+#pragma mark // Calculate Recommended Water Intake
+
+- (IBAction)onCalculateTapped:(id)sender {
+
+    // normalizing for climate
+    double climateMultiplier = 1;
+    if (self.climateSelectedSegment.selectedSegmentIndex == 0) {
+        climateMultiplier = 1.09;
+    } else if (self.climateSelectedSegment.selectedSegmentIndex == 2) {
+        climateMultiplier = 1.21;
+    }
+
+    // normalizing for weight
+    double weightMultiplier;
+    if ([self.weightTextField.text doubleValue] <= 100) {
+        weightMultiplier = 1.1;
+    } else if ([self.weightTextField.text doubleValue] > 100 && [self.weightTextField.text doubleValue] <= 125) {
+        weightMultiplier = 1.075;
+    } else if ([self.weightTextField.text doubleValue] > 125 && [self.weightTextField.text doubleValue] <= 150) {
+        weightMultiplier = 1.05;
+    } else if ([self.weightTextField.text doubleValue] > 150 && [self.weightTextField.text doubleValue] <= 175) {
+        weightMultiplier = 1.025;
+    } else if ([self.weightTextField.text doubleValue] > 175 && [self.weightTextField.text doubleValue] <= 200) {
+        weightMultiplier = 1;
+    } else if ([self.weightTextField.text doubleValue] > 200 && [self.weightTextField.text doubleValue] <= 225) {
+        weightMultiplier = .975;
+    } else if ([self.weightTextField.text doubleValue] > 225 && [self.weightTextField.text doubleValue] <= 250) {
+        weightMultiplier = 0.95;
+    } else if ([self.weightTextField.text doubleValue] > 250 && [self.weightTextField.text doubleValue] <= 300) {
+        weightMultiplier = 0.925;
+    } else if ([self.weightTextField.text doubleValue] > 300) {
+        weightMultiplier = 0.9;
+    }
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    if ([goalFromDefault isEqualToString:@"milliliter"]) {
+        self.mlMultiplier = 29.5735;
+    } else {
+        self.mlMultiplier = 1;
+    }
+
+    double strenous = ([self.strenousActivityTextField.text doubleValue] * .6);
+    double goal = ((((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier) * self.mlMultiplier);
+    int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
+    self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
+
+    self.goButton.hidden = NO;
+}
+
+#pragma mark // Prepare for Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    SettingsViewController *destVC = segue.destinationViewController;
+    destVC.recoTotal = self.calculateTextField.text;
+}
+
+#pragma mark // To Be Used To Write Water Data To HealthKit on iOS9
 
 //- (IBAction)addProtein:(UIButton *)sender {
 //    // Some weight in gram
@@ -191,54 +252,6 @@
 //    }];
 //
 //}
-
-- (IBAction)onCalculateTapped:(id)sender {
-
-    // normalizing for climate
-    double climateMultiplier = 1;
-    if (self.climateSelectedSegment.selectedSegmentIndex == 0) {
-        climateMultiplier = 1.09;
-    } else if (self.climateSelectedSegment.selectedSegmentIndex == 2) {
-        climateMultiplier = 1.21;
-    }
-
-    // normalizing weight
-    double weightMultiplier;
-    if ([self.weightTextField.text doubleValue] <= 100) {
-        weightMultiplier = 1.1;
-    } else if ([self.weightTextField.text doubleValue] > 100 && [self.weightTextField.text doubleValue] <= 125) {
-        weightMultiplier = 1.075;
-    } else if ([self.weightTextField.text doubleValue] > 125 && [self.weightTextField.text doubleValue] <= 150) {
-        weightMultiplier = 1.05;
-    } else if ([self.weightTextField.text doubleValue] > 150 && [self.weightTextField.text doubleValue] <= 175) {
-        weightMultiplier = 1.025;
-    } else if ([self.weightTextField.text doubleValue] > 175 && [self.weightTextField.text doubleValue] <= 200) {
-        weightMultiplier = 1;
-    } else if ([self.weightTextField.text doubleValue] > 200 && [self.weightTextField.text doubleValue] <= 225) {
-        weightMultiplier = .975;
-    } else if ([self.weightTextField.text doubleValue] > 225 && [self.weightTextField.text doubleValue] <= 250) {
-        weightMultiplier = 0.95;
-    } else if ([self.weightTextField.text doubleValue] > 250 && [self.weightTextField.text doubleValue] <= 300) {
-        weightMultiplier = 0.925;
-    } else if ([self.weightTextField.text doubleValue] > 300) {
-        weightMultiplier = 0.9;
-    }
-
-    double strenous = ([self.strenousActivityTextField.text doubleValue] * .6);
-    double goal = (((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier);
-    int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
-    self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
-
-    self.goButton.hidden = NO;
-
-}
-
-#pragma mark // Prepare for Segue
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    SettingsViewController *destVC = segue.destinationViewController;
-    destVC.recoTotal = self.calculateTextField.text;
-}
 
 // - (IBAction)addWater:(UIButton *)sender {
 //

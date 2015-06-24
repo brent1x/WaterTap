@@ -13,6 +13,7 @@
 #import "SettingsViewController.h"
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
@@ -51,8 +52,16 @@
         [self saveGoalToUserDefaults];
     }
 
+    // setting default unit to 'ounce' and then checking to determine if unit type has changed to 'milliliter'
+    // note: also running the test in viewWillAppear
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
 
-    self.unitTypeSelected = @"ounce";
+
+    // self.unitTypeSelected = @"ounce";
+
+
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
 
     [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
@@ -89,14 +98,17 @@
 - (void)viewDidAppear:(BOOL)animated {
 
     NSLog(@"%i", self.currentDailyGoal);
-    NSLog(@"viewdidappear %@", self.unitTypeSelected);
+    // NSLog(@"viewdidappear %@", self.unitTypeSelected);
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
     [self.view sendSubviewToBack:self.waterMarkImageView];
     [self.view sendSubviewToBack:self.waterLevel];
 
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
 
 }
 
@@ -125,6 +137,7 @@
     NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
     self.currentDailyGoal = [goalFromDefault intValue];
 }
+
 - (void)unitTypeSelected:(NSString *)unitType {
     self.unitTypeSelected = unitType;
     NSLog(@"unittypeselected %@", unitType);
