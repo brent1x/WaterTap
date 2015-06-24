@@ -236,8 +236,8 @@
 				849740791B335CF90039DCA2 /* ConsumptionEvent.h */,
 				8497407A1B335CF90039DCA2 /* ConsumptionEvent.m */,
 				8497407C1B335D6C0039DCA2 /* CustomWaterLevelView.h */,
-				9AE84BD71B3A05060084C8EF /* Images.xcassets */,
 				8497407D1B335D6C0039DCA2 /* CustomWaterLevelView.m */,
+				9AE84BD71B3A05060084C8EF /* Images.xcassets */,
 				128853291B33382A00E2CA6D /* TrackerViewController.h */,
 				1288532A1B33382A00E2CA6D /* TrackerViewController.m */,
 				8493AD5C1B2BD11C0048A5B7 /* LaunchScreen.xib */,
@@ -634,11 +634,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-
 				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
-
-
-
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

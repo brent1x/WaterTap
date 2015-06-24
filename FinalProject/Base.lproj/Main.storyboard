@@ -323,7 +323,7 @@ intake recommendation</string>
                                     <rect key="frame" x="304" y="221" width="51" height="31"/>
                                 </variation>
                                 <connections>
-                                    <segue destination="Yvk-Nt-GFE" kind="show" id="QyL-va-cLY"/>
+                                    <action selector="onRecommendationSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="qxo-Rx-Rpi"/>
                                 </connections>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AFe-KR-f47">
@@ -335,7 +335,7 @@ intake recommendation</string>
                                     <segue destination="vL5-Ca-gFJ" kind="show" identifier="waterContainerSegue" id="58N-uO-eEe"/>
                                 </connections>
                             </switch>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -376,6 +376,18 @@ intake recommendation</string>
                                     <action selector="onSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="b4i-mz-GNc"/>
                                 </connections>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3b-oh-1K2">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="245" y="221" width="30" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="Yvk-Nt-GFE" kind="show" identifier="recommendationSegue" id="DVc-d8-Had"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -391,6 +403,7 @@ intake recommendation</string>
                                 <exclude reference="efU-JU-W7G"/>
                                 <exclude reference="JZO-Dc-uTh"/>
                                 <exclude reference="G55-yT-tfV"/>
+                                <exclude reference="U3b-oh-1K2"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -406,13 +419,17 @@ intake recommendation</string>
                                 <include reference="efU-JU-W7G"/>
                                 <include reference="JZO-Dc-uTh"/>
                                 <include reference="G55-yT-tfV"/>
+                                <include reference="U3b-oh-1K2"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="customContainerSwitch" destination="AFe-KR-f47" id="w0n-m2-kRW"/>
                         <outlet property="dailyGoalTextField" destination="IqW-jg-e74" id="ORR-a5-5Nm"/>
                         <outlet property="notifSwitch" destination="G55-yT-tfV" id="2jw-9a-vCP"/>
                         <outlet property="notificationButton" destination="JZO-Dc-uTh" id="iRb-ed-Ju1"/>
+                        <outlet property="recoButton" destination="U3b-oh-1K2" id="1KA-Ho-ETz"/>
+                        <outlet property="recoSwitch" destination="xN0-sr-AGf" id="Fs6-q4-Hkj"/>
                         <outlet property="segmentedUnitSelector" destination="B9g-IY-Yc2" id="6Au-NH-bEK"/>
                     </connections>
                 </viewController>
@@ -432,20 +449,12 @@ intake recommendation</string>
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="grams consumed" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="SSe-gk-q7O">
-                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="562" width="135" height="30"/>
-                                </variation>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="height" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="v3A-Ce-3P6">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="152" y="272" width="97" height="30"/>
+                                    <rect key="frame" x="152" y="115" width="97" height="30"/>
                                 </variation>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="minutes" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="D9T-8J-YSX">
@@ -453,7 +462,7 @@ intake recommendation</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="255" y="336" width="97" height="30"/>
+                                    <rect key="frame" x="255" y="179" width="97" height="30"/>
                                 </variation>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="weight" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="f5Y-M1-T2d">
@@ -461,25 +470,16 @@ intake recommendation</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="152" y="223" width="97" height="30"/>
+                                    <rect key="frame" x="152" y="66" width="97" height="30"/>
                                 </variation>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZh-dM-ggh">
-                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="36" y="101" width="31" height="21"/>
-                                </variation>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6k5-Vx-xl9">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="81" y="227" width="53" height="21"/>
+                                    <rect key="frame" x="81" y="70" width="53" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwk-AB-wFN">
@@ -488,7 +488,7 @@ intake recommendation</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="82" y="276" width="51" height="21"/>
+                                    <rect key="frame" x="82" y="119" width="51" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strenous Activity Per Day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-Yr-iwA">
@@ -497,7 +497,7 @@ intake recommendation</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="36" y="340" width="195" height="21"/>
+                                    <rect key="frame" x="36" y="183" width="195" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Climate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2F-SV-zLa">
@@ -506,7 +506,7 @@ intake recommendation</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="79" y="392" width="59" height="21"/>
+                                    <rect key="frame" x="79" y="235" width="59" height="21"/>
                                 </variation>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="CWH-qc-DM0">
@@ -517,7 +517,7 @@ intake recommendation</string>
                                     <segment title="Tropical"/>
                                 </segments>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="161" y="389" width="223" height="29"/>
+                                    <rect key="frame" x="161" y="232" width="223" height="29"/>
                                 </variation>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NhI-WF-cTi">
@@ -526,22 +526,10 @@ intake recommendation</string>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="110" y="473" width="102" height="30"/>
+                                    <rect key="frame" x="110" y="316" width="102" height="30"/>
                                 </variation>
                                 <connections>
                                     <action selector="onCalculateTapped:" destination="Yvk-Nt-GFE" eventType="touchUpInside" id="p8h-RY-rev"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H7P-Cu-Pt5">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Add Protein">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="152" y="562" width="128" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="addProtein:" destination="Yvk-Nt-GFE" eventType="touchUpInside" id="kBJ-QX-BFI"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="km6-oX-XkV">
@@ -550,23 +538,15 @@ intake recommendation</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="220" y="477" width="105" height="21"/>
+                                    <rect key="frame" x="220" y="320" width="105" height="21"/>
                                 </variation>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="age" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hGi-0H-frP">
-                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="8" y="139" width="384" height="30"/>
-                                </variation>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIY-8S-lfs">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Go"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                    <rect key="frame" x="274" y="473" width="30" height="30"/>
+                                    <rect key="frame" x="274" y="316" width="30" height="30"/>
                                 </variation>
                                 <connections>
                                     <segue destination="gnj-Ji-kPY" kind="unwind" unwindAction="unwindFromSegue:" id="LbT-Ut-ynN"/>
@@ -576,51 +556,40 @@ intake recommendation</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="SSe-gk-q7O"/>
                                 <exclude reference="v3A-Ce-3P6"/>
                                 <exclude reference="D9T-8J-YSX"/>
                                 <exclude reference="f5Y-M1-T2d"/>
-                                <exclude reference="GZh-dM-ggh"/>
                                 <exclude reference="6k5-Vx-xl9"/>
                                 <exclude reference="bwk-AB-wFN"/>
                                 <exclude reference="Hnb-Yr-iwA"/>
                                 <exclude reference="u2F-SV-zLa"/>
                                 <exclude reference="CWH-qc-DM0"/>
                                 <exclude reference="NhI-WF-cTi"/>
-                                <exclude reference="H7P-Cu-Pt5"/>
                                 <exclude reference="km6-oX-XkV"/>
-                                <exclude reference="hGi-0H-frP"/>
                                 <exclude reference="eIY-8S-lfs"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="SSe-gk-q7O"/>
                                 <include reference="v3A-Ce-3P6"/>
                                 <include reference="D9T-8J-YSX"/>
                                 <include reference="f5Y-M1-T2d"/>
-                                <include reference="GZh-dM-ggh"/>
                                 <include reference="6k5-Vx-xl9"/>
                                 <include reference="bwk-AB-wFN"/>
                                 <include reference="Hnb-Yr-iwA"/>
                                 <include reference="u2F-SV-zLa"/>
                                 <include reference="CWH-qc-DM0"/>
                                 <include reference="NhI-WF-cTi"/>
-                                <include reference="H7P-Cu-Pt5"/>
                                 <include reference="km6-oX-XkV"/>
-                                <include reference="hGi-0H-frP"/>
                                 <include reference="eIY-8S-lfs"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="ageTextField" destination="hGi-0H-frP" id="d6S-ZB-AAQ"/>
                         <outlet property="calculateTextField" destination="km6-oX-XkV" id="96B-wd-UVY"/>
                         <outlet property="climateSelectedSegment" destination="CWH-qc-DM0" id="IXI-HK-9bm"/>
                         <outlet property="goButton" destination="eIY-8S-lfs" id="i1q-B9-UPa"/>
                         <outlet property="heightTextField" destination="v3A-Ce-3P6" id="xw0-Ts-ZsK"/>
-                        <outlet property="proteinButton" destination="H7P-Cu-Pt5" id="FC3-wY-gNO"/>
-                        <outlet property="proteinText" destination="SSe-gk-q7O" id="Kzj-h4-vr9"/>
                         <outlet property="strenousActivityTextField" destination="D9T-8J-YSX" id="Ti8-cr-Sca"/>
                         <outlet property="weightTextField" destination="f5Y-M1-T2d" id="dxI-86-rhx"/>
                     </connections>

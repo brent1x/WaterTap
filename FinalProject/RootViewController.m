@@ -13,6 +13,7 @@
 #import "SettingsViewController.h"
 #define kNSUserWaterLevel @"kNSUserWaterLevelKey"
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
@@ -58,6 +59,16 @@
 
     self.unitTypeSelected = @"ounce";
 
+    // setting default unit to 'ounce' and then checking to determine if unit type has changed to 'milliliter'
+    // note: also running the test in viewWillAppear
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
+
+
+    // self.unitTypeSelected = @"ounce";
+
+
     //this is all animation set up for the buttons
 
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -89,9 +100,18 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 
+
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+    [self.view sendSubviewToBack:self.waterMarkImageView];
+    [self.view sendSubviewToBack:self.waterLevel];
+
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
 
 
     self.navigationController.navigationBarHidden = YES;
@@ -100,6 +120,17 @@
 //    int persistentWaterHeight = [[userDefaults objectForKey:kNSUserWaterLevel]intValue];
 ////    [self loadPersistentWaterLevel:persistentWaterHeight];
     [self loadWaterLevel];
+
+    if (self.currentDailyGoal == 0) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
+        }];
+
+        [alertController addAction:action];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 #pragma MARK - Change Daily Goal Methods
@@ -130,6 +161,7 @@
 
 #pragma MARK -UNIT SELECTION METHOD 
 //This method probably should just be removed, doesn't do anything of value, and Brent's push should take care of this
+
 - (void)unitTypeSelected:(NSString *)unitType {
     self.unitTypeSelected = unitType;
     NSLog(@"unittypeselected %@", unitType);
