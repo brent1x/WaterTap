@@ -317,7 +317,7 @@ intake recommendation</string>
                                     <rect key="frame" x="304" y="221" width="51" height="31"/>
                                 </variation>
                                 <connections>
-                                    <segue destination="Yvk-Nt-GFE" kind="show" id="QyL-va-cLY"/>
+                                    <action selector="onRecommendationSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="qxo-Rx-Rpi"/>
                                 </connections>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AFe-KR-f47">
@@ -329,7 +329,7 @@ intake recommendation</string>
                                     <segue destination="vL5-Ca-gFJ" kind="show" identifier="waterContainerSegue" id="58N-uO-eEe"/>
                                 </connections>
                             </switch>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-jg-e74">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -370,6 +370,18 @@ intake recommendation</string>
                                     <action selector="onSwitchTapped:" destination="0ka-N1-EvE" eventType="valueChanged" id="b4i-mz-GNc"/>
                                 </connections>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3b-oh-1K2">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="245" y="221" width="30" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="Yvk-Nt-GFE" kind="show" identifier="recommendationSegue" id="DVc-d8-Had"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
@@ -385,6 +397,7 @@ intake recommendation</string>
                                 <exclude reference="efU-JU-W7G"/>
                                 <exclude reference="JZO-Dc-uTh"/>
                                 <exclude reference="G55-yT-tfV"/>
+                                <exclude reference="U3b-oh-1K2"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -400,13 +413,17 @@ intake recommendation</string>
                                 <include reference="efU-JU-W7G"/>
                                 <include reference="JZO-Dc-uTh"/>
                                 <include reference="G55-yT-tfV"/>
+                                <include reference="U3b-oh-1K2"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="customContainerSwitch" destination="AFe-KR-f47" id="w0n-m2-kRW"/>
                         <outlet property="dailyGoalTextField" destination="IqW-jg-e74" id="ORR-a5-5Nm"/>
                         <outlet property="notifSwitch" destination="G55-yT-tfV" id="2jw-9a-vCP"/>
                         <outlet property="notificationButton" destination="JZO-Dc-uTh" id="iRb-ed-Ju1"/>
+                        <outlet property="recoButton" destination="U3b-oh-1K2" id="1KA-Ho-ETz"/>
+                        <outlet property="recoSwitch" destination="xN0-sr-AGf" id="Fs6-q4-Hkj"/>
                         <outlet property="segmentedUnitSelector" destination="B9g-IY-Yc2" id="6Au-NH-bEK"/>
                     </connections>
                 </viewController>

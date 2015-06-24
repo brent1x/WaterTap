@@ -11,6 +11,7 @@
 #import "SettingsViewController.h"
 
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
+#define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
 
 @interface HealthKitViewController ()
 
@@ -215,6 +216,8 @@
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
     self.goButton.hidden = NO;
+
+
 }
 
 #pragma mark // Prepare for Segue

@@ -12,15 +12,20 @@
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
+#define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
 
 @interface SettingsViewController () 
 
 @property NSArray *notificationCheck;
 @property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
 @property (weak, nonatomic) IBOutlet UIButton *notificationButton;
+@property (weak, nonatomic) IBOutlet UIButton *recoButton;
 @property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *recoSwitch;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
+@property (weak, nonatomic) IBOutlet UISwitch *customContainerSwitch;
 @property int dailyGoal;
+@property bool recoReceived;
 
 @end
 
@@ -32,7 +37,10 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
     [self switchLogic];
+    [self recommendationSwitchLogic];
     [self loadGoalFromUserDefaults];
+
+    self.recoButton.hidden = TRUE;
 
     // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
@@ -52,22 +60,29 @@
         self.segmentedUnitSelector.selectedSegmentIndex = 1;
     }
 
+    // this line checks to see if a user has previously received a recommendation
+    [self recommendationSwitchLogic];
 }
+
+- (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
+    if (self.recoTotal != nil) {
+        // this method checks, upon the unwind from the Recommendation (aka HealthKit) view controller, if we received a recoomendation
+        // if it does have a recommendation, it loads it into the daily goal and calls the delegate method
+        self.dailyGoalTextField.text = self.recoTotal;
+        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+        [self saveGoalToUserDefaults];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:TRUE forKey:kNSUserReceivedRecommendation];
+        self.recoReceived = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    }
+}
+
+#pragma mark // Business Logic
 
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     // this method checks whether or not the daily goal changed. if it did it lets its delegate (RootVC) know
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
     [self saveGoalToUserDefaults];
-}
-
-- (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
-    if (self.recoTotal != nil) {
-        // this method checks, upon the unwind from the recommendation (aka HealthKit) view controller, if we received a recoomendation
-        // if it does have a recommendation, it loads it into the daily goal and calls the delegate method
-        self.dailyGoalTextField.text = self.recoTotal;
-        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
-        [self saveGoalToUserDefaults];
-    }
 }
 
 - (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
@@ -92,6 +107,8 @@
     }
 }
 
+#pragma mark // Reminder Switch Logic
+
 - (IBAction)onSwitchTapped:(id)sender {
     // this method checks to see if user flips reminders switch. if it's *on* and the user flips it to *off*, then all of the
     // reminders are cancelled. conversely, if the switch is *off* and the user flips it to *on", it segues to the reminders
@@ -115,6 +132,37 @@
         self.notificationButton.hidden = NO;
     }
 }
+
+#pragma mark // Recommendation Switch Logic
+
+- (void)recommendationSwitchLogic {
+    // this section checks whether a user has received a personalized recommendation. if they have the UISwitch is *on*
+    // if they haven't it remains off. if the switch is *on* and it flips, the recommendation is cleared. if the switch is *off*
+    // and the user flips it, I segue them to the Recommendation (aka HealthKit) view controller
+    if (self.recoReceived == TRUE) {
+        self.recoSwitch.on = TRUE;
+    } else {
+        self.recoSwitch.on = FALSE;
+    }
+}
+
+- (IBAction)onRecommendationSwitchTapped:(id)sender {
+    // this method checks to see if user flips reminders switch. if it's *on* and the user flips it to *off*, then all of the
+    // reminders are cancelled. conversely, if the switch is *off* and the user flips it to *on", it segues to the reminders
+    // view controller
+    if (self.recoSwitch.on == TRUE) {
+        [self performSegueWithIdentifier:@"recommendationSegue" sender:self];
+    } else if (self.recoSwitch.on == FALSE) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
+        self.recoReceived = FALSE;
+        self.dailyGoalTextField.text = @"";
+        self.dailyGoalTextField.placeholder = @"Enter a goal.";
+        [self recommendationSwitchLogic];
+    }
+}
+
+#pragma mark // Daily Goal NSUser Default Methods
 
 - (void)saveGoalToUserDefaults {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
