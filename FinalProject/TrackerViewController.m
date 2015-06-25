@@ -19,6 +19,10 @@
 @property NSMutableArray *waterIntakeValues;
 @property NSMutableArray *dateValues;
 @property NSMutableArray *goalPrecentageValues;
+
+@property NSMutableArray *waterIntakeValuesBackup;
+@property NSMutableArray *dateValuesBackup;
+@property NSMutableArray *goalPrecentageValuesBackup;
 @property int totalNumber;
 
 @property BEMSimpleLineGraphView *graphView;
@@ -139,14 +143,6 @@
 
 }
 
-
-//-(void)viewWillAppear:(BOOL)animated {
-//    CGPoint bottomOffset = CGPointMake(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
-//    [self.collectionView setContentOffset:bottomOffset animated:YES];
-//
-//
-//}
-
 // Graph //
 
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
@@ -161,8 +157,6 @@
 
 #pragma mark - PDTSimpleLineGraph methods to override
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
-
-    //    NSString *label = [self labelForDateAtIndex:index];
     NSString *label = @"";
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
 }
@@ -229,7 +223,7 @@
             for (ConsumptionEvent *event in events) {
                 dayTotal += (float)event.volumeConsumed;
                 goal = (float)event.consumptionGoal;
-                NSLog(@"GOAL: %d", event.consumptionGoal);
+//                NSLog(@"GOAL: %d", event.consumptionGoal);
             }
             [self.waterIntakeValues addObject:[NSNumber numberWithFloat:dayTotal]];
             self.totalNumber += (int)dayTotal;
@@ -241,6 +235,9 @@
             if (shouldReload) {
                 [self.graphView reloadGraph];
                 [self.collectionView reloadData];
+                self.waterIntakeValuesBackup = [NSMutableArray arrayWithArray:self.waterIntakeValues];
+                self.dateValuesBackup = [NSMutableArray arrayWithArray:self.dateValues];
+                self.goalPrecentageValuesBackup = [NSMutableArray arrayWithArray:self.goalPrecentageValues];
                 [self.waterIntakeValues removeAllObjects];
                 [self.dateValues removeAllObjects];
                 [self.goalPrecentageValues removeAllObjects];
@@ -250,20 +247,6 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-
-
-    //TEST
-    //    [self.waterIntakeValues addObject:[NSNumber numberWithFloat:[self getRandomFloat]]];
-    //    [self.goalPrecentageValues addObject:[NSNumber numberWithFloat:10000]];
-    //    if (shouldReload) {
-    //        [self.graphView reloadGraph];
-    //        [self.collectionView reloadData];
-    //    }
-}
-
-- (float)getRandomFloat {
-    float i1 = (float)(arc4random() % 1000000) / 100 ;
-    return i1;
 }
 
 -(NSDate *)makeDayNextStartOfDay:(NSDate *)day {
@@ -309,17 +292,15 @@
 #pragma mark - PDTSimpleCalendarViewController methods to override
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+    [super scrollViewDidScroll:scrollView];
     if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
         self.navigationItem.title = self.overlayView.text;
     }
-
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-
     [self hydrateDataSetsForMonth:self.overlayView.text];
-
-
 }
 
 //Blank so these dont hide the overlay when not srcolling
@@ -352,134 +333,65 @@
 {
     PDTSimpleCalendarViewCell *cell = (PDTSimpleCalendarViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 
+    NSArray *subviews = [cell subviews];
+    if (subviews.count > 1) {
+        for (int i = 0; i < (subviews.count - 1); i++) {
+            UIView *viewToRemove = [[cell subviews] objectAtIndex:i];
+            [viewToRemove removeFromSuperview];
+        }
+    }
+    
     NSDate *date = [self dateForCellAtIndexPath:indexPath];
 
-    //Anders added >>>>
+    if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
 
-    UIView *customRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-    customRectangle.backgroundColor = [UIColor magentaColor];
-    customRectangle.layer.borderColor = [UIColor blackColor].CGColor;
-    customRectangle.layer.borderWidth = 1;
+        NSLog(@"date: %@", date);
+        NSLog(@"Subviews: %@", [cell subviews]);
 
-    //    customRectangle.layer.cornerRadius = 16;
-    //just to eliminate white spots
-    //cell.dayLabel.layer.cornerRadius += 2;
+        //Static backgroundRectangle
+        UIView *backgroundRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+        backgroundRectangle.backgroundColor = [UIColor magentaColor];
+        backgroundRectangle.layer.borderColor = [UIColor blackColor].CGColor;
+        backgroundRectangle.layer.borderWidth = 1;
 
-    [cell bringSubviewToFront:cell.dayLabel];
-    [cell insertSubview:customRectangle belowSubview:cell.dayLabel];
-    [cell sendSubviewToBack:customRectangle];
+        [cell bringSubviewToFront:cell.dayLabel];
+        [cell insertSubview:backgroundRectangle belowSubview:cell.dayLabel];
+        [cell sendSubviewToBack:backgroundRectangle];
 
+        CGRect coverFrame = backgroundRectangle.frame;
+        coverFrame.size.height = backgroundRectangle.frame.size.height /2;
 
-    CGRect newFrameForSecondRectangle = customRectangle.frame;
-    //    newFrameForSecondRectangle.origin.y = customRectangle.frame.origin.y/2;
-    newFrameForSecondRectangle.size.height = customRectangle.frame.size.height /2;
+        UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
+        coverRectangle.backgroundColor = [UIColor whiteColor];
 
-    UIView *secondCustomRectangle = [[UILabel alloc] initWithFrame:newFrameForSecondRectangle];
-    secondCustomRectangle.backgroundColor = [UIColor whiteColor];
-    //    secondCustomRectangle.layer.cornerRadius = 16;
-    //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
-    //    secondCustomRectangle.layer.borderWidth = 1;
+        //    secondCustomRectangle.layer.cornerRadius = 16;
+        //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
+        //    secondCustomRectangle.layer.borderWidth = 1;
 
-    CALayer *upperBorder = [CALayer layer];
-    upperBorder.backgroundColor = [[UIColor blackColor] CGColor];
-    upperBorder.frame = CGRectMake(0, 0, secondCustomRectangle.frame.size.width, 1.0f);
-    [secondCustomRectangle.layer addSublayer:upperBorder];
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor blackColor] CGColor];
+        upperBorder.frame = CGRectMake(0, 0, coverRectangle.frame.size.width, 1.0f);
+        [coverRectangle.layer addSublayer:upperBorder];
 
-
-    // [cell bringSubviewToFront:cell.dayLabel];
-    //    cell.dayLabel.alpha = 0.7;
-    cell.dayLabel.backgroundColor = [UIColor clearColor];
-    [cell insertSubview:secondCustomRectangle aboveSubview:customRectangle];
-    [cell sendSubviewToBack:customRectangle];
-    [cell bringSubviewToFront:cell.dayLabel];
-    //<<<<<<
-
-    if ([self.dateValues containsObject:date] && self.waterIntakeValues.count == self.dateValues.count && [[self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]] integerValue] > 0) {
-        //        cell.dayLabel.backgroundColor = [UIColor blueColor];
-
-        //        cell.dayLabel.layer.masksToBounds = NO;
+        cell.dayLabel.backgroundColor = [UIColor clearColor];
+        [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
+        [cell sendSubviewToBack:backgroundRectangle];
+        [cell bringSubviewToFront:cell.dayLabel];
 
 
-        //        UIView *customCircle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-        //        customCircle.backgroundColor = [UIColor magentaColor];
-        //        customCircle.layer.cornerRadius = 16;
-        //
-        //        [cell bringSubviewToFront:cell.dayLabel];
-        //
-        //
-
-
-        // /[cell insertSubview:customCircle belowSubview:cell.dayLabel];
-
-        //        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-        //        rectangleCover.backgroundColor = [UIColor clearColor];
-        //        rectangleCover.frame = CGRectMake(rectangleCover.frame.origin.x, rectangleCover.frame.origin.y, 32, 16);
-        //        [cell insertSubview:rectangleCover belowSubview:cell.dayLabel];
-
-
-
-        //        //// Bezier Drawing
-        //        UIBezierPath* bezierPath = UIBezierPath.bezierPath;
-        //        [bezierPath moveToPoint: CGPointMake(45, 82.5)];
-        //        [bezierPath addCurveToPoint: CGPointMake(24.5, 62) controlPoint1: CGPointMake(45, 71.18) controlPoint2: CGPointMake(35.82, 62)];
-        //        [bezierPath addCurveToPoint: CGPointMake(4, 82.5) controlPoint1: CGPointMake(13.18, 62) controlPoint2: CGPointMake(4, 71.18)];
-        //        [bezierPath addCurveToPoint: CGPointMake(4.01, 83) controlPoint1: CGPointMake(4, 82.67) controlPoint2: CGPointMake(4, 82.83)];
-        //        [bezierPath addLineToPoint: CGPointMake(44.99, 83)];
-        //        [bezierPath addCurveToPoint: CGPointMake(45, 82.5) controlPoint1: CGPointMake(45, 82.83) controlPoint2: CGPointMake(45, 82.67)];
-        //        [bezierPath closePath];
-        //        [UIColor.grayColor setFill];
-        //        [bezierPath fill];
-        //
-        //
-        //        //// Bezier 2 Drawing
-        //        UIBezierPath* bezier2Path = UIBezierPath.bezierPath;
-        //        [bezier2Path moveToPoint: CGPointMake(99, 78.76)];
-        //        [bezier2Path addCurveToPoint: CGPointMake(81.5, 62) controlPoint1: CGPointMake(99, 69.5) controlPoint2: CGPointMake(91.16, 62)];
-        //        [bezier2Path addCurveToPoint: CGPointMake(71.66, 64.9) controlPoint1: CGPointMake(77.85, 62) controlPoint2: CGPointMake(74.46, 63.07)];
-        //        [bezier2Path addCurveToPoint: CGPointMake(64, 78.76) controlPoint1: CGPointMake(67.03, 67.92) controlPoint2: CGPointMake(64, 73)];
-        //        [bezier2Path addCurveToPoint: CGPointMake(64.87, 84) controlPoint1: CGPointMake(64, 80.59) controlPoint2: CGPointMake(64.31, 82.35)];
-        //        [bezier2Path addLineToPoint: CGPointMake(98.13, 84)];
-        //        [bezier2Path addCurveToPoint: CGPointMake(99, 78.76) controlPoint1: CGPointMake(98.69, 82.35) controlPoint2: CGPointMake(99, 80.59)];
-        //        [bezier2Path closePath];
-        //        [UIColor.grayColor setFill];
-        //        [bezier2Path fill];
-
+        NSLog(@"2 Subviews: %@", [cell subviews]);
+        NSLog(@"POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+    } else {
+//        for (UIView *view in [cell subviews]) {
+//
+//            NSLog(@"view: %@", view);
+////            if(view != cell.dayLabel){
+////                [view removeFromSuperview];
+////            }
+//        }
+//        NSLog(@" Subviews: %@", [cell subviews]);
+//        NSLog(@"POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
     }
-
-
-
-    //    UILabel *customCircle = [[UILabel alloc]initWithFrame:cell.bounds];
-    //    customCircle.bounds = CGRectMake(customCircle.bounds.origin.x, customCircle.bounds.origin.y, 32, 32);
-    //    customCircle.layer.cornerRadius = 16;
-    //    customCircle.layer.masksToBounds = YES;
-    //    customCircle.backgroundColor = [UIColor magentaColor];
-    //    [cell addSubview:customCircle];
-    //    [cell sendSubviewToBack:customCircle];
-    //
-
-    //
-    //    if ([self.dateValues containsObject:date] && self.goalPrecentageValues.count == self.dateValues.count && [[self.goalPrecentageValues objectAtIndex:[self.dateValues indexOfObject:date]] floatValue] > 0) {
-    //
-    //        float goalPrecentage = [[self.goalPrecentageValues objectAtIndex:[self.dateValues indexOfObject:date]] floatValue];
-    //
-    //        float yValue = 32;
-    //        if (goalPrecentage > 0) {
-    //            yValue = (32 * goalPrecentage) / 100;
-    //        }
-    //
-    ////        NSLog(@"yvalue: %f", yValue);
-    //
-    //        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.bounds];
-    //        rectangleCover.backgroundColor = [UIColor blackColor];
-    //        rectangleCover.frame = CGRectMake(rectangleCover.bounds.origin.x, rectangleCover.bounds.origin.y, 32, 32);
-    //        rectangleCover.layer.masksToBounds = YES;
-    //        [cell insertSubview:rectangleCover aboveSubview:customCircle];
-    //        //        rectangleCover.center = cell.center;
-    //        //        [cell addSubview:rectangleCover];
-    //        //        [cell bringSubviewToFront:rectangleCover];
-    ////            [cell sendSubviewToBack:rectangleCover];
-    //    }
-
     return cell;
 }
 
