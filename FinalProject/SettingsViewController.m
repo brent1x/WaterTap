@@ -41,7 +41,6 @@
     self.navigationItem.title = @"Settings";
     [self switchLogic];
     [self recommendationSwitchLogic];
-    self.recoButton.hidden = TRUE;
     [self loadGoalFromUserDefaults];
 
     // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
@@ -158,10 +157,12 @@
 
     if (self.recoReceived == TRUE) {
         self.recoSwitch.on = TRUE;
+        self.recoButton.hidden = FALSE;
     } else {
         self.recoSwitch.on = FALSE;
         [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
         self.dailyGoalTextField.enabled = YES;
+        self.recoButton.hidden = TRUE;
     }
 }
 
