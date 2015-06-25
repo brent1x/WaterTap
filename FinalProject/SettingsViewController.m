@@ -11,16 +11,24 @@
 #import "HealthKitViewController.h"
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
+#define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
+#define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
+#define kNSUserDefaultsContainerTwoSize @"kNSUserDefaultsContainerTwoSize"
 
 @interface SettingsViewController () 
 
-@property NSArray *notificationCheck;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
 @property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
-@property int dailyGoal;
+@property (weak, nonatomic) IBOutlet UISwitch *customContainerSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *customContainerButton;
 @property (weak, nonatomic) IBOutlet UIButton *notificationButton;
 @property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
-
+@property (weak, nonatomic) IBOutlet UIButton *recoButton;
+@property (weak, nonatomic) IBOutlet UISwitch *recoSwitch;
+@property NSArray *notificationCheck;
+@property bool recoReceived;
+@property int dailyGoal;
 
 @end
 
@@ -28,49 +36,95 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
     [self switchLogic];
+    [self recommendationSwitchLogic];
+    self.recoButton.hidden = TRUE;
     [self loadGoalFromUserDefaults];
 
+    // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
         self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    // this line checks to see if a user has set up custom reminders
     [self switchLogic];
-    [self loadGoalFromUserDefaults];
-}
 
-- (IBAction)onDailyGoalDidChange:(UITextField *)sender {
-    [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
-    [self saveGoalToUserDefaults];
+    // this line will load the daily goal saved from the Recommendation (aka HealthKit) view controller
+    [self loadGoalFromUserDefaults];
+
+    // this section checks whether mL has been set as the default unit type; if so, it lights up the correct segment in the UISegCtrl
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    NSLog(@"user defaults type: %@", goalFromDefault);
+    if ([goalFromDefault isEqualToString:@"milliliter"]) {
+        self.segmentedUnitSelector.selectedSegmentIndex = 1;
+    }
+
+    // this line checks to see if a user has previously received a recommendation
+    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
+    if (self.recoReceived == TRUE) {
+        self.dailyGoalTextField.enabled = FALSE;
+    }
+    [self recommendationSwitchLogic];
+
+    // this line check to see if a user has set up custom water containers
+    [self customContainerSwitchLogic];
 }
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
     if (self.recoTotal != nil) {
+        // this method checks, upon the unwind from the Recommendation (aka HealthKit) view controller, if we received a recoomendation
+        // if it does have a recommendation, it loads it into the daily goal and calls the delegate method
+
         self.dailyGoalTextField.text = self.recoTotal;
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         [self saveGoalToUserDefaults];
     }
 }
 
+#pragma mark // Business Logic
+
+- (IBAction)onDailyGoalDidChange:(UITextField *)sender {
+    // this method checks whether or not the daily goal changed. if it did, it lets its delegate (RootVC) know
+
+    [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+    [self saveGoalToUserDefaults];
+}
+
 - (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
+    // this piece of logic checks whether the user has selected imperial or metric unit types
+    // if they choose metric, I convert from ounces (default) to milliliters and round the result to the nearest whole number,
+    // then I update the daily goal text field and call the delegate method that is listening for any changes to the daily goal
+    // finally, I save the selected unit type to NSUserDefaults so it persists across the app without having to query Parse
+
     if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
         double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735;
         int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
-        [self.delegate unitTypeSelected:@"milliliter"];
+        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"milliliter" forKey:kNSUserUnitTypeSelected];
     } else if (self.segmentedUnitSelector.selectedSegmentIndex == 0) {
         double convertMLToCounce = [self.dailyGoalTextField.text doubleValue] * 0.0338;
         int convToInt = (int)(convertMLToCounce + (convertMLToCounce > 0 ? 0.5 : -0.5));
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
-        [self.delegate unitTypeSelected:@"ounce"];
+        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"ounce" forKey:kNSUserUnitTypeSelected];
     }
 }
 
+#pragma mark // Reminder Switch Logic
+
 - (IBAction)onSwitchTapped:(id)sender {
+    // this method checks to see if the user flips the reminders switch. if it's *on* and the user flips it to *off*, then all of the
+    // reminders are cancelled. conversely, if the switch is *off* and the user flips it to *on", it segues to the reminders VC
+
     if (self.notifSwitch.on == NO) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         self.notificationButton.hidden = YES;
@@ -80,6 +134,9 @@
 }
 
 - (void)switchLogic {
+    // this method checks to see if notifications have been set. if so, the switch is set *on* and the *edit* button appears,
+    // which will segue the user to the reminders view controller where they can edit the reminders
+
     if ([[[UIApplication sharedApplication] scheduledLocalNotifications] count] == 0) {
         [self.notifSwitch setOn:NO animated:YES];
         self.notificationButton.hidden = YES;
@@ -88,6 +145,72 @@
         self.notificationButton.hidden = NO;
     }
 }
+
+#pragma mark // Recommendation Switch Logic
+
+- (void)recommendationSwitchLogic {
+    // this section checks whether a user has received a personalized recommendation. if they have, the UISwitch is set to *on*
+    // if they haven't, it remains off. if the switch is *on* and it flips, the recommendation is cleared. if the switch is *off*
+    // and it flips, I segue them to the Recommendation (aka HealthKit) view controller
+
+    if (self.recoReceived == TRUE) {
+        self.recoSwitch.on = TRUE;
+    } else {
+        self.recoSwitch.on = FALSE;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
+        self.dailyGoalTextField.enabled = YES;
+    }
+}
+
+- (IBAction)onRecommendationSwitchTapped:(id)sender {
+    // this method checks to see if user flips the reminders switch. if it's *on* and it flips, then all of the reminders are
+    // cancelled. conversely, if the switch is *off* and it flips, we segue the user to the Recommendation (aka HealthKit) VC
+
+    if (self.recoSwitch.on == TRUE) {
+        [self performSegueWithIdentifier:@"recommendationSegue" sender:self];
+    } else { // if (self.recoSwitch.on == FALSE) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
+        self.recoReceived = FALSE;
+        self.dailyGoalTextField.text = @"";
+        self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
+        [self recommendationSwitchLogic];
+    }
+}
+
+#pragma mark // Custom Container Switch Logic
+
+- (void)customContainerSwitchLogic {
+    // this method checks whether a user has set up custom containers. if they have, the switch is *on*
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *containerOne = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
+    NSString *containerTwo = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
+    if ([containerOne intValue] > 0 || [containerTwo intValue] > 0) {
+        self.customContainerSwitch.on = TRUE;
+        self.customContainerButton.hidden = FALSE;
+    } else {
+        self.customContainerSwitch.on = FALSE;
+        self.customContainerButton.hidden = TRUE;
+    }
+}
+
+- (IBAction)onCustomContainerSwitchTapped:(id)sender {
+    // if the switch is *off* and it gets flipped, I segue them to the Custom Container VC. if the switch is *on* and it flips,
+    // I set the custom containers equal to nil
+
+    if (self.customContainerSwitch.on == TRUE) {
+        [self performSegueWithIdentifier:@"containerSegue" sender:self];
+    } else if (self.customContainerSwitch.on == FALSE) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
+        [userDefaults removeObjectForKey:kNSUserDefaultsContainerTwoSize];
+        [self customContainerSwitchLogic];
+    }
+}
+
+#pragma mark // Daily Goal NSUser Default Methods
 
 - (void)saveGoalToUserDefaults {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

@@ -10,17 +10,18 @@
 #import "HKHealthStore+AAPLExtensions.h"
 #import "SettingsViewController.h"
 
-@interface HealthKitViewController () // <SettingsViewControllerDelegate>
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
+#define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
 
-@property (weak, nonatomic) IBOutlet UIButton *proteinButton;
-@property (weak, nonatomic) IBOutlet UITextField *proteinText;
+@interface HealthKitViewController ()
+
 @property (weak, nonatomic) IBOutlet UITextField *heightTextField;
 @property (weak, nonatomic) IBOutlet UITextField *weightTextField;
-@property (weak, nonatomic) IBOutlet UITextField *ageTextField;
 @property (weak, nonatomic) IBOutlet UITextField *strenousActivityTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *climateSelectedSegment;
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
+@property double mlMultiplier;
 
 @end
 
@@ -29,15 +30,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.proteinButton.hidden = YES;
-    self.proteinText.hidden = YES;
-
     self.goButton.hidden = YES;
-
     self.navigationController.navigationBarHidden = NO;
 
+    // this initializes the healthStore (db provided by HealthKit)
     self.healthStore = [[HKHealthStore alloc] init];
 
+    // since HK isn't on iPad or older iOS versions, I check to see if it's available to the user
     if ([HKHealthStore isHealthDataAvailable]) {
         NSSet *writeDataTypes = [self dataTypesToWrite];
         NSSet *readDataTypes = [self dataTypesToRead];
@@ -49,7 +48,8 @@
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self updateUsersAgeLabel];
+                // if HK is available, I call the following methods, which will grab values from HK to use in the app
+                // [self updateUsersAgeLabel];
                 [self updateUsersHeightLabel];
                 [self updateUsersWeightLabel];
             });
@@ -60,8 +60,8 @@
 #pragma mark // Write Data Permissions to HealthKit
 - (NSSet *)dataTypesToWrite {
 
-    HKQuantityType *proteinType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
-    return [NSSet setWithObjects:proteinType, nil];
+    // HKQuantityType *proteinType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
+    return [NSSet setWithObjects:nil];
 
     /* THESE TWO LINES WILL LET ME WRITE WATER QUANTITY TYPES TO HEALTHKIT UPON iOS9 RELEASE */
     // HKQuantityType *waterType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryWater];
@@ -69,32 +69,31 @@
 }
 
 #pragma mark // Read Data Permissions from HealthKit
-
 - (NSSet *)dataTypesToRead {
     HKQuantityType *heightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
     HKQuantityType *weightType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
-    HKCharacteristicType *birthdayType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
+    // HKCharacteristicType *birthdayType = [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth];
 
-    return [NSSet setWithObjects:heightType, weightType, birthdayType, nil];
+    return [NSSet setWithObjects:heightType, weightType, nil];
 }
 
 #pragma mark // Update Labels With User's Data from HealthKit
-- (void)updateUsersAgeLabel {
-    NSError *error;
-    NSDate *dateOfBirth = [self.healthStore dateOfBirthWithError:&error];
-    if (!dateOfBirth) {
-        NSLog(@"Either an error occured fetching the user's age information or none has been stored yet.");
-        self.ageTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your age.", nil);
-    }
-
-    else {
-        // This will compute the age of the user if age isn't provided
-        NSDate *now = [NSDate date];
-        NSDateComponents *ageComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitYear fromDate:dateOfBirth toDate:now options:NSCalendarWrapComponents];
-        NSUInteger usersAge = [ageComponents year];
-        self.ageTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersAge) numberStyle:NSNumberFormatterNoStyle];
-    }
-}
+//- (void)updateUsersAgeLabel {
+//    NSError *error;
+//    NSDate *dateOfBirth = [self.healthStore dateOfBirthWithError:&error];
+//    if (!dateOfBirth) {
+//        NSLog(@"Either an error occured fetching the user's age information or none has been stored yet.");
+//        self.ageTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your age.", nil);
+//    }
+//
+//    else {
+//        // This will compute the age of the user if age isn't provided
+//        NSDate *now = [NSDate date];
+//        NSDateComponents *ageComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitYear fromDate:dateOfBirth toDate:now options:NSCalendarWrapComponents];
+//        NSUInteger usersAge = [ageComponents year];
+//        self.ageTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersAge) numberStyle:NSNumberFormatterNoStyle];
+//    }
+//}
 
 - (void)updateUsersHeightLabel {
     // Fetch user's default height unit in inches.
@@ -149,7 +148,6 @@
     [self.healthStore aapl_mostRecentQuantitySampleOfType:weightType predicate:nil completion:^(HKQuantity *mostRecentQuantity, NSError *error) {
         if (!mostRecentQuantity) {
             NSLog(@"Either an error occured fetching the user's height information or none has been stored yet.");
-
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.weightTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your weight in pounds.", nil);
             });
@@ -167,32 +165,10 @@
     }];
 }
 
-- (IBAction)addProtein:(UIButton *)sender {
-    // Some weight in gram
-    double proteinInGrams = [self.proteinText.text doubleValue];
-
-    // Create an instance of HKQuantityType and HKQuantity to specify the data type and value you want to update
-    NSDate *now = [NSDate date];
-    HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
-    HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:proteinInGrams];
-
-    // Create the concrete sample
-    HKQuantitySample *proteinSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
-                                                                      quantity:hkQuantity
-                                                                     startDate:now
-                                                                       endDate:now];
-
-    // Update the protein consumed in the health store
-    [self.healthStore saveObject:proteinSample withCompletion:^(BOOL success, NSError *error) {
-        if (!success) {
-            NSLog(@"you crashed, homie: %@. this is your proteinSample data: %@", error, proteinSample);
-            abort();
-        }
-    }];
-
-}
+#pragma mark // Calculate Recommended Water Intake
 
 - (IBAction)onCalculateTapped:(id)sender {
+    // this method calculates the recommended amount of water the user should consume per day
 
     // normalizing for climate
     double climateMultiplier = 1;
@@ -202,7 +178,7 @@
         climateMultiplier = 1.21;
     }
 
-    // normalizing weight
+    // normalizing for weight
     double weightMultiplier;
     if ([self.weightTextField.text doubleValue] <= 100) {
         weightMultiplier = 1.1;
@@ -224,21 +200,63 @@
         weightMultiplier = 0.9;
     }
 
+    // this section checks whether they have mL set as the preferred unit type; if so I convert from ounces to mLs
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    if ([goalFromDefault isEqualToString:@"milliliter"]) {
+        self.mlMultiplier = 29.5735;
+    } else {
+        self.mlMultiplier = 1;
+    }
+
+    // this section is the patented algorithm, along with TRACKER, that makes this app a decacorn
     double strenous = ([self.strenousActivityTextField.text doubleValue] * .6);
-    double goal = (((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier);
+    double goal = ((((([self.weightTextField.text doubleValue] * weightMultiplier) * .5333) + strenous) * climateMultiplier) * self.mlMultiplier);
     int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
-    self.goButton.hidden = NO;
-
+    self.goButton.hidden = FALSE;
 }
 
 #pragma mark // Prepare for Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // this is just passing the value I calculated in the above method back to the Settings VC when we segue back
+    // also setting a bool to true, indicating a recommendation has been made – this was created to persist the
+    // state of a switch on the Settings page
+
     SettingsViewController *destVC = segue.destinationViewController;
     destVC.recoTotal = self.calculateTextField.text;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:TRUE forKey:kNSUserReceivedRecommendation];
 }
+
+#pragma mark // To Be Used To Write Water Data To HealthKit on iOS9
+
+//- (IBAction)addProtein:(UIButton *)sender {
+//    // Some weight in gram
+//    double proteinInGrams = [self.proteinText.text doubleValue];
+//
+//    // Create an instance of HKQuantityType and HKQuantity to specify the data type and value you want to update
+//    NSDate *now = [NSDate date];
+//    HKQuantityType *hkQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
+//    HKQuantity *hkQuantity = [HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:proteinInGrams];
+//
+//    // Create the concrete sample
+//    HKQuantitySample *proteinSample = [HKQuantitySample quantitySampleWithType:hkQuantityType
+//                                                                      quantity:hkQuantity
+//                                                                     startDate:now
+//                                                                       endDate:now];
+//
+//    // Update the protein consumed in the health store
+//    [self.healthStore saveObject:proteinSample withCompletion:^(BOOL success, NSError *error) {
+//        if (!success) {
+//            NSLog(@"you crashed, homie: %@. this is your proteinSample data: %@", error, proteinSample);
+//            abort();
+//        }
+//    }];
+//
+//}
 
 // - (IBAction)addWater:(UIButton *)sender {
 //

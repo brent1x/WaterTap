@@ -11,26 +11,35 @@
 #import "CustomWaterLevelView.h"
 #import "ContainerButton.h"
 #import "SettingsViewController.h"
-
+#define kNSUserWaterLevelKey @"kNSUserWaterLevelKey"
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
+//the image view for the water measurement marks on the right side of the view controller
 @property (weak, nonatomic) IBOutlet UIImageView *waterMarkImageView;
+//the button pressed to bring up the container buttons
 @property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
+
+//properties for the buttons that pop up with animation
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
 @property NSMutableArray *menuButtons;
-//@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+
 @property NSArray *consumptionEvents;
 @property int currentTotalAmountConsumedToday;
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterLevelHeightConstraint;
+
+//ignore these two variables, nader added them in and I'm not sure what they do
 @property float waterLevelHeight;
 @property float waterLevelY;
+
+//properties for animation for the button
 @property UIDynamicAnimator *animator;
 @property BOOL isFannedOut;
+//unit type persistence (old, updated in Brent's new push)
 @property NSString *unitTypeSelected;
 
 @end
@@ -40,67 +49,108 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//      [self.view sendSubviewToBack:self.waterLevel];
-
-   [self.view sendSubviewToBack:self.waterMarkImageView];
-
-    [self loadGoalFromUserDefaults];
-
-    if (self.currentDailyGoal == 0) {
-        self.currentDailyGoal = 64;
-        [self saveGoalToUserDefaults];
-    }
-
+    //TODO: Fix currentDailyGoal problem. It needs to be set to something. >=64. app crashes if user tries to set 0 as daily goal
+    self.currentDailyGoal = 100;
 
     self.unitTypeSelected = @"ounce";
+
+    //animation for buttons
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
-
     [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
-
     self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
-
     for (ContainerButton *button in self.menuButtons) {
         button.center = self.addWaterButton.center;
     }
-
     self.menuButton1.customAmount = 10;
     self.menuButton2.customAmount = 10;
     self.menuButton3.customAmount = 10;
 
-    self.navigationController.navigationBarHidden = YES;
     self.consumptionEvents = [NSArray new];
-
-//    PFUser *currentUser = [PFUser currentUser];
-    NSLog(@"ANON: %@", [PFUser currentUser]);
-
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
-
-    }
-
-    else {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        // This is the first launch ever
-        //Take user through tutorial
-    }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-
-    NSLog(@"%i", self.currentDailyGoal);
-    NSLog(@"viewdidappear %@", self.unitTypeSelected);
-}
-
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
-    [self.view sendSubviewToBack:self.waterMarkImageView];
-    [self.view sendSubviewToBack:self.waterLevel];
+   // self.currentDailyGoal = 100;
+}
 
+-(void)viewDidLayoutSubviews {
+    [self loadWaterLevelBeforeDisplay];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+
+    if (self.currentDailyGoal == 0) {
+        self.currentDailyGoal = 100;
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
+        }];
+
+        [alertController addAction:action];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+#pragma MARK -ADDING WATER METHODS
+
+- (IBAction)onAddWaterButtonTapped:(id)sender {
+
+    ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
+    ContainerButton *button = sender;
+    myConsumptionEvent.volumeConsumed = button.customAmount;
+    myConsumptionEvent.user = [PFUser currentUser];
+    myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
+    myConsumptionEvent.consumedAt = [NSDate date];
+    //save the consumption event to local data store, eventually to be uploaded to Parse (or not)
+    [myConsumptionEvent pinInBackground];
+
+    //Change the current water level by the volume consumed in the consumption event (See "changeWaterLevel" method
+    [self addWaterLevel:[NSNumber numberWithInt:myConsumptionEvent.volumeConsumed]];
+
+    //check and switch the state of the animation so the buttons pop back in
+    [self toggleFan];
+}
+
+-(void)loadWaterLevelBeforeDisplay {
+
+    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+    self.waterLevel.frame = rect;
 
 }
 
-#pragma MARK - Change Daily Goal Methods
+-(float)getWaterHeightFromTotalConsumedToday{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    return (([totalConsumedToday floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
+}
+
+- (void)addWaterLevel:(NSNumber *)amountConsumed {
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
+    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
+
+    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+
+    if([self getWaterHeightFromTotalConsumedToday] < self.view.frame.size.height) {
+
+        [UIView animateWithDuration:0.5 animations:^{
+            self.waterLevel.frame = rect;
+        }];
+
+    }else {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.waterLevel.frame = rect;
+        }];
+        NSString *messageString = @"You've reached your water intake goal for the day!!!";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+
+#pragma mark -- Change Daily Goal Methods
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"settingsSegue"]) {
@@ -109,48 +159,8 @@
     }
 }
 
-- (void)dailyGoalChanged:(int)dailyGoalAmount {
-    self.currentDailyGoal = dailyGoalAmount;
-    [self saveGoalToUserDefaults];
-}
-
-- (void)saveGoalToUserDefaults {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *string = [NSString stringWithFormat:@"%i", self.currentDailyGoal];
-    [userDefaults setObject:string forKey:kNSUserDailyGoalKey];
-} 
-
-- (void)loadGoalFromUserDefaults {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
-    self.currentDailyGoal = [goalFromDefault intValue];
-}
-- (void)unitTypeSelected:(NSString *)unitType {
-    self.unitTypeSelected = unitType;
-    NSLog(@"unittypeselected %@", unitType);
-}
-
-#pragma MARK -ADDING WATER METHODS
-
-- (IBAction)onAddWaterButtonTapped:(id)sender {
-
-    ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
-
-    ContainerButton *button = sender;
-    myConsumptionEvent.volumeConsumed = button.customAmount;
-
-    myConsumptionEvent.user = [PFUser currentUser];
-    myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
-    myConsumptionEvent.consumedAt = [NSDate date];
-    [myConsumptionEvent pinInBackground];
-
-
-     NSLog(@"changing the water level by %i", myConsumptionEvent.volumeConsumed);
-    [self changeWaterLevel:myConsumptionEvent.volumeConsumed];
-
-    [self toggleFan];
-}
-
+#pragma mark -- Button Animation Methods
+//checks the state of the buttons, whether they are "fanned out" or "fanned in," then switches the state
 
 - (void)toggleFan {
 
@@ -161,7 +171,6 @@
     else {
         [self fanOut];
     }
-
     self.isFannedOut = !self.isFannedOut;
 }
 
@@ -169,11 +178,9 @@
     CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
     UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
     point = CGPointMake(self.addWaterButton.frame.origin.x+30, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
     point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
@@ -186,62 +193,38 @@
 
     UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
     
 }
 
+#pragma mark -- Daily Goal Methods
 
-- (void)changeWaterLevel:(int) heightChange {
-
-    NSLog(@"the view height is %f", self.view.frame.size.height);
-    float adjustedHeightForDailyGoal = (float)(self.view.frame.size.height/self.currentDailyGoal);
-
-    float height = (float)(heightChange*adjustedHeightForDailyGoal);
-
-    CGRect newFrameRect = self.waterLevel.frame;
-
-    newFrameRect.size.height = self.waterLevel.frame.size.height + (height);
-
-    newFrameRect.origin.y = self.waterLevel.frame.origin.y - (height);
-
-    if(self.waterLevel.frame.size.height + height >= 667.0) {
-
-
-       // newFrameRect.size.height = self.waterLevel.frame.size.height + height;
-
-        [UIView animateWithDuration:0.5 animations:^{
-
-            //        self.waterLevelHeightConstraint.constant += heightChange;
-            self.waterLevel.frame = newFrameRect;
-            self.waterLevelY = self.waterLevel.frame.origin.y;
-            self.waterLevelHeight = self.waterLevel.frame.size.height;
-            self.waterLevel.backgroundColor = [UIColor colorWithRed:0.96 green:0.85 blue:0.27 alpha:1];
-            
-
-        }];
-        NSString *messageString = @"You've reached your water intake goal for the day!!!";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-
-    }
-
-    else {
-       // newFrameRect.size.height = self.waterLevel.frame.size.height + height;
-
-        [UIView animateWithDuration:0.5 animations:^{
-
-            //        self.waterLevelHeightConstraint.constant += heightChange;
-            self.waterLevel.frame = newFrameRect;
-            self.waterLevelY = self.waterLevel.frame.origin.y;
-            self.waterLevelHeight = self.waterLevel.frame.size.height;
-        }];
-        
-    }
+- (void)dailyGoalChanged:(int)dailyGoalAmount {
+    self.currentDailyGoal = dailyGoalAmount;
+    [self saveGoalToUserDefaults];
 }
+
+- (void)saveGoalToUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *string = [NSString stringWithFormat:@"%i", self.currentDailyGoal];
+    [userDefaults setObject:string forKey:kNSUserDailyGoalKey];
+}
+
+- (void)loadGoalFromUserDefaults {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
+    self.currentDailyGoal = [goalFromDefault intValue];
+}
+
+#pragma mark -- Unit Selection Method
+//This method probably should just be removed, doesn't do anything of value, and Brent's push should take care of this
+
+//- (void)unitTypeSelected:(NSString *)unitType {
+//    self.unitTypeSelected = unitType;
+//    NSLog(@"unittypeselected %@", unitType);
+//}
 
 @end
