@@ -13,19 +13,22 @@
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 #define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
+#define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
+#define kNSUserDefaultsContainerTwoSize @"kNSUserDefaultsContainerTwoSize"
 
 @interface SettingsViewController () 
 
-@property NSArray *notificationCheck;
-@property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
-@property (weak, nonatomic) IBOutlet UIButton *notificationButton;
-@property (weak, nonatomic) IBOutlet UIButton *recoButton;
-@property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
-@property (weak, nonatomic) IBOutlet UISwitch *recoSwitch;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
+@property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *customContainerSwitch;
-@property int dailyGoal;
+@property (weak, nonatomic) IBOutlet UIButton *customContainerButton;
+@property (weak, nonatomic) IBOutlet UIButton *notificationButton;
+@property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *recoButton;
+@property (weak, nonatomic) IBOutlet UISwitch *recoSwitch;
+@property NSArray *notificationCheck;
 @property bool recoReceived;
+@property int dailyGoal;
 
 @end
 
@@ -48,7 +51,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    // this line checks to see if a user has set up custom reminders
     [self switchLogic];
+
+    // this line will load the daily goal saved from the Recommendation (aka HealthKit) view controller
     [self loadGoalFromUserDefaults];
 
     // this section checks whether mL has been set as the default unit type; if so, it lights up the correct segment in the UISegCtrl
@@ -65,6 +71,9 @@
         self.dailyGoalTextField.enabled = FALSE;
     }
     [self recommendationSwitchLogic];
+
+    // this line check to see if a user has set up custom water containers
+    [self customContainerSwitchLogic];
 }
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
@@ -167,6 +176,37 @@
         self.dailyGoalTextField.text = @"";
         self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
         [self recommendationSwitchLogic];
+    }
+}
+
+#pragma mark // Custom Container Switch Logic
+
+- (void)customContainerSwitchLogic {
+    // this method checks whether a user has set up custom containers. if they have, the switch is *on*
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *containerOne = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
+    NSString *containerTwo = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
+    if ([containerOne intValue] > 0 || [containerTwo intValue] > 0) {
+        self.customContainerSwitch.on = TRUE;
+        self.customContainerButton.hidden = FALSE;
+    } else {
+        self.customContainerSwitch.on = FALSE;
+        self.customContainerButton.hidden = TRUE;
+    }
+}
+
+- (IBAction)onCustomContainerSwitchTapped:(id)sender {
+    // if the switch is *off* and it gets flipped, I segue them to the Custom Container VC. if the switch is *on* and it flips,
+    // I set the custom containers equal to nil
+
+    if (self.customContainerSwitch.on == TRUE) {
+        [self performSegueWithIdentifier:@"containerSegue" sender:self];
+    } else if (self.customContainerSwitch.on == FALSE) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
+        [userDefaults removeObjectForKey:kNSUserDefaultsContainerTwoSize];
+        [self customContainerSwitchLogic];
     }
 }
 
