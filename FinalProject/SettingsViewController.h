@@ -11,7 +11,7 @@
 @protocol SettingsViewControllerDelegate
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount;
-- (void)unitTypeSelected:(NSString *)unitType;
+// - (void)unitTypeSelected:(NSString *)unitType;
 
 @end
 
