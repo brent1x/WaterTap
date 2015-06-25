@@ -153,11 +153,13 @@
     // if they haven't, it remains off. if the switch is *on* and it flips, the recommendation is cleared. if the switch is *off*
     // and it flips, I segue them to the Recommendation (aka HealthKit) view controller
 
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
+
     if (self.recoReceived == TRUE) {
         self.recoSwitch.on = TRUE;
     } else {
         self.recoSwitch.on = FALSE;
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
         self.dailyGoalTextField.enabled = YES;
     }

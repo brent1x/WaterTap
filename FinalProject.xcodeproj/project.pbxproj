@@ -12,6 +12,7 @@
 		12CD3CC11B33911C005A0291 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CD3CBE1B33911B005A0291 /* FBSDKMessengerShareKit.framework */; };
 		12CD3CC41B3393D7005A0291 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CD3CC31B3393D7005A0291 /* User.m */; };
 		840F61231B362EEE00A981C8 /* CustomWaterContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F61221B362EEE00A981C8 /* CustomWaterContainerViewController.m */; };
+		842468E61B3CAC6A00BB39A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AE84BD71B3A05060084C8EF /* Images.xcassets */; };
 		8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 8469F9F91B33264200D1FFA6 /* water.aiff */; };
 		8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FC1B3326EB00D1FFA6 /* RemindersViewController.m */; };
 		8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8469F9FE1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m */; };
@@ -50,7 +51,6 @@
 		9A9719DF1B33BCC80046A7E1 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DC1B33BCC80046A7E1 /* FBSDKLoginKit.framework */; };
 		9A9719E01B33BCC80046A7E1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DD1B33BCC80046A7E1 /* FBSDKShareKit.framework */; };
 		9AD0B2721B37630200345F55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0B2701B37630200345F55 /* Main.storyboard */; };
-		9AE84BD81B3A05060084C8EF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AE84BD71B3A05060084C8EF /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -404,7 +404,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */,
-				9AE84BD81B3A05060084C8EF /* Images.xcassets in Resources */,
+				842468E61B3CAC6A00BB39A2 /* Images.xcassets in Resources */,
 				8493AD5E1B2BD11C0048A5B7 /* LaunchScreen.xib in Resources */,
 				9AD0B2721B37630200345F55 /* Main.storyboard in Resources */,
 			);
