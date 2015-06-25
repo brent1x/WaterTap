@@ -80,9 +80,9 @@
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
     NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
-    self.menuButton1.customAmount = [bottleOneAmount intValue];
+    self.menuButton1.customAmount = [bottleTwoAmount intValue];
     self.menuButton2.customAmount = 10;
-    self.menuButton3.customAmount = [bottleTwoAmount intValue];
+    self.menuButton3.customAmount = [bottleOneAmount intValue];
 }
 
 - (void)viewDidLayoutSubviews {
