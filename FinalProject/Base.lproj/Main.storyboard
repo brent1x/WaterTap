@@ -18,8 +18,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.11559902465262506" green="0.79544498511050976" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <variation key="widthClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="600" width="400" height="0.0"/>
+                                </variation>
+                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone 6" translatesAutoresizingMaskIntoConstraints="NO" id="4PS-Oj-jV4">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                </variation>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-B5-DFh">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -136,10 +146,6 @@
                                     <segue destination="0ka-N1-EvE" kind="show" identifier="settingsSegue" id="Lrt-CR-86G"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.11559902465262506" green="0.79544498511050976" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.70063471773725605" green="0.94574253419089371" blue="0.96436352318705254" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -166,6 +172,7 @@
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
+                                <exclude reference="VTJ-k2-lQf"/>
                                 <exclude reference="4PS-Oj-jV4"/>
                                 <exclude reference="LrZ-B5-DFh"/>
                                 <exclude reference="r1Q-hY-c2P"/>
@@ -173,7 +180,6 @@
                                 <exclude reference="dBc-Dg-bWV"/>
                                 <exclude reference="eqb-UO-Xah"/>
                                 <exclude reference="eSi-zi-Z6M"/>
-                                <exclude reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="4q5-ty-lfq"/>
@@ -200,6 +206,7 @@
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
+                                <include reference="VTJ-k2-lQf"/>
                                 <include reference="4PS-Oj-jV4"/>
                                 <include reference="LrZ-B5-DFh"/>
                                 <include reference="r1Q-hY-c2P"/>
@@ -207,7 +214,6 @@
                                 <include reference="dBc-Dg-bWV"/>
                                 <include reference="eqb-UO-Xah"/>
                                 <include reference="eSi-zi-Z6M"/>
-                                <include reference="VTJ-k2-lQf"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="4q5-ty-lfq"/>
