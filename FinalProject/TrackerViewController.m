@@ -34,7 +34,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [[PDTSimpleCalendarViewCell appearance] setTextTodayColor:[UIColor blueColor]];
+    // Calendar Settings //
+
+    [[PDTSimpleCalendarViewCell appearance] setTextTodayColor:[UIColor blueColor]];//BG color
+
+    self.lastDate = [NSDate date];
+    self.firstDate = [self.lastDate dateByAddingTimeInterval:-(15778454)]; //seconds in 6 months
+
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+
+    // View Settings //
 
     self.navigationController.navigationBarHidden = NO;
 
@@ -128,33 +137,15 @@
 
     self.delegate = self;
 
-    // Calendar Settings //
-    //    [self setFirstDateAs6MonthBeforeFirstIntake];
-
-
 }
 
 
-//-(NSDate *)setFirstDateAs6MonthBeforeFirstIntake {
-//    PFQuery *query = [PFQuery queryWithClassName:@"ConsumptionEvent"];
-//    [query fromLocalDatastore];
-//    [query orderByAscending:@"consumedAt"];
-//    [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
-//        if (!error) {
-//            if ([events firstObject]) {
-//                self.firstDate = [events firstObject];
-//                NSLog(@"first date: %@", self.firstDate);
-//            } else {
+//-(void)viewWillAppear:(BOOL)animated {
+//    CGPoint bottomOffset = CGPointMake(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
+//    [self.collectionView setContentOffset:bottomOffset animated:YES];
 //
-//            }
-//        } else {
-//            // Log details of the failure
-//            NSLog(@"Error: %@ %@", error, [error userInfo]);
-//        }
-//    }];
-//    return [NSDate date];
+//
 //}
-
 
 // Graph //
 
@@ -221,7 +212,6 @@
 
 -(void)loadWaterIntakeForADay:(NSDate *)day shouldReloadGraph:(BOOL)shouldReload{
 
-
     NSDate *startDay = [self makeDayStartOfDay:day];
     [self.dateValues addObject:[self makeDayStartOfDay:day]];
     NSDate *endDay = [self makeDayNextStartOfDay:day];
@@ -251,12 +241,29 @@
             if (shouldReload) {
                 [self.graphView reloadGraph];
                 [self.collectionView reloadData];
+                [self.waterIntakeValues removeAllObjects];
+                [self.dateValues removeAllObjects];
+                [self.goalPrecentageValues removeAllObjects];
             }
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+
+
+    //TEST
+    //    [self.waterIntakeValues addObject:[NSNumber numberWithFloat:[self getRandomFloat]]];
+    //    [self.goalPrecentageValues addObject:[NSNumber numberWithFloat:10000]];
+    //    if (shouldReload) {
+    //        [self.graphView reloadGraph];
+    //        [self.collectionView reloadData];
+    //    }
+}
+
+- (float)getRandomFloat {
+    float i1 = (float)(arc4random() % 1000000) / 100 ;
+    return i1;
 }
 
 -(NSDate *)makeDayNextStartOfDay:(NSDate *)day {
@@ -299,17 +306,20 @@
 //
 //}
 
-
-
 #pragma mark - PDTSimpleCalendarViewController methods to override
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [super scrollViewDidScroll:scrollView];
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
         self.navigationItem.title = self.overlayView.text;
-        [self hydrateDataSetsForMonth:self.overlayView.text];
     }
+
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+
+    [self hydrateDataSetsForMonth:self.overlayView.text];
+
+
 }
 
 //Blank so these dont hide the overlay when not srcolling
@@ -344,11 +354,14 @@
 
     NSDate *date = [self dateForCellAtIndexPath:indexPath];
 
-//Anders added >>>>
+    //Anders added >>>>
 
     UIView *customRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
     customRectangle.backgroundColor = [UIColor magentaColor];
-    customRectangle.layer.cornerRadius = 16;
+    customRectangle.layer.borderColor = [UIColor blackColor].CGColor;
+    customRectangle.layer.borderWidth = 1;
+
+    //    customRectangle.layer.cornerRadius = 16;
     //just to eliminate white spots
     //cell.dayLabel.layer.cornerRadius += 2;
 
@@ -358,42 +371,50 @@
 
 
     CGRect newFrameForSecondRectangle = customRectangle.frame;
-//    newFrameForSecondRectangle.origin.y = customRectangle.frame.origin.y/2;
+    //    newFrameForSecondRectangle.origin.y = customRectangle.frame.origin.y/2;
     newFrameForSecondRectangle.size.height = customRectangle.frame.size.height /2;
 
     UIView *secondCustomRectangle = [[UILabel alloc] initWithFrame:newFrameForSecondRectangle];
     secondCustomRectangle.backgroundColor = [UIColor whiteColor];
-    secondCustomRectangle.layer.cornerRadius = 16;
+    //    secondCustomRectangle.layer.cornerRadius = 16;
+    //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
+    //    secondCustomRectangle.layer.borderWidth = 1;
 
-   // [cell bringSubviewToFront:cell.dayLabel];
-//    cell.dayLabel.alpha = 0.7;
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor blackColor] CGColor];
+    upperBorder.frame = CGRectMake(0, 0, secondCustomRectangle.frame.size.width, 1.0f);
+    [secondCustomRectangle.layer addSublayer:upperBorder];
+
+
+    // [cell bringSubviewToFront:cell.dayLabel];
+    //    cell.dayLabel.alpha = 0.7;
     cell.dayLabel.backgroundColor = [UIColor clearColor];
     [cell insertSubview:secondCustomRectangle aboveSubview:customRectangle];
     [cell sendSubviewToBack:customRectangle];
     [cell bringSubviewToFront:cell.dayLabel];
-//<<<<<<
+    //<<<<<<
 
     if ([self.dateValues containsObject:date] && self.waterIntakeValues.count == self.dateValues.count && [[self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]] integerValue] > 0) {
-//        cell.dayLabel.backgroundColor = [UIColor blueColor];
+        //        cell.dayLabel.backgroundColor = [UIColor blueColor];
 
-//        cell.dayLabel.layer.masksToBounds = NO;
-
-
-//        UIView *customCircle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-//        customCircle.backgroundColor = [UIColor magentaColor];
-//        customCircle.layer.cornerRadius = 16;
-//
-//        [cell bringSubviewToFront:cell.dayLabel];
-//
-//
+        //        cell.dayLabel.layer.masksToBounds = NO;
 
 
-     // /[cell insertSubview:customCircle belowSubview:cell.dayLabel];
+        //        UIView *customCircle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+        //        customCircle.backgroundColor = [UIColor magentaColor];
+        //        customCircle.layer.cornerRadius = 16;
+        //
+        //        [cell bringSubviewToFront:cell.dayLabel];
+        //
+        //
 
-//        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-//        rectangleCover.backgroundColor = [UIColor clearColor];
-//        rectangleCover.frame = CGRectMake(rectangleCover.frame.origin.x, rectangleCover.frame.origin.y, 32, 16);
-//        [cell insertSubview:rectangleCover belowSubview:cell.dayLabel];
+
+        // /[cell insertSubview:customCircle belowSubview:cell.dayLabel];
+
+        //        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+        //        rectangleCover.backgroundColor = [UIColor clearColor];
+        //        rectangleCover.frame = CGRectMake(rectangleCover.frame.origin.x, rectangleCover.frame.origin.y, 32, 16);
+        //        [cell insertSubview:rectangleCover belowSubview:cell.dayLabel];
 
 
 
@@ -485,22 +506,9 @@
     NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
                                                     fromDate:self.firstDate];
     components.day = 1;
-    
+
     return [self.calendar dateFromComponents:components];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
