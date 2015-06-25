@@ -12,7 +12,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
 @interface PDTSimpleCalendarViewCell ()
 
-@property (nonatomic, strong) UILabel *dayLabel;
+
 @property (nonatomic, strong) NSDate *date;
 
 @end

@@ -869,7 +869,7 @@ intake recommendation</string>
         </scene>
     </scenes>
     <resources>
-        <image name="add" width="120" height="120"/>
+        <image name="add" width="80" height="80"/>
         <image name="amount" width="80" height="80"/>
         <image name="iPhone 6" width="375" height="667"/>
     </resources>

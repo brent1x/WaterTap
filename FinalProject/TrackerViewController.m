@@ -12,6 +12,7 @@
 #import "PDTSimpleCalendarViewFlowLayout.h"
 #import <Parse/Parse.h>
 #import "ConsumptionEvent.h"
+#import "PDTSimpleCalendarViewCell.h"
 
 @interface TrackerViewController () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, PDTSimpleCalendarViewDelegate>
 
@@ -32,6 +33,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [[PDTSimpleCalendarViewCell appearance] setTextTodayColor:[UIColor blueColor]];
 
     self.navigationController.navigationBarHidden = NO;
 
@@ -60,7 +63,7 @@
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
-    float graphViewHeight = screenHeight / 2;
+    float graphViewHeight = screenHeight / 2.5;
     float placeholderViewHeight = 20;
 
     //Add constraints
@@ -95,22 +98,22 @@
     self.graphView.enableYAxisLabel = YES;
     self.graphView.autoScaleYAxis = YES;
     self.graphView.alwaysDisplayDots = YES;
-//    self.graphView.enableReferenceXAxisLines = YES;
-//    self.graphView.enableRefe renceYAxisLines = YES;
+    //    self.graphView.enableReferenceXAxisLines = YES;
+    //    self.graphView.enableRefe renceYAxisLines = YES;
     self.graphView.enableReferenceAxisFrame = YES;
 
     // Draw an average line
-//    self.graphView.averageLine.enableAverageLine = YES;
-//    self.graphView.averageLine.alpha = 0.6;
-//    self.graphView.averageLine.color = [UIColor darkGrayColor];
-//    self.graphView.averageLine.width = 2.5;
-//    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
+    //    self.graphView.averageLine.enableAverageLine = YES;
+    //    self.graphView.averageLine.alpha = 0.6;
+    //    self.graphView.averageLine.color = [UIColor darkGrayColor];
+    //    self.graphView.averageLine.width = 2.5;
+    //    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
 
     // Set the graph's animation style to draw, fade, or none
     self.graphView.animationGraphStyle = BEMLineAnimationDraw;
 
     // Dash the y reference lines
-//    self.graphView.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
+    //    self.graphView.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
 
     // Show the y axis values with this format string
     self.graphView.formatStringForValues = @"%.1f";
@@ -126,7 +129,7 @@
     self.delegate = self;
 
     // Calendar Settings //
-//    [self setFirstDateAs6MonthBeforeFirstIntake];
+    //    [self setFirstDateAs6MonthBeforeFirstIntake];
 
 
 }
@@ -168,7 +171,8 @@
 #pragma mark - PDTSimpleLineGraph methods to override
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
 
-    NSString *label = [self labelForDateAtIndex:index];
+    //    NSString *label = [self labelForDateAtIndex:index];
+    NSString *label = @"";
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
 }
 
@@ -217,9 +221,9 @@
 
 -(void)loadWaterIntakeForADay:(NSDate *)day shouldReloadGraph:(BOOL)shouldReload{
 
-    [self.dateValues addObject:day];
 
     NSDate *startDay = [self makeDayStartOfDay:day];
+    [self.dateValues addObject:[self makeDayStartOfDay:day]];
     NSDate *endDay = [self makeDayNextStartOfDay:day];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(%@ <= consumedAt) && (consumedAt < %@)", startDay, endDay];
@@ -230,18 +234,23 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
         if (!error) {
             // Do something with the found objects
-            int dayTotal = 0;
-            int goal = 0;
+            float dayTotal = 0;
+            float goal = 0;
             for (ConsumptionEvent *event in events) {
-                dayTotal += event.volumeConsumed;
-                goal = event.consumptionGoal;
+                dayTotal += (float)event.volumeConsumed;
+                goal = (float)event.consumptionGoal;
+                NSLog(@"GOAL: %d", event.consumptionGoal);
             }
-            [self.waterIntakeValues addObject:[NSNumber numberWithInt:dayTotal]];
-            self.totalNumber += dayTotal;
-//            int goalPrecentage = dayTotal/goal;
-//            [self.goalPrecentageValues addObject:[NSNumber numberWithInt:goalPrecentage]];
+            [self.waterIntakeValues addObject:[NSNumber numberWithFloat:dayTotal]];
+            self.totalNumber += (int)dayTotal;
+            float goalPrecentage = 0;
+            if (dayTotal != 0 && goal != 0) {
+                goalPrecentage = dayTotal/goal;
+            }
+            [self.goalPrecentageValues addObject:[NSNumber numberWithFloat:goalPrecentage]];
             if (shouldReload) {
                 [self.graphView reloadGraph];
+                [self.collectionView reloadData];
             }
         } else {
             // Log details of the failure
@@ -276,15 +285,21 @@
     return YES;
 }
 
-- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
+//- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
+//
+////    if ([self.dateValues containsObject:date] && self.waterIntakeValues.count == self.dateValues.count && [[self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]] integerValue] > 0) {
+//////        NSLog(@"DATE: %@", date);
+//////        NSLog(@"dateValues: %@", self.dateValues);
+//////        NSLog(@"waterIntakeValues: %@", self.waterIntakeValues);
+//////        NSLog(@"Index: %lu", (unsigned long)[self.dateValues indexOfObject:date]);
+//////        NSLog(@"waterIntake: %@", [self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]]);
+////        return [UIColor clearColor];
+////    }
+//    return [UIColor blueColor];
+//
+//}
 
-    for (NSDate *aDate in self.dateValues) {
-        if ([date isEqualToDate:[self zeroTimeDate:aDate]]) {
-            return [UIColor blueColor];
-        }
-    }
-    return nil;
-}
+
 
 #pragma mark - PDTSimpleCalendarViewController methods to override
 
@@ -323,10 +338,176 @@
     return label;
 }
 
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    PDTSimpleCalendarViewCell *cell = (PDTSimpleCalendarViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
+
+    NSDate *date = [self dateForCellAtIndexPath:indexPath];
+
+//Anders added >>>>
+
+    UIView *customRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+    customRectangle.backgroundColor = [UIColor magentaColor];
+    customRectangle.layer.cornerRadius = 16;
+    //just to eliminate white spots
+    //cell.dayLabel.layer.cornerRadius += 2;
+
+    [cell bringSubviewToFront:cell.dayLabel];
+    [cell insertSubview:customRectangle belowSubview:cell.dayLabel];
+    [cell sendSubviewToBack:customRectangle];
+
+
+    CGRect newFrameForSecondRectangle = customRectangle.frame;
+//    newFrameForSecondRectangle.origin.y = customRectangle.frame.origin.y/2;
+    newFrameForSecondRectangle.size.height = customRectangle.frame.size.height /2;
+
+    UIView *secondCustomRectangle = [[UILabel alloc] initWithFrame:newFrameForSecondRectangle];
+    secondCustomRectangle.backgroundColor = [UIColor whiteColor];
+    secondCustomRectangle.layer.cornerRadius = 16;
+
+   // [cell bringSubviewToFront:cell.dayLabel];
+//    cell.dayLabel.alpha = 0.7;
+    cell.dayLabel.backgroundColor = [UIColor clearColor];
+    [cell insertSubview:secondCustomRectangle aboveSubview:customRectangle];
+    [cell sendSubviewToBack:customRectangle];
+    [cell bringSubviewToFront:cell.dayLabel];
+//<<<<<<
+
+    if ([self.dateValues containsObject:date] && self.waterIntakeValues.count == self.dateValues.count && [[self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]] integerValue] > 0) {
+//        cell.dayLabel.backgroundColor = [UIColor blueColor];
+
+//        cell.dayLabel.layer.masksToBounds = NO;
+
+
+//        UIView *customCircle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+//        customCircle.backgroundColor = [UIColor magentaColor];
+//        customCircle.layer.cornerRadius = 16;
+//
+//        [cell bringSubviewToFront:cell.dayLabel];
+//
+//
+
+
+     // /[cell insertSubview:customCircle belowSubview:cell.dayLabel];
+
+//        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
+//        rectangleCover.backgroundColor = [UIColor clearColor];
+//        rectangleCover.frame = CGRectMake(rectangleCover.frame.origin.x, rectangleCover.frame.origin.y, 32, 16);
+//        [cell insertSubview:rectangleCover belowSubview:cell.dayLabel];
+
+
+
+        //        //// Bezier Drawing
+        //        UIBezierPath* bezierPath = UIBezierPath.bezierPath;
+        //        [bezierPath moveToPoint: CGPointMake(45, 82.5)];
+        //        [bezierPath addCurveToPoint: CGPointMake(24.5, 62) controlPoint1: CGPointMake(45, 71.18) controlPoint2: CGPointMake(35.82, 62)];
+        //        [bezierPath addCurveToPoint: CGPointMake(4, 82.5) controlPoint1: CGPointMake(13.18, 62) controlPoint2: CGPointMake(4, 71.18)];
+        //        [bezierPath addCurveToPoint: CGPointMake(4.01, 83) controlPoint1: CGPointMake(4, 82.67) controlPoint2: CGPointMake(4, 82.83)];
+        //        [bezierPath addLineToPoint: CGPointMake(44.99, 83)];
+        //        [bezierPath addCurveToPoint: CGPointMake(45, 82.5) controlPoint1: CGPointMake(45, 82.83) controlPoint2: CGPointMake(45, 82.67)];
+        //        [bezierPath closePath];
+        //        [UIColor.grayColor setFill];
+        //        [bezierPath fill];
+        //
+        //
+        //        //// Bezier 2 Drawing
+        //        UIBezierPath* bezier2Path = UIBezierPath.bezierPath;
+        //        [bezier2Path moveToPoint: CGPointMake(99, 78.76)];
+        //        [bezier2Path addCurveToPoint: CGPointMake(81.5, 62) controlPoint1: CGPointMake(99, 69.5) controlPoint2: CGPointMake(91.16, 62)];
+        //        [bezier2Path addCurveToPoint: CGPointMake(71.66, 64.9) controlPoint1: CGPointMake(77.85, 62) controlPoint2: CGPointMake(74.46, 63.07)];
+        //        [bezier2Path addCurveToPoint: CGPointMake(64, 78.76) controlPoint1: CGPointMake(67.03, 67.92) controlPoint2: CGPointMake(64, 73)];
+        //        [bezier2Path addCurveToPoint: CGPointMake(64.87, 84) controlPoint1: CGPointMake(64, 80.59) controlPoint2: CGPointMake(64.31, 82.35)];
+        //        [bezier2Path addLineToPoint: CGPointMake(98.13, 84)];
+        //        [bezier2Path addCurveToPoint: CGPointMake(99, 78.76) controlPoint1: CGPointMake(98.69, 82.35) controlPoint2: CGPointMake(99, 80.59)];
+        //        [bezier2Path closePath];
+        //        [UIColor.grayColor setFill];
+        //        [bezier2Path fill];
+
+    }
+
+
+
+    //    UILabel *customCircle = [[UILabel alloc]initWithFrame:cell.bounds];
+    //    customCircle.bounds = CGRectMake(customCircle.bounds.origin.x, customCircle.bounds.origin.y, 32, 32);
+    //    customCircle.layer.cornerRadius = 16;
+    //    customCircle.layer.masksToBounds = YES;
+    //    customCircle.backgroundColor = [UIColor magentaColor];
+    //    [cell addSubview:customCircle];
+    //    [cell sendSubviewToBack:customCircle];
+    //
+
+    //
+    //    if ([self.dateValues containsObject:date] && self.goalPrecentageValues.count == self.dateValues.count && [[self.goalPrecentageValues objectAtIndex:[self.dateValues indexOfObject:date]] floatValue] > 0) {
+    //
+    //        float goalPrecentage = [[self.goalPrecentageValues objectAtIndex:[self.dateValues indexOfObject:date]] floatValue];
+    //
+    //        float yValue = 32;
+    //        if (goalPrecentage > 0) {
+    //            yValue = (32 * goalPrecentage) / 100;
+    //        }
+    //
+    ////        NSLog(@"yvalue: %f", yValue);
+    //
+    //        UILabel *rectangleCover = [[UILabel alloc]initWithFrame:cell.bounds];
+    //        rectangleCover.backgroundColor = [UIColor blackColor];
+    //        rectangleCover.frame = CGRectMake(rectangleCover.bounds.origin.x, rectangleCover.bounds.origin.y, 32, 32);
+    //        rectangleCover.layer.masksToBounds = YES;
+    //        [cell insertSubview:rectangleCover aboveSubview:customCircle];
+    //        //        rectangleCover.center = cell.center;
+    //        //        [cell addSubview:rectangleCover];
+    //        //        [cell bringSubviewToFront:rectangleCover];
+    ////            [cell sendSubviewToBack:rectangleCover];
+    //    }
+
+    return cell;
+}
+
+- (NSDate *)dateForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDate *firstOfMonth = [self firstOfMonthForSection:indexPath.section];
+    NSInteger ordinalityOfFirstDay = [self.calendar ordinalityOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfYear forDate:firstOfMonth];
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    dateComponents.day = (1 - ordinalityOfFirstDay) + indexPath.item;
+
+    return [self.calendar dateByAddingComponents:dateComponents toDate:firstOfMonth options:0];
+}
+
+- (NSDate *)firstOfMonthForSection:(NSInteger)section
+{
+    NSDateComponents *offset = [NSDateComponents new];
+    offset.month = section;
+
+    return [self.calendar dateByAddingComponents:offset toDate:self.firstDateMonth options:0];
+}
+
+- (NSDate *)firstDateMonth
+{
+    NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
+                                                    fromDate:self.firstDate];
+    components.day = 1;
+    
+    return [self.calendar dateFromComponents:components];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #pragma mark - PDTSimpleCalendarViewController Helper Methods
 
 -(NSDate *)zeroTimeDate:(NSDate *)date {
-
+    
     unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth| NSCalendarUnitDay;
     NSCalendar* calendar = [NSCalendar currentCalendar];
     NSDateComponents* components = [calendar components:flags fromDate:date];

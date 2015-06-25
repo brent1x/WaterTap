@@ -634,11 +634,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-
 				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
-
-
-
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
