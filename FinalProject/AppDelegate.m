@@ -47,7 +47,7 @@
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication
-                                                       annotation:annotation];
+                                                         annotation:annotation];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
