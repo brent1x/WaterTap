@@ -26,6 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    // running a check in VDL to determine if custom containers have been set. if they have, i prepopulate
+    // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *containerOneIntValue = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
     NSString *containerTwoIntValue = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
@@ -44,21 +46,27 @@
 
 }
 
+#pragma mark // Create Custom Containers
+
 - (IBAction)containerOneAdded:(id)sender {
+    // these 2 methods save, as an integer, the value entered into the text box for a container's volume into NSUserDefaults
+
     int containerOneIntValue = [self.containerOneText.text intValue];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:containerOneIntValue forKey:kNSUserDefaultsContainerOneSize];
-    NSLog(@"%i", containerOneIntValue);
 }
 
 - (IBAction)containerTwoAdded:(id)sender {
     int containerTwoIntValue = [self.containerTwoText.text intValue];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:containerTwoIntValue forKey:kNSUserDefaultsContainerTwoSize];
-    NSLog(@"%i", containerTwoIntValue);
 }
 
+#pragma mark // Delete Custom Containers
+
 - (IBAction)containerOneDeleted:(id)sender {
+    // these 2 methods set custom containers' volumes equal to null and clear the text box
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
     self.containerOneText.text = @"";
