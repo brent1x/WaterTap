@@ -17,6 +17,7 @@
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 #define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
 #define kNSUserDefaultsContainerTwoSize @"kNSUserDefaultsContainerTwoSize"
+#define kNSUserDefaultsDateCheck @"kNSUserDefaultsDateCheck"
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
@@ -66,6 +67,7 @@
     }
 
     self.consumptionEvents = [NSArray new];
+    [self dateCheck];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -88,6 +90,8 @@
 
     [self checkForZeroGoal];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
+
     self.navigationController.navigationBarHidden = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -95,8 +99,12 @@
     NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
     self.menuButton1.customAmount = [bottleTwoAmount intValue];
-    self.menuButton2.customAmount = 10;
+    self.menuButton2.customAmount = 8;
     self.menuButton3.customAmount = [bottleOneAmount intValue];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -117,6 +125,7 @@
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
+
 #pragma MARK -ADDING WATER METHODS
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
@@ -175,7 +184,32 @@
     [self checkForZeroGoal];
     CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
     self.waterLevel.frame = rect;
+}
 
+#pragma mark // DATE CHECK VALIDATION
+
+- (void)logDate {
+    NSUserDefaults *userDefaults  = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayString = [formatter stringFromDate:today];
+    [userDefaults setObject:todayString forKey:kNSUserDefaultsDateCheck];
+}
+
+- (void)dateCheck {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayStringToCheck = [formatter stringFromDate:today];
+    NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
+
+    NSLog(@"todaystring %@, todaystringfromud %@", todayStringToCheck, todayStringFromUserDefaults);
+
+    if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
+        [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
+    }
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
@@ -186,6 +220,7 @@
 
 - (void)addWaterLevel:(NSNumber *)amountConsumed {
 
+    [self logDate];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
     totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
@@ -203,8 +238,8 @@
         [UIView animateWithDuration:0.5 animations:^{
             self.waterLevel.frame = rect;
         }];
-        NSString *messageString = @"You've reached your water intake goal for the day!!!";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        NSString *messageString = @"You've reached your water intake goal for the day.";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
         [alert show];
     }
 }
