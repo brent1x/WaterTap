@@ -67,6 +67,7 @@
     }
 
     self.consumptionEvents = [NSArray new];
+    [self dateCheck];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -74,7 +75,8 @@
     NSLog(@"%i", self.currentDailyGoal);
 
     [self checkForZeroGoal];
-    [self dateCheck];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     self.navigationController.navigationBarHidden = YES;
 
@@ -85,6 +87,10 @@
     self.menuButton1.customAmount = [bottleTwoAmount intValue];
     self.menuButton2.customAmount = 8;
     self.menuButton3.customAmount = [bottleOneAmount intValue];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -156,7 +162,6 @@
 
     if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
         [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
-        NSLog(@"/////////////// ------------ /////////////////");
     }
 }
 
