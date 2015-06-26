@@ -83,7 +83,7 @@
     NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
     self.menuButton1.customAmount = [bottleTwoAmount intValue];
-    self.menuButton2.customAmount = 10;
+    self.menuButton2.customAmount = 8;
     self.menuButton3.customAmount = [bottleOneAmount intValue];
 }
 
@@ -131,7 +131,6 @@
     [self checkForZeroGoal];
     CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
     self.waterLevel.frame = rect;
-
 }
 
 #pragma mark // DATE CHECK VALIDATION
@@ -187,8 +186,8 @@
         [UIView animateWithDuration:0.5 animations:^{
             self.waterLevel.frame = rect;
         }];
-        NSString *messageString = @"You've reached your water intake goal for the day!!!";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations you gulper!!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        NSString *messageString = @"You've reached your water intake goal for the day.";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
         [alert show];
     }
 }

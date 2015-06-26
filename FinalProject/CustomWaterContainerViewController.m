@@ -26,6 +26,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.containerOneDelete.hidden = TRUE;
+    self.containerTwoDelete.hidden = TRUE;
+
     // running a check in VDL to determine if custom containers have been set. if they have, i prepopulate
     // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -34,12 +37,14 @@
 
     if ([containerOneIntValue intValue] > 0) {
         self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
+        self.containerOneDelete.hidden = FALSE;
     } else {
         self.containerOneText.placeholder = @"Enter a container size.";
     }
 
     if ([containerTwoIntValue intValue] > 0) {
         self.containerTwoText.text = [NSString stringWithFormat:@"%@", containerTwoIntValue];
+        self.containerTwoDelete.hidden = FALSE;
     } else {
         self.containerTwoText.placeholder = @"Enter a container size.";
     }
@@ -54,12 +59,14 @@
     int containerOneIntValue = [self.containerOneText.text intValue];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:containerOneIntValue forKey:kNSUserDefaultsContainerOneSize];
+    self.containerOneDelete.hidden = FALSE;
 }
 
 - (IBAction)containerTwoAdded:(id)sender {
     int containerTwoIntValue = [self.containerTwoText.text intValue];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:containerTwoIntValue forKey:kNSUserDefaultsContainerTwoSize];
+    self.containerTwoDelete.hidden = FALSE;
 }
 
 #pragma mark // Delete Custom Containers
@@ -71,6 +78,7 @@
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
     self.containerOneText.text = @"";
     self.containerOneText.placeholder = @"Enter a container size.";
+    self.containerOneDelete.hidden = TRUE;
 }
 
 - (IBAction)containerTwoDeleted:(id)sender {
@@ -78,6 +86,7 @@
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerTwoSize];
     self.containerTwoText.text = @"";
     self.containerTwoText.placeholder = @"Enter a container size.";
+    self.containerTwoDelete.hidden = TRUE;
 }
 
 @end
