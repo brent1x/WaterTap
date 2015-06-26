@@ -232,17 +232,6 @@
                                 <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="MRc-b6-cKz"/>
-                                <exclude reference="SlV-aj-VpD"/>
-                                <exclude reference="olD-Ce-cfX"/>
-                                <exclude reference="5Kt-QW-Rcy"/>
-                                <exclude reference="Nj1-Kb-qFo"/>
-                                <exclude reference="wdc-9k-obB"/>
-                                <exclude reference="BBe-5x-5Ka"/>
-                                <exclude reference="qjW-QG-Yp4"/>
-                                <exclude reference="dsk-Oi-T83"/>
-                                <exclude reference="v9j-xh-eFR"/>
-                                <exclude reference="waH-PY-bvJ"/>
                                 <exclude reference="55v-1Z-OTH"/>
                                 <exclude reference="Js8-lI-1SX"/>
                                 <exclude reference="Lp6-Wk-JPi"/>
@@ -254,9 +243,20 @@
                                 <exclude reference="p2S-Ln-Ecp"/>
                                 <exclude reference="r5r-0m-KUG"/>
                                 <exclude reference="zCa-Zq-hLq"/>
+                                <exclude reference="5Kt-QW-Rcy"/>
+                                <exclude reference="Nj1-Kb-qFo"/>
+                                <exclude reference="wdc-9k-obB"/>
+                                <exclude reference="b61-C4-XiP"/>
+                                <exclude reference="qjW-QG-Yp4"/>
+                                <exclude reference="BBe-5x-5Ka"/>
+                                <exclude reference="dsk-Oi-T83"/>
+                                <exclude reference="v9j-xh-eFR"/>
+                                <exclude reference="waH-PY-bvJ"/>
+                                <exclude reference="MRc-b6-cKz"/>
+                                <exclude reference="SlV-aj-VpD"/>
+                                <exclude reference="olD-Ce-cfX"/>
                                 <exclude reference="Ro2-zI-LcI"/>
                                 <exclude reference="tiG-49-LYe"/>
-                                <exclude reference="b61-C4-XiP"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -272,17 +272,6 @@
                                 <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="MRc-b6-cKz"/>
-                                <include reference="SlV-aj-VpD"/>
-                                <include reference="olD-Ce-cfX"/>
-                                <include reference="5Kt-QW-Rcy"/>
-                                <include reference="Nj1-Kb-qFo"/>
-                                <include reference="wdc-9k-obB"/>
-                                <include reference="BBe-5x-5Ka"/>
-                                <include reference="qjW-QG-Yp4"/>
-                                <include reference="dsk-Oi-T83"/>
-                                <include reference="v9j-xh-eFR"/>
-                                <include reference="waH-PY-bvJ"/>
                                 <include reference="55v-1Z-OTH"/>
                                 <include reference="Js8-lI-1SX"/>
                                 <include reference="Lp6-Wk-JPi"/>
@@ -294,9 +283,20 @@
                                 <include reference="p2S-Ln-Ecp"/>
                                 <include reference="r5r-0m-KUG"/>
                                 <include reference="zCa-Zq-hLq"/>
+                                <include reference="5Kt-QW-Rcy"/>
+                                <include reference="Nj1-Kb-qFo"/>
+                                <include reference="wdc-9k-obB"/>
+                                <include reference="b61-C4-XiP"/>
+                                <include reference="qjW-QG-Yp4"/>
+                                <include reference="BBe-5x-5Ka"/>
+                                <include reference="dsk-Oi-T83"/>
+                                <include reference="v9j-xh-eFR"/>
+                                <include reference="waH-PY-bvJ"/>
+                                <include reference="MRc-b6-cKz"/>
+                                <include reference="SlV-aj-VpD"/>
+                                <include reference="olD-Ce-cfX"/>
                                 <include reference="Ro2-zI-LcI"/>
                                 <include reference="tiG-49-LYe"/>
-                                <include reference="b61-C4-XiP"/>
                             </mask>
                         </variation>
                     </view>
@@ -552,7 +552,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6k5-Vx-xl9">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="81" y="70" width="53" height="21"/>
@@ -561,7 +561,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwk-AB-wFN">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="82" y="119" width="51" height="21"/>
@@ -570,7 +570,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strenous Activity Per Day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hnb-Yr-iwA">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="36" y="183" width="195" height="21"/>
@@ -579,7 +579,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Climate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2F-SV-zLa">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="79" y="235" width="59" height="21"/>
@@ -611,7 +611,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="km6-oX-XkV">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="220" y="320" width="105" height="21"/>
@@ -897,7 +897,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Container 1:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40O-MS-9uK">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="16" y="84" width="113" height="21"/>
@@ -906,7 +906,7 @@ intake recommendation</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Container 2:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cp6-Ty-O8z">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="16" y="167" width="113" height="21"/>
