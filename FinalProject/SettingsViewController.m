@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Brent Dady. All rights reserved.
 //
 
-#import "SettingsViewController.h"
 #import "RootViewController.h"
+#import "SettingsViewController.h"
 #import "HealthKitViewController.h"
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
