@@ -403,9 +403,11 @@
 
     NSArray *subviews = [cell subviews];
     if (subviews.count > 1) {
-        for (int i = 0; i < (subviews.count - 1); i++) {
-            UIView *viewToRemove = [[cell subviews] objectAtIndex:0];
-            [viewToRemove removeFromSuperview];
+        UIView *viewToKeep = [[cell subviews] objectAtIndex:(subviews.count - 4)];
+        for (UIView *view in subviews) {
+            if (![view isEqual:viewToKeep]) {
+                [view removeFromSuperview];
+            }
         }
     }
 
@@ -413,7 +415,8 @@
 
         //Static backgroundRectangle
         UIView *backgroundRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-        backgroundRectangle.backgroundColor = [UIColor magentaColor];
+
+        backgroundRectangle.backgroundColor = [UIColor colorWithRed:0.49 green:0.81 blue:0.95 alpha:1];
         backgroundRectangle.layer.borderColor = [UIColor blackColor].CGColor;
         backgroundRectangle.layer.borderWidth = 1;
 
@@ -427,16 +430,29 @@
         coverFrame.size.height = backgroundRectangle.frame.size.height * proportion;
 
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
-        coverRectangle.backgroundColor = [UIColor whiteColor];
+        coverRectangle.backgroundColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
 
-        //    secondCustomRectangle.layer.cornerRadius = 16;
-        //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
-        //    secondCustomRectangle.layer.borderWidth = 1;
+        UIView *topBorder = [UIView new];
+        topBorder.backgroundColor = [UIColor blackColor];
+        topBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, coverRectangle.frame.size.width, 1.0f);
+        [cell addSubview:topBorder];
+
+        UIView *leftBorder = [UIView new];
+        leftBorder.backgroundColor = [UIColor blackColor];
+        leftBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
+        [cell addSubview:leftBorder];
+
+        UIView *rightBorder = [UIView new];
+        rightBorder.backgroundColor = [UIColor blackColor];
+        rightBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x +backgroundRectangle.frame.size.width - 1.0f, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
+        [cell addSubview:rightBorder];
 
         cell.dayLabel.backgroundColor = [UIColor clearColor];
-        [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
+
         [cell sendSubviewToBack:backgroundRectangle];
+         [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell bringSubviewToFront:cell.dayLabel];
+
     }
     return cell;
 }
