@@ -112,7 +112,12 @@
     myConsumptionEvent.volumeConsumed = button.customAmount;
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
+
+//    NSDate *dateToRemove = [NSDate date];
+//    dateToRemove = [dateToRemove dateByAddingTimeInterval:-60*60*24*1];
     myConsumptionEvent.consumedAt = [NSDate date];
+//    myConsumptionEvent.consumedAt = dateToRemove;
+    
     //save the consumption event to local data store, eventually to be uploaded to Parse (or not)
     [myConsumptionEvent pinInBackground];
 

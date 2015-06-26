@@ -31,6 +31,8 @@
 
 @property UILabel *overlayView;
 
+@property NSMutableArray *sectionHeaderViewsDisplayed;
+
 @end
 
 @implementation TrackerViewController
@@ -46,6 +48,11 @@
     self.firstDate = [self.lastDate dateByAddingTimeInterval:-(15778454)]; //seconds in 6 months
 
     self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+
+
+
+
+//    [self.collectionView setPagingEnabled:YES];
 
     // View Settings //
 
@@ -143,6 +150,12 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.sectionHeaderViewsDisplayed = [NSMutableArray new];
+
+    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, self.collectionView.frame.origin.y + 667)];
+}
+
 // Graph //
 
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
@@ -223,7 +236,6 @@
             for (ConsumptionEvent *event in events) {
                 dayTotal += (float)event.volumeConsumed;
                 goal = (float)event.consumptionGoal;
-//                NSLog(@"GOAL: %d", event.consumptionGoal);
             }
             [self.waterIntakeValues addObject:[NSNumber numberWithFloat:dayTotal]];
             self.totalNumber += (int)dayTotal;
@@ -267,6 +279,21 @@
     return newDate;
 }
 
+
+
+
+
+
+
+
+
+
+
+//[self numberOfSectionsInCollectionView:self.collectionView] - 1;
+
+
+
+
 // Calendar //
 
 #pragma mark - PDTSimpleCalendar Delegate methods
@@ -274,20 +301,6 @@
 - (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date {
     return YES;
 }
-
-//- (UIColor *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller circleColorForDate:(NSDate *)date {
-//
-////    if ([self.dateValues containsObject:date] && self.waterIntakeValues.count == self.dateValues.count && [[self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]] integerValue] > 0) {
-//////        NSLog(@"DATE: %@", date);
-//////        NSLog(@"dateValues: %@", self.dateValues);
-//////        NSLog(@"waterIntakeValues: %@", self.waterIntakeValues);
-//////        NSLog(@"Index: %lu", (unsigned long)[self.dateValues indexOfObject:date]);
-//////        NSLog(@"waterIntake: %@", [self.waterIntakeValues objectAtIndex:[self.dateValues indexOfObject:date]]);
-////        return [UIColor clearColor];
-////    }
-//    return [UIColor blueColor];
-//
-//}
 
 #pragma mark - PDTSimpleCalendarViewController methods to override
 
@@ -303,13 +316,66 @@
     [self hydrateDataSetsForMonth:self.overlayView.text];
 }
 
-//Blank so these dont hide the overlay when not srcolling
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+//    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+//    CGRect rect = [attributes frame];
+
+
+
+
+//    [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
 }
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
 }
+
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+
+
+    PDTSimpleCalendarViewHeader *collectionHeaderView = (PDTSimpleCalendarViewHeader *)[super collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
+
+    if (collectionHeaderView) {
+//        self.sectionHeaderViewDisplayed = collectionHeaderView;
+        NSLog(@"collectionHeaderView: %@", collectionHeaderView.titleLabel.text);
+    }
+    return collectionHeaderView;
+}
+
+//-(void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+//
+//    if (elementKind == UICollectionElementKindSectionHeader) {
+//        UICollectionReusableView *collectionHeaderView = [self.collectionView dequeueReusableCellWithReuseIdentifier:UICollectionElementKindSectionHeader forIndexPath:indexPath];
+////        [self.sectionHeaderViewsWithIndexPaths removeObjectForKey:indexPath];
+//    }
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - (NSDateFormatter *)headerDateFormatter;
 {
@@ -333,20 +399,17 @@
 {
     PDTSimpleCalendarViewCell *cell = (PDTSimpleCalendarViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 
+    NSDate *date = [self dateForCellAtIndexPath:indexPath];
+
     NSArray *subviews = [cell subviews];
     if (subviews.count > 1) {
         for (int i = 0; i < (subviews.count - 1); i++) {
-            UIView *viewToRemove = [[cell subviews] objectAtIndex:i];
+            UIView *viewToRemove = [[cell subviews] objectAtIndex:0];
             [viewToRemove removeFromSuperview];
         }
     }
-    
-    NSDate *date = [self dateForCellAtIndexPath:indexPath];
 
     if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
-
-        NSLog(@"date: %@", date);
-        NSLog(@"Subviews: %@", [cell subviews]);
 
         //Static backgroundRectangle
         UIView *backgroundRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
@@ -358,8 +421,10 @@
         [cell insertSubview:backgroundRectangle belowSubview:cell.dayLabel];
         [cell sendSubviewToBack:backgroundRectangle];
 
+        //Dynamic frame for cover based on waterIntake and goal for that date   
         CGRect coverFrame = backgroundRectangle.frame;
-        coverFrame.size.height = backgroundRectangle.frame.size.height /2;
+        float proportion = [[self.goalPrecentageValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] floatValue];
+        coverFrame.size.height = backgroundRectangle.frame.size.height * proportion;
 
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
         coverRectangle.backgroundColor = [UIColor whiteColor];
@@ -368,11 +433,6 @@
         //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
         //    secondCustomRectangle.layer.borderWidth = 1;
 
-        CALayer *upperBorder = [CALayer layer];
-        upperBorder.backgroundColor = [[UIColor blackColor] CGColor];
-        upperBorder.frame = CGRectMake(0, 0, coverRectangle.frame.size.width, 1.0f);
-        [coverRectangle.layer addSublayer:upperBorder];
-
         cell.dayLabel.backgroundColor = [UIColor clearColor];
         [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell sendSubviewToBack:backgroundRectangle];
@@ -380,6 +440,7 @@
     }
     return cell;
 }
+
 
 - (NSDate *)dateForCellAtIndexPath:(NSIndexPath *)indexPath
 {
