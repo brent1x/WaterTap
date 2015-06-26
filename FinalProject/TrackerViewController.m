@@ -377,20 +377,6 @@
         [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell sendSubviewToBack:backgroundRectangle];
         [cell bringSubviewToFront:cell.dayLabel];
-
-
-        NSLog(@"2 Subviews: %@", [cell subviews]);
-        NSLog(@"POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
-    } else {
-//        for (UIView *view in [cell subviews]) {
-//
-//            NSLog(@"view: %@", view);
-////            if(view != cell.dayLabel){
-////                [view removeFromSuperview];
-////            }
-//        }
-//        NSLog(@" Subviews: %@", [cell subviews]);
-//        NSLog(@"POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
     }
     return cell;
 }
