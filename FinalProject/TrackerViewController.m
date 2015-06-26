@@ -345,16 +345,10 @@
 
     if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
 
-        NSLog(@"date: %@", date);
-        NSLog(@"Subviews: %@", [cell subviews]);
-
         //Static backgroundRectangle
         UIView *backgroundRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
-        NSLog(@"the day label frame y is %f", cell.dayLabel.frame.origin.y);
-        NSLog(@"the day label frame x is %f", cell.dayLabel.frame.origin.x);
 
         backgroundRectangle.backgroundColor = [UIColor colorWithRed:0.49 green:0.81 blue:0.95 alpha:1];
-
         backgroundRectangle.layer.borderColor = [UIColor blackColor].CGColor;
         backgroundRectangle.layer.borderWidth = 1;
 
@@ -367,15 +361,6 @@
 
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
         coverRectangle.backgroundColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
-
-        //    secondCustomRectangle.layer.cornerRadius = 16;
-        //    secondCustomRectangle.layer.borderColor = [UIColor blackColor].CGColor;
-        //    secondCustomRectangle.layer.borderWidth = 1;
-
-
-        NSLog(@"coverRectangle.frame.origin.x: %f", coverRectangle.frame.origin.x);
-        NSLog(@"coverRectangle.frame.origin.y: %f", coverRectangle.frame.origin.y);
-        NSLog(@"coverRectangle.frame.size.width: %f", coverRectangle.frame.size.width);
 
         UIView *topBorder = [UIView new];
         topBorder.backgroundColor = [UIColor blackColor];
@@ -397,7 +382,6 @@
         [cell sendSubviewToBack:backgroundRectangle];
          [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell bringSubviewToFront:cell.dayLabel];
-//        [cell bringSubviewToFront:topBorder];
 
     }
     return cell;

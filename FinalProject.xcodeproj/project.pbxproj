@@ -34,7 +34,6 @@
 		8497405E1B33509E0039DCA2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8497405D1B33509E0039DCA2 /* MobileCoreServices.framework */; };
 		849740601B3350A30039DCA2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8497405F1B3350A30039DCA2 /* QuartzCore.framework */; };
 		849740621B3350AB0039DCA2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849740611B3350AB0039DCA2 /* Security.framework */; };
-		849740641B3350AF0039DCA2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849740631B3350AF0039DCA2 /* StoreKit.framework */; };
 		849740661B3350B70039DCA2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849740651B3350B70039DCA2 /* SystemConfiguration.framework */; };
 		8497406A1B3350CD0039DCA2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 849740691B3350CD0039DCA2 /* libsqlite3.0.dylib */; };
 		8497406C1B3350E00039DCA2 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8497406B1B3350E00039DCA2 /* Accounts.framework */; };
@@ -104,7 +103,6 @@
 		8497405D1B33509E0039DCA2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8497405F1B3350A30039DCA2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		849740611B3350AB0039DCA2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		849740631B3350AF0039DCA2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		849740651B3350B70039DCA2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		849740691B3350CD0039DCA2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		8497406B1B3350E00039DCA2 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -145,7 +143,6 @@
 				12CD3CC11B33911C005A0291 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				9A9719E01B33BCC80046A7E1 /* FBSDKShareKit.framework in Frameworks */,
 				849740661B3350B70039DCA2 /* SystemConfiguration.framework in Frameworks */,
-				849740641B3350AF0039DCA2 /* StoreKit.framework in Frameworks */,
 				849740621B3350AB0039DCA2 /* Security.framework in Frameworks */,
 				849740601B3350A30039DCA2 /* QuartzCore.framework in Frameworks */,
 				8497405E1B33509E0039DCA2 /* MobileCoreServices.framework in Frameworks */,
@@ -298,7 +295,6 @@
 				8497406B1B3350E00039DCA2 /* Accounts.framework */,
 				849740691B3350CD0039DCA2 /* libsqlite3.0.dylib */,
 				849740651B3350B70039DCA2 /* SystemConfiguration.framework */,
-				849740631B3350AF0039DCA2 /* StoreKit.framework */,
 				849740611B3350AB0039DCA2 /* Security.framework */,
 				8497405F1B3350A30039DCA2 /* QuartzCore.framework */,
 				8497405D1B33509E0039DCA2 /* MobileCoreServices.framework */,
@@ -366,15 +362,19 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N3P6V95JDD;
+						DevelopmentTeam = 875TN8947E;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
 							};
 						};
 					};
 					8493AD621B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 875TN8947E;
 						TestTargetID = 8493AD461B2BD11C0048A5B7;
 					};
 				};
@@ -530,6 +530,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -552,6 +553,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -573,6 +575,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -588,6 +591,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -598,7 +602,7 @@
 			baseConfigurationReference = 36317A266E83B02497A37A83 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -611,7 +615,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -621,7 +625,7 @@
 			baseConfigurationReference = C7E8A6640CFBD0DBAB544398 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -634,7 +638,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -643,6 +647,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -654,6 +660,7 @@
 				INFOPLIST_FILE = FinalProjectTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FinalProject.app/FinalProject";
 			};
 			name = Debug;
@@ -662,6 +669,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -669,6 +678,7 @@
 				INFOPLIST_FILE = FinalProjectTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FinalProject.app/FinalProject";
 			};
 			name = Release;

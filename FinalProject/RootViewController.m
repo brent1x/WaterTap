@@ -68,6 +68,20 @@
     self.consumptionEvents = [NSArray new];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self resignFirstResponder];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 
     NSLog(@"%i", self.currentDailyGoal);
@@ -117,10 +131,43 @@
     [myConsumptionEvent pinInBackground];
 
     //Change the current water level by the volume consumed in the consumption event (See "changeWaterLevel" method
-    [self addWaterLevel:[NSNumber numberWithInt:myConsumptionEvent.volumeConsumed]];
+
+    NSNumber *toBeSent = [NSNumber numberWithInt:myConsumptionEvent.volumeConsumed];
+    [self addWaterLevel:toBeSent];
+    [self.undoManager registerUndoWithTarget:self selector:@selector(subtractWaterLevel:) object:toBeSent];
 
     //check and switch the state of the animation so the buttons pop back in
     [self toggleFan];
+}
+
+- (void)subtractWaterLevel:(NSNumber *)amountConsumed {
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] - [amountConsumed floatValue])];
+    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
+
+   float amountConsumedToBeSubtractedFromY = (([amountConsumed floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
+
+    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y) +amountConsumedToBeSubtractedFromY, self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+
+
+    if ([self getWaterHeightFromTotalConsumedToday] > 0) {
+
+        [UIView animateWithDuration:0.5 animations:^{
+            self.waterLevel.frame = rect;
+        }];
+
+    } else {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.waterLevel.frame = rect;
+        }];
+        NSString *messageString = @"You're at zero consumption";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing more to undo, so get gulping!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+
+
 }
 
 - (void)loadWaterLevelBeforeDisplay {
