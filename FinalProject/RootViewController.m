@@ -141,40 +141,10 @@
 
     NSNumber *toBeSent = [NSNumber numberWithInt:myConsumptionEvent.volumeConsumed];
     [self addWaterLevel:toBeSent];
-    [self.undoManager registerUndoWithTarget:self selector:@selector(subtractWaterLevel:) object:toBeSent];
+    [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:[NSNumber numberWithFloat:[(toBeSent) floatValue]*-1]];
 
     //check and switch the state of the animation so the buttons pop back in
     [self toggleFan];
-}
-
-- (void)subtractWaterLevel:(NSNumber *)amountConsumed {
-
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] - [amountConsumed floatValue])];
-    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
-
-   float amountConsumedToBeSubtractedFromY = (([amountConsumed floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
-
-    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y) +amountConsumedToBeSubtractedFromY, self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
-
-
-    if ([self getWaterHeightFromTotalConsumedToday] > 0) {
-
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-
-    } else {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-        NSString *messageString = @"You're at zero consumption";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing more to undo, so get gulping!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-
-
 }
 
 - (void)loadWaterLevelBeforeDisplay {
@@ -218,27 +188,72 @@
 
 - (void)addWaterLevel:(NSNumber *)amountConsumed {
 
+    NSLog(@" goal adjusted display height before change is %f", [self getWaterHeightFromTotalConsumedToday]);
     [self logDate];
+    NSLog( @"amount to be undone is %@", amountConsumed);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    NSLog( @"initial total amount consumed today is %@", totalConsumedToday);
     totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
+    NSLog( @"new total amount consumed after undo completed is %@", totalConsumedToday);
     [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
 
-    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+    if ([amountConsumed floatValue] < 0) {
 
-    if ([self getWaterHeightFromTotalConsumedToday] < self.view.frame.size.height) {
 
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
+        if ([self getWaterHeightFromTotalConsumedToday] > 0) {
 
-    } else {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-        NSString *messageString = @"You've reached your water intake goal for the day.";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
-        [alert show];
+            CGRect rect1 = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, self.waterLevel.frame.size.height);
+
+
+            [UIView animateWithDuration:0.5 animations:^{
+
+                self.waterLevel.frame = rect1;
+
+            } completion:^(BOOL finished) {
+
+                CGRect rect2 = CGRectMake(self.waterLevel.frame.origin.x, self.waterLevel.frame.origin.y, self.waterLevel.frame.size.width, CGRectGetHeight(self.view.frame) - self.waterLevel.frame.origin.y);
+                self.waterLevel.frame = rect2;
+
+            }];
+
+        }
+
+
+        else {
+
+            NSString *messageString = @"Get thirsty and get to gulpin'";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+
+        NSLog(@" y after change is %f", self.waterLevel.frame.origin.y);
+        NSLog(@" height after change is %f", self.waterLevel.frame.size.height);
+        NSLog(@" goal adjusted display height after change is %f", [self getWaterHeightFromTotalConsumedToday]);
+
+
+    }
+
+
+    else {
+
+        CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+
+
+        if ([self getWaterHeightFromTotalConsumedToday] < self.view.frame.size.height) {
+
+            [UIView animateWithDuration:0.5 animations:^{
+                self.waterLevel.frame = rect;
+            }];
+
+        } else {
+            [UIView animateWithDuration:0.5 animations:^{
+                self.waterLevel.frame = rect;
+            }];
+            NSString *messageString = @"You've reached your water intake goal for the day.";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+            [alert show];
+        }
     }
 }
 
@@ -289,7 +304,7 @@
     [self.animator addBehavior:snapBehavior];
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-    
+
 }
 
 #pragma mark // Daily Goal Methods
