@@ -82,11 +82,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    NSLog(@"%i", self.currentDailyGoal);
-
     [self checkForZeroGoal];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
 
     self.navigationController.navigationBarHidden = YES;
 
@@ -103,6 +102,7 @@
     [super viewWillDisappear:animated];
     [self resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -124,7 +124,7 @@
     }
 }
 
-#pragma MARK -ADDING WATER METHODS
+#pragma mark // Add Water Methods
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
@@ -133,7 +133,12 @@
     myConsumptionEvent.volumeConsumed = button.customAmount;
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
+
+//    NSDate *dateToRemove = [NSDate date];
+//    dateToRemove = [dateToRemove dateByAddingTimeInterval:-60*60*24*1];
     myConsumptionEvent.consumedAt = [NSDate date];
+//    myConsumptionEvent.consumedAt = dateToRemove;
+    
     //save the consumption event to local data store, eventually to be uploaded to Parse (or not)
     [myConsumptionEvent pinInBackground];
 
@@ -152,32 +157,6 @@
     [self checkForZeroGoal];
     CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
     self.waterLevel.frame = rect;
-}
-
-#pragma mark // DATE CHECK VALIDATION
-
-- (void)logDate {
-    NSUserDefaults *userDefaults  = [NSUserDefaults standardUserDefaults];
-    NSDate *today = [NSDate new];
-    NSDateFormatter *formatter = [NSDateFormatter new];
-    [formatter setDateFormat:@"dd MM yyyy"];
-    NSString *todayString = [formatter stringFromDate:today];
-    [userDefaults setObject:todayString forKey:kNSUserDefaultsDateCheck];
-}
-
-- (void)dateCheck {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *today = [NSDate new];
-    NSDateFormatter *formatter = [NSDateFormatter new];
-    [formatter setDateFormat:@"dd MM yyyy"];
-    NSString *todayStringToCheck = [formatter stringFromDate:today];
-    NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
-
-    NSLog(@"todaystring %@, todaystringfromud %@", todayStringToCheck, todayStringFromUserDefaults);
-
-    if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
-        [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
-    }
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
@@ -257,12 +236,27 @@
     }
 }
 
-#pragma mark // Change Daily Goal Methods
+#pragma mark // Date Checks
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"settingsSegue"]) {
-        SettingsViewController *sVC = segue.destinationViewController;
-        sVC.delegate = self;
+- (void)logDate {
+    NSUserDefaults *userDefaults  = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayString = [formatter stringFromDate:today];
+    [userDefaults setObject:todayString forKey:kNSUserDefaultsDateCheck];
+}
+
+- (void)dateCheck {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayStringToCheck = [formatter stringFromDate:today];
+    NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
+
+    if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
+        [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
     }
 }
 
@@ -324,6 +318,15 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
     self.currentDailyGoal = [goalFromDefault intValue];
+}
+
+#pragma mark // Change Daily Goal Method
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"settingsSegue"]) {
+        SettingsViewController *sVC = segue.destinationViewController;
+        sVC.delegate = self;
+    }
 }
 
 @end
