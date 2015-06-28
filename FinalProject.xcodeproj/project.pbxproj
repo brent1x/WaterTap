@@ -362,7 +362,7 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 875TN8947E;
+						DevelopmentTeam = N3P6V95JDD;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -374,7 +374,7 @@
 					};
 					8493AD621B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 875TN8947E;
+						DevelopmentTeam = N3P6V95JDD;
 						TestTargetID = 8493AD461B2BD11C0048A5B7;
 					};
 				};
@@ -615,7 +615,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cd1c2593-bde4-4bfb-bca9-b412e6b7bd0e";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -638,7 +638,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cd1c2593-bde4-4bfb-bca9-b412e6b7bd0e";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

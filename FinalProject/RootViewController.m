@@ -11,6 +11,7 @@
 #import "CustomWaterLevelView.h"
 #import "ContainerButton.h"
 #import "SettingsViewController.h"
+@import AVFoundation;
 
 #define kNSUserWaterLevelKey @"kNSUserWaterLevelKey"
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
@@ -57,6 +58,8 @@
     self.currentDailyGoal = 64;
 
     self.unitTypeSelected = @"ounce";
+
+    [self backgroundEffect];
 
     //animation for buttons
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -108,6 +111,60 @@
 - (void)viewDidLayoutSubviews {
     [self checkForZeroGoal];
     [self loadWaterLevelBeforeDisplay];
+}
+
+- (void)backgroundEffect {
+    // Initiate the capture sesh
+    AVCaptureSession *session = [[AVCaptureSession alloc]init];
+    session.sessionPreset = AVCaptureSessionPresetHigh;
+
+    // Check for front-facing cam
+    NSArray *devices = [AVCaptureDevice devices];
+    AVCaptureDevice *frontCamera;
+    AVCaptureDevice *backCamera;
+
+    for (AVCaptureDevice *device in devices) {
+
+        NSLog(@"Device name: %@", [device localizedName]);
+
+        if ([device hasMediaType:AVMediaTypeVideo]) {
+
+            if ([device position] == AVCaptureDevicePositionBack) {
+                NSLog(@"Device position : back");
+                backCamera = device;
+            }
+            else {
+                NSLog(@"Device position : front");
+                frontCamera = device;
+            }
+        }
+    }
+
+    NSError *error = nil;
+
+    AVCaptureDeviceInput *frontFacingCameraDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:frontCamera error:&error];
+
+    if (!error) {
+        if ([session canAddInput:frontFacingCameraDeviceInput])
+            [session addInput:frontFacingCameraDeviceInput];
+        else {
+            NSLog(@"Couldn't add front facing video input");
+        }
+    }
+
+    // Output video capture
+    AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
+    [session addOutput:output];
+
+    // Map video capture to preview
+    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+    UIView *myView = self.view;
+    previewLayer.frame = myView.bounds;
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.view.layer addSublayer:previewLayer];
+
+    // Kick off capture session
+    [session startRunning];
 }
 
 - (void)checkForZeroGoal {
