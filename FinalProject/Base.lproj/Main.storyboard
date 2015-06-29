@@ -851,7 +851,7 @@
                                             <constraint firstAttribute="height" constant="30" id="68Z-Z7-aHl"/>
                                             <constraint firstAttribute="width" constant="110" id="6dD-tl-VZe"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                         <variation key="default">
                                             <mask key="constraints">

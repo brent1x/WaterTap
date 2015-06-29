@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #import "SettingsViewController.h"
 #import "HealthKitViewController.h"
+#import "QuartzCore/QuartzCore.h"
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
@@ -40,8 +41,13 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
 
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
     self.view.backgroundColor = myGrayColor;
+
+    self.dailyGoalTextField.layer.cornerRadius = 3.0f;
+    self.dailyGoalTextField.layer.borderWidth = 1;
+    self.dailyGoalTextField.layer.borderColor = myBlueColor.CGColor;
 
 
     [self switchLogic];
@@ -50,7 +56,7 @@
 
     // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
-        self.dailyGoalTextField.placeholder = @"Set a goal.";
+        self.dailyGoalTextField.placeholder = @"Set a goal";
     }
 }
 
@@ -184,7 +190,7 @@
         [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
         self.recoReceived = FALSE;
         self.dailyGoalTextField.text = @"";
-        self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
+        self.dailyGoalTextField.placeholder = @"Set a goal";
         [self recommendationSwitchLogic];
     }
 }
