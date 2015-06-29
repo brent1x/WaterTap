@@ -21,9 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationController.navigationBarHidden = NO;
-
-    self.navigationItem.title = @"Set Reminders";
+    [self styling];
 
     UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
@@ -31,6 +29,22 @@
 
     self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     [self.tableView reloadData];
+}
+
+- (void)styling {
+
+    self.navigationController.navigationBarHidden = NO;
+
+    self.navigationItem.title = @"Reminders";
+
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+
+    self.datePicker.backgroundColor = [UIColor whiteColor];
+    [self.datePicker setValue:myBlueColor forKeyPath:@"textColor"];
+
+    self.view.backgroundColor = myGrayColor;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear All" style:UIBarButtonItemStylePlain target:self action:@selector(killAllReminders:)];
 }
 
 - (IBAction)setReminder:(id)sender {
@@ -55,6 +69,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
     UILocalNotification *notification = [self.notifications objectAtIndex:indexPath.row];
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+    cell.textLabel.textColor = myBlueColor;
+    cell.detailTextLabel.textColor = myBlueColor;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"hh:mm a"];
@@ -71,10 +88,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-
         UILocalNotification *notif = [[[UIApplication sharedApplication] scheduledLocalNotifications] objectAtIndex:indexPath.row];
         [[UIApplication sharedApplication] cancelLocalNotification:notif];
-
         [self hax];
     }
 }
@@ -88,8 +103,7 @@
     return @"Delete";
 }
 
-- (IBAction)killAllReminders:(id)sender {
-
+- (void)killAllReminders:(id)sender {
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self hax];
