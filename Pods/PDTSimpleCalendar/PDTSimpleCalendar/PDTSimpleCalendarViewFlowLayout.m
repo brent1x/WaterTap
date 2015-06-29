@@ -32,6 +32,8 @@ const CGFloat PDTSimpleCalendarFlowLayoutHeaderHeight = 30.0f;
         self.headerReferenceSize = CGSizeMake(0, PDTSimpleCalendarFlowLayoutHeaderHeight);
         
         //Note: Item Size is defined using the delegate to take into account the width of the view and calculate size dynamically
+
+
     }
 
     return self;

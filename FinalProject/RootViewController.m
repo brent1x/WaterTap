@@ -54,6 +54,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationController.navigationBarHidden = YES;
+
     //TODO: Fix currentDailyGoal problem. It needs to be set to something. >=64. app crashes if user tries to set 0 as daily goal
     self.currentDailyGoal = 64;
 
@@ -74,6 +76,9 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+
+    [self.navigationController setNavigationBarHidden: YES animated:YES];
+
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
 }
@@ -88,8 +93,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
-
-    self.navigationController.navigationBarHidden = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
