@@ -11,6 +11,7 @@
 #import "CustomWaterLevelView.h"
 #import "ContainerButton.h"
 #import "SettingsViewController.h"
+@import AVFoundation;
 
 #define kNSUserWaterLevelKey @"kNSUserWaterLevelKey"
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
@@ -58,6 +59,8 @@
 
     self.unitTypeSelected = @"ounce";
 
+    [self backgroundEffect];
+
     //animation for buttons
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
@@ -68,7 +71,6 @@
 
     self.consumptionEvents = [NSArray new];
     [self dateCheck];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -82,11 +84,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    NSLog(@"%i", self.currentDailyGoal);
-
     [self checkForZeroGoal];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
 
     self.navigationController.navigationBarHidden = YES;
 
@@ -103,11 +104,66 @@
     [super viewWillDisappear:animated];
     [self resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
     [self checkForZeroGoal];
     [self loadWaterLevelBeforeDisplay];
+}
+
+- (void)backgroundEffect {
+    // Initiate the capture sesh
+    AVCaptureSession *session = [[AVCaptureSession alloc]init];
+    session.sessionPreset = AVCaptureSessionPresetHigh;
+
+    // Check for front-facing cam
+    NSArray *devices = [AVCaptureDevice devices];
+    AVCaptureDevice *frontCamera;
+    AVCaptureDevice *backCamera;
+
+    for (AVCaptureDevice *device in devices) {
+
+        NSLog(@"Device name: %@", [device localizedName]);
+
+        if ([device hasMediaType:AVMediaTypeVideo]) {
+
+            if ([device position] == AVCaptureDevicePositionBack) {
+                NSLog(@"Device position : back");
+                backCamera = device;
+            }
+            else {
+                NSLog(@"Device position : front");
+                frontCamera = device;
+            }
+        }
+    }
+
+    NSError *error = nil;
+
+    AVCaptureDeviceInput *frontFacingCameraDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:frontCamera error:&error];
+
+    if (!error) {
+        if ([session canAddInput:frontFacingCameraDeviceInput])
+            [session addInput:frontFacingCameraDeviceInput];
+        else {
+            NSLog(@"Couldn't add front facing video input");
+        }
+    }
+
+    // Output video capture
+    AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
+    [session addOutput:output];
+
+    // Map video capture to preview
+    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+    UIView *myView = self.view;
+    previewLayer.frame = myView.bounds;
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.view.layer addSublayer:previewLayer];
+
+    // Kick off capture session
+    [session startRunning];
 }
 
 - (void)checkForZeroGoal {
@@ -124,7 +180,7 @@
     }
 }
 
-#pragma MARK -ADDING WATER METHODS
+#pragma mark // Add Water Methods
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
 
@@ -146,40 +202,10 @@
 
     NSNumber *toBeSent = [NSNumber numberWithInt:myConsumptionEvent.volumeConsumed];
     [self addWaterLevel:toBeSent];
-    [self.undoManager registerUndoWithTarget:self selector:@selector(subtractWaterLevel:) object:toBeSent];
+    [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:[NSNumber numberWithFloat:[(toBeSent) floatValue]*-1]];
 
     //check and switch the state of the animation so the buttons pop back in
     [self toggleFan];
-}
-
-- (void)subtractWaterLevel:(NSNumber *)amountConsumed {
-
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] - [amountConsumed floatValue])];
-    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
-
-   float amountConsumedToBeSubtractedFromY = (([amountConsumed floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
-
-    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.waterLevel.frame.origin.y) +amountConsumedToBeSubtractedFromY, self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
-
-
-    if ([self getWaterHeightFromTotalConsumedToday] > 0) {
-
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-
-    } else {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-        NSString *messageString = @"You're at zero consumption";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing more to undo, so get gulping!" message:messageString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-
-
 }
 
 - (void)loadWaterLevelBeforeDisplay {
@@ -189,7 +215,84 @@
     self.waterLevel.frame = rect;
 }
 
-#pragma mark // DATE CHECK VALIDATION
+- (float)getWaterHeightFromTotalConsumedToday {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    return (([totalConsumedToday floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
+}
+
+- (void)addWaterLevel:(NSNumber *)amountConsumed {
+
+    NSLog(@" goal adjusted display height before change is %f", [self getWaterHeightFromTotalConsumedToday]);
+    [self logDate];
+    NSLog( @"amount to be undone is %@", amountConsumed);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+    NSLog( @"initial total amount consumed today is %@", totalConsumedToday);
+    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
+    NSLog( @"new total amount consumed after undo completed is %@", totalConsumedToday);
+    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
+
+    if ([amountConsumed floatValue] < 0) {
+
+
+        if ([self getWaterHeightFromTotalConsumedToday] > 0) {
+
+            CGRect rect1 = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, self.waterLevel.frame.size.height);
+
+
+            [UIView animateWithDuration:0.5 animations:^{
+
+                self.waterLevel.frame = rect1;
+
+            } completion:^(BOOL finished) {
+
+                CGRect rect2 = CGRectMake(self.waterLevel.frame.origin.x, self.waterLevel.frame.origin.y, self.waterLevel.frame.size.width, CGRectGetHeight(self.view.frame) - self.waterLevel.frame.origin.y);
+                self.waterLevel.frame = rect2;
+
+            }];
+
+        }
+
+
+        else {
+
+            NSString *messageString = @"Get thirsty and get to gulpin'";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+
+        NSLog(@" y after change is %f", self.waterLevel.frame.origin.y);
+        NSLog(@" height after change is %f", self.waterLevel.frame.size.height);
+        NSLog(@" goal adjusted display height after change is %f", [self getWaterHeightFromTotalConsumedToday]);
+
+
+    }
+
+
+    else {
+
+        CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
+
+
+        if ([self getWaterHeightFromTotalConsumedToday] < self.view.frame.size.height) {
+
+            [UIView animateWithDuration:0.5 animations:^{
+                self.waterLevel.frame = rect;
+            }];
+
+        } else {
+            [UIView animateWithDuration:0.5 animations:^{
+                self.waterLevel.frame = rect;
+            }];
+            NSString *messageString = @"You've reached your water intake goal for the day.";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
+}
+
+#pragma mark // Date Checks
 
 - (void)logDate {
     NSUserDefaults *userDefaults  = [NSUserDefaults standardUserDefaults];
@@ -208,51 +311,8 @@
     NSString *todayStringToCheck = [formatter stringFromDate:today];
     NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
 
-    NSLog(@"todaystring %@, todaystringfromud %@", todayStringToCheck, todayStringFromUserDefaults);
-
     if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
         [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
-    }
-}
-
-- (float)getWaterHeightFromTotalConsumedToday {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    return (([totalConsumedToday floatValue] * self.view.frame.size.height) / self.currentDailyGoal);
-}
-
-- (void)addWaterLevel:(NSNumber *)amountConsumed {
-
-    [self logDate];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
-    [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
-
-    CGRect rect = CGRectMake(self.waterLevel.frame.origin.x, (self.view.frame.size.height - [self getWaterHeightFromTotalConsumedToday]), self.waterLevel.frame.size.width, [self getWaterHeightFromTotalConsumedToday]);
-
-    if ([self getWaterHeightFromTotalConsumedToday] < self.view.frame.size.height) {
-
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-
-    } else {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.waterLevel.frame = rect;
-        }];
-        NSString *messageString = @"You've reached your water intake goal for the day.";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-}
-
-#pragma mark // Change Daily Goal Methods
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"settingsSegue"]) {
-        SettingsViewController *sVC = segue.destinationViewController;
-        sVC.delegate = self;
     }
 }
 
@@ -294,7 +354,7 @@
     [self.animator addBehavior:snapBehavior];
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-    
+
 }
 
 #pragma mark // Daily Goal Methods
@@ -314,6 +374,15 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
     self.currentDailyGoal = [goalFromDefault intValue];
+}
+
+#pragma mark // Change Daily Goal Method
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"settingsSegue"]) {
+        SettingsViewController *sVC = segue.destinationViewController;
+        sVC.delegate = self;
+    }
 }
 
 @end

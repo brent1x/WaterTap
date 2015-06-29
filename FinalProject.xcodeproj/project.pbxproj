@@ -11,6 +11,7 @@
 		1288532B1B33382A00E2CA6D /* TrackerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1288532A1B33382A00E2CA6D /* TrackerViewController.m */; };
 		12CD3CC11B33911C005A0291 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CD3CBE1B33911B005A0291 /* FBSDKMessengerShareKit.framework */; };
 		12CD3CC41B3393D7005A0291 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CD3CC31B3393D7005A0291 /* User.m */; };
+		8403873C1B40804B00870B84 /* Calibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8403873B1B40804B00870B84 /* Calibre-Regular.ttf */; };
 		840F61231B362EEE00A981C8 /* CustomWaterContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F61221B362EEE00A981C8 /* CustomWaterContainerViewController.m */; };
 		842468E61B3CAC6A00BB39A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AE84BD71B3A05060084C8EF /* Images.xcassets */; };
 		8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 8469F9F91B33264200D1FFA6 /* water.aiff */; };
@@ -44,6 +45,7 @@
 		8497407E1B335D6C0039DCA2 /* CustomWaterLevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8497407D1B335D6C0039DCA2 /* CustomWaterLevelView.m */; };
 		849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */; };
 		849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740831B338B3C0039DCA2 /* SettingsViewController.m */; };
+		84F019EA1B40C2080000377E /* Calibre-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84F019E91B40C2080000377E /* Calibre-Medium.ttf */; };
 		9A11AB321B3615D100F16CE5 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A11AB311B3615D100F16CE5 /* HealthKit.framework */; };
 		9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FDBEA1B36620F00266247 /* ContainerButton.m */; };
 		9A9719DE1B33BCC80046A7E1 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */; };
@@ -70,6 +72,7 @@
 		12CD3CC31B3393D7005A0291 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1F209540F572FF538EA6D0CC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		36317A266E83B02497A37A83 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		8403873B1B40804B00870B84 /* Calibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calibre-Regular.ttf"; sourceTree = "<group>"; };
 		840F61211B362EEE00A981C8 /* CustomWaterContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomWaterContainerViewController.h; sourceTree = "<group>"; };
 		840F61221B362EEE00A981C8 /* CustomWaterContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomWaterContainerViewController.m; sourceTree = "<group>"; };
 		8469F9F61B33247100D1FFA6 /* FinalProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FinalProject.entitlements; sourceTree = "<group>"; };
@@ -117,6 +120,7 @@
 		849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInAndSignUpViewController.m; sourceTree = "<group>"; };
 		849740821B338B3C0039DCA2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		84F019E91B40C2080000377E /* Calibre-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calibre-Medium.ttf"; sourceTree = "<group>"; };
 		9A11AB311B3615D100F16CE5 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		9A8FDBE91B36620F00266247 /* ContainerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerButton.h; sourceTree = "<group>"; };
 		9A8FDBEA1B36620F00266247 /* ContainerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerButton.m; sourceTree = "<group>"; };
@@ -176,6 +180,15 @@
 				C7E8A6640CFBD0DBAB544398 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		8403871E1B407F7200870B84 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				84F019E91B40C2080000377E /* Calibre-Medium.ttf */,
+				8403873B1B40804B00870B84 /* Calibre-Regular.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		8469FA011B33315B00D1FFA6 /* Other Views */ = {
@@ -247,6 +260,7 @@
 		8493AD4A1B2BD11C0048A5B7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8403871E1B407F7200870B84 /* Fonts */,
 				8469F9F91B33264200D1FFA6 /* water.aiff */,
 				8493AD4B1B2BD11C0048A5B7 /* Info.plist */,
 				8493AD4C1B2BD11C0048A5B7 /* main.m */,
@@ -374,7 +388,7 @@
 					};
 					8493AD621B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 875TN8947E;
+						DevelopmentTeam = N3P6V95JDD;
 						TestTargetID = 8493AD461B2BD11C0048A5B7;
 					};
 				};
@@ -403,9 +417,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F019EA1B40C2080000377E /* Calibre-Medium.ttf in Resources */,
 				8469F9FA1B33264200D1FFA6 /* water.aiff in Resources */,
 				842468E61B3CAC6A00BB39A2 /* Images.xcassets in Resources */,
 				8493AD5E1B2BD11C0048A5B7 /* LaunchScreen.xib in Resources */,
+				8403873C1B40804B00870B84 /* Calibre-Regular.ttf in Resources */,
 				9AD0B2721B37630200345F55 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -615,7 +631,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cd1c2593-bde4-4bfb-bca9-b412e6b7bd0e";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -638,7 +654,7 @@
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cd1c2593-bde4-4bfb-bca9-b412e6b7bd0e";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

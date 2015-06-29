@@ -23,7 +23,7 @@
 
     self.navigationController.navigationBarHidden = NO;
 
-    self.navigationItem.title = @"Create Reminder";
+    self.navigationItem.title = @"Set Reminders";
 
     UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
@@ -46,7 +46,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self hax];
     });
-
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
