@@ -12,10 +12,9 @@
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
 @interface CustomWaterContainerViewController ()
+
 @property (weak, nonatomic) IBOutlet UITextField *containerOneText;
 @property (weak, nonatomic) IBOutlet UIButton *containerOneAdd;
-@property (weak, nonatomic) IBOutlet UIButton *containerOneDelete;
-
 
 @end
 
@@ -23,8 +22,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.containerOneDelete.hidden = TRUE;
 
     self.navigationItem.title = @"Custom Container";
 
@@ -36,6 +33,8 @@
     self.containerOneText.layer.borderWidth = 1;
     self.containerOneText.layer.borderColor = myBlueColor.CGColor;
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(containerOneDeleted:)];
+
     // running a check in VDL to determine if custom containers have been set. if they have, I prepopulate
     // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -44,7 +43,6 @@
     NSLog(@"%@", unitTypeSelected);
     if ([containerOneIntValue intValue] > 0) {
         self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
-        self.containerOneDelete.hidden = FALSE;
     } else {
         if ([unitTypeSelected isEqualToString:@"ounce"]) {
             self.containerOneText.placeholder = @"Size in ounces";
@@ -63,19 +61,17 @@
     int containerOneIntValue = [self.containerOneText.text intValue];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:containerOneIntValue forKey:kNSUserDefaultsContainerOneSize];
-    self.containerOneDelete.hidden = FALSE;
 }
 
 #pragma mark // Delete Custom Containers
 
-- (IBAction)containerOneDeleted:(id)sender {
+- (void)containerOneDeleted:(id)sender {
     // these 2 methods set custom containers' volumes equal to null and clear the text box
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
     NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
     self.containerOneText.text = @"";
-    self.containerOneDelete.hidden = TRUE;
     if ([unitTypeSelected isEqualToString:@"ounce"]) {
         self.containerOneText.placeholder = @"Size in ounces";
     }
