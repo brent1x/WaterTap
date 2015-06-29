@@ -17,6 +17,7 @@
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 #define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
 #define kNSUserDefaultsContainerTwoSize @"kNSUserDefaultsContainerTwoSize"
+#define kNSUserDefaultsDateCheck @"kNSUserDefaultsDateCheck"
 
 @interface RootViewController () <SettingsViewControllerDelegate>
 
@@ -73,6 +74,7 @@
     NSLog(@"%i", self.currentDailyGoal);
 
     [self checkForZeroGoal];
+    [self dateCheck];
 
     self.navigationController.navigationBarHidden = YES;
 
@@ -103,6 +105,7 @@
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
+
 #pragma MARK -ADDING WATER METHODS
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
@@ -131,6 +134,33 @@
 
 }
 
+#pragma mark // DATE CHECK VALIDATION
+
+- (void)logDate {
+    NSUserDefaults *userDefaults  = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayString = [formatter stringFromDate:today];
+    [userDefaults setObject:todayString forKey:kNSUserDefaultsDateCheck];
+}
+
+- (void)dateCheck {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *today = [NSDate new];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"dd MM yyyy"];
+    NSString *todayStringToCheck = [formatter stringFromDate:today];
+    NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
+
+    NSLog(@"todaystring %@, todaystringfromud %@", todayStringToCheck, todayStringFromUserDefaults);
+
+    if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
+        [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
+        NSLog(@"/////////////// ------------ /////////////////");
+    }
+}
+
 - (float)getWaterHeightFromTotalConsumedToday {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
@@ -139,6 +169,7 @@
 
 - (void)addWaterLevel:(NSNumber *)amountConsumed {
 
+    [self logDate];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
     totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + [amountConsumed floatValue])];
