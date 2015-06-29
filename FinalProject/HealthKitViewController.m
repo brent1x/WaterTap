@@ -32,6 +32,8 @@
 
     self.goButton.hidden = YES;
     self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.title = @"Get a Reco";
+
 
     // this initializes the healthStore (db provided by HealthKit)
     self.healthStore = [[HKHealthStore alloc] init];

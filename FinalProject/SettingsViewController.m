@@ -40,13 +40,17 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
 
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+    self.view.backgroundColor = myGrayColor;
+
+
     [self switchLogic];
     [self recommendationSwitchLogic];
     [self loadGoalFromUserDefaults];
 
     // if no daily goal has been entered, this will prompt user to set it to something; otherwise it defaults to 0
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
-        self.dailyGoalTextField.placeholder = @"Set your daily goal here.";
+        self.dailyGoalTextField.placeholder = @"Set a goal.";
     }
 }
 

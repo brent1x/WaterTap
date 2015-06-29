@@ -23,7 +23,7 @@
 
     self.navigationController.navigationBarHidden = NO;
 
-    self.navigationItem.title = @"Create Reminder";
+    self.navigationItem.title = @"Set Reminders";
 
     UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];

@@ -29,6 +29,8 @@
     self.containerOneDelete.hidden = TRUE;
     self.containerTwoDelete.hidden = TRUE;
 
+    self.navigationItem.title = @"Custom Container";
+
     // running a check in VDL to determine if custom containers have been set. if they have, i prepopulate
     // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

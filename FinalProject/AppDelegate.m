@@ -11,7 +11,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 
-
 @interface AppDelegate ()
 
 @end
@@ -21,22 +20,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    // custom colors 
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
 
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:18.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+    // gimme some white status bar action, Jony
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+    // segmented control settings
     [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                              [UIFont fontWithName:@"Calibre-Regular" size:16.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
 
+    [[UISegmentedControl appearance] setTintColor:myBlueColor];
+
+    // nav bar settings
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:24.0], NSFontAttributeName, nil]];
-
     [[UINavigationBar appearance] setBarTintColor:myBlueColor];
-
     [[UINavigationBar appearance] setTranslucent:NO];
-
     [[UINavigationBar appearance] setTintColor:myGrayColor];
-    
+
+    // bar button settings
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:18.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+
+    // flippin' switches
+    [[UISwitch appearance] setOnTintColor:myBlueColor];
+//    [[UISwitch appearance] setTintColor:[UIColor whiteColor]];
+
     //  // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios_guide#localdatastore/iOS
     [Parse enableLocalDatastore];
