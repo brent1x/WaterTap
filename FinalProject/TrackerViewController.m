@@ -31,28 +31,12 @@
 
 @property UILabel *overlayView;
 
-@property NSMutableArray *sectionHeaderViewsDisplayed;
-
 @end
 
 @implementation TrackerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Calendar Settings //
-
-    [[PDTSimpleCalendarViewCell appearance] setTextTodayColor:[UIColor blueColor]];//BG color
-
-    self.lastDate = [NSDate date];
-    self.firstDate = [self.lastDate dateByAddingTimeInterval:-(15778454)]; //seconds in 6 months
-
-    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
-
-
-
-
-//    [self.collectionView setPagingEnabled:YES];
 
     // View Settings //
 
@@ -83,11 +67,11 @@
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
-    float graphViewHeight = screenHeight / 2.5;
-    float placeholderViewHeight = 20;
+    float placeholderViewHeight = 34;
+    float graphViewHeight = (screenHeight / 2.5) - 14;
 
     //Add constraints
-    NSDictionary *viewsDictionary = @{@"overlayView": self.overlayView, @"topLayoutGuide": self.topLayoutGuide, @"graphView": self.graphView, @"placeholderView": placeholderView};
+    NSDictionary *viewsDictionary = @{@"overlayView": self.overlayView, @"topLayoutGuide": self.topLayoutGuide, @"graphView": self.graphView, @"placeholderView": placeholderView, @"navigationBar": self.navigationController.navigationBar};
     NSDictionary *metricsDictionary = @{@"overlayViewHeight": @(PDTSimpleCalendarFlowLayoutHeaderHeight), @"placeholderViewHeight": @(placeholderViewHeight), @"graphViewHeight": @(graphViewHeight)};
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[placeholderView(==placeholderViewHeight)][overlayView(==overlayViewHeight)][graphView(==graphViewHeight)]" options:0 metrics:metricsDictionary views:viewsDictionary]];
@@ -146,17 +130,49 @@
 
     [self hydrateDataSetsForMonth:self.overlayView.text];
 
+    // Calendar Settings //
+
+    [[PDTSimpleCalendarViewCell appearance] setTextTodayColor:[UIColor blueColor]];//BG color
+
+    self.lastDate = [NSDate date];
+    self.firstDate = [self.lastDate dateByAddingTimeInterval:-(15778454)]; //- seconds for 6 months
+
+    PFQuery *query = [PFQuery queryWithClassName:@"ConsumptionEvent"];
+    [query fromLocalDatastore];
+    [query orderByDescending:@"consumedAt"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
+        if (!error) {
+            if ([events firstObject] < self.firstDate) {
+                self.firstDate = [events firstObject];
+                [self.collectionView reloadData];
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+
     self.delegate = self;
 
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    self.sectionHeaderViewsDisplayed = [NSMutableArray new];
 
-    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, self.collectionView.frame.origin.y + 667)];
+    NSInteger section = [self numberOfSectionsInCollectionView:self.collectionView] - 1;
+    NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:lastIndexPath];
+    CGRect rect = [attributes frame];
+    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, rect.origin.y)];
 }
 
-// Graph //
+-(void)viewDidAppear:(BOOL)animated {
+    self.navigationItem.title = [self.headerDateFormatter stringFromDate:[NSDate date]]; //Fixes initial title mismatch
+}
+
+//////////// Graph ////////////
 
 #pragma mark - PDTSimpleLineGraphDelegate & DataSource
 
@@ -279,127 +295,21 @@
     return newDate;
 }
 
-
-
-
-
-
-
-
-
-
-
-//[self numberOfSectionsInCollectionView:self.collectionView] - 1;
-
-
-
-
-// Calendar //
-
-#pragma mark - PDTSimpleCalendar Delegate methods
-
-- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date {
-    return YES;
-}
+//////////// Calendar ////////////
 
 #pragma mark - PDTSimpleCalendarViewController methods to override
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-
-    [super scrollViewDidScroll:scrollView];
-    if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
-        self.navigationItem.title = self.overlayView.text;
-    }
-}
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self hydrateDataSetsForMonth:self.overlayView.text];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-//    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
-//    CGRect rect = [attributes frame];
-
-
-
-
-//    [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-}
-
--(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-
-
-    PDTSimpleCalendarViewHeader *collectionHeaderView = (PDTSimpleCalendarViewHeader *)[super collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
-
-    if (collectionHeaderView) {
-//        self.sectionHeaderViewDisplayed = collectionHeaderView;
-        NSLog(@"collectionHeaderView: %@", collectionHeaderView.titleLabel.text);
-    }
-    return collectionHeaderView;
-}
-
-//-(void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-//
-//    if (elementKind == UICollectionElementKindSectionHeader) {
-//        UICollectionReusableView *collectionHeaderView = [self.collectionView dequeueReusableCellWithReuseIdentifier:UICollectionElementKindSectionHeader forIndexPath:indexPath];
-////        [self.sectionHeaderViewsWithIndexPaths removeObjectForKey:indexPath];
-//    }
-//
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- (NSDateFormatter *)headerDateFormatter;
-{
-    if (!_headerDateFormatter) {
-        _headerDateFormatter = [[NSDateFormatter alloc] init];
-        _headerDateFormatter.calendar = self.calendar;
-        _headerDateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy LLLL" options:0 locale:self.calendar.locale];
-    }
-    return _headerDateFormatter;
-}
-
-- (NSString *)labelForDateAtIndex:(NSInteger)index {
-    NSDate *date = self.dateValues[index];
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MM/dd";
-    NSString *label = [df stringFromDate:date];
-    return label;
-}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     PDTSimpleCalendarViewCell *cell = (PDTSimpleCalendarViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 
     NSDate *date = [self dateForCellAtIndexPath:indexPath];
+
+    NSLog(@"date: %@", date);
+    NSLog(@"dateValuesBackup: %d", [self.dateValuesBackup containsObject:date]);
+    NSLog(@"3: %d", self.waterIntakeValuesBackup.count == self.dateValuesBackup.count);
+    NSLog(@"NO: %d", NO);
+
 
     NSArray *subviews = [cell subviews];
     if (subviews.count > 1) {
@@ -424,7 +334,7 @@
         [cell insertSubview:backgroundRectangle belowSubview:cell.dayLabel];
         [cell sendSubviewToBack:backgroundRectangle];
 
-        //Dynamic frame for cover based on waterIntake and goal for that date   
+        //Dynamic frame for cover based on waterIntake and goal for that date
         CGRect coverFrame = backgroundRectangle.frame;
         float proportion = [[self.goalPrecentageValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] floatValue];
         coverFrame.size.height = backgroundRectangle.frame.size.height * proportion;
@@ -432,16 +342,15 @@
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
         coverRectangle.backgroundColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
 
+        //Borders for cover
         UIView *topBorder = [UIView new];
         topBorder.backgroundColor = [UIColor blackColor];
         topBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, coverRectangle.frame.size.width, 1.0f);
         [cell addSubview:topBorder];
-
         UIView *leftBorder = [UIView new];
         leftBorder.backgroundColor = [UIColor blackColor];
         leftBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
         [cell addSubview:leftBorder];
-
         UIView *rightBorder = [UIView new];
         rightBorder.backgroundColor = [UIColor blackColor];
         rightBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x +backgroundRectangle.frame.size.width - 1.0f, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
@@ -450,13 +359,82 @@
         cell.dayLabel.backgroundColor = [UIColor clearColor];
 
         [cell sendSubviewToBack:backgroundRectangle];
-         [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
+        [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell bringSubviewToFront:cell.dayLabel];
-
+        
     }
     return cell;
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+    [super scrollViewDidScroll:scrollView];
+    if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
+        self.navigationItem.title = self.overlayView.text;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if (velocity.y == 0.f) {
+        // A 0 velocity means the user dragged and stopped (no flick)
+        // In this case, tell the scroll view to animate to the closest index
+        //         [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
+        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height /2));
+        NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
+        UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
+        CGRect rect = [lastSection frame];
+        if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
+            [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
+            [self hydrateDataSetsForMonth:self.navigationItem.title];
+        }
+    } else if (velocity.y > 0.f) {
+        // User scrolled downwards
+        // Evaluate to the nearest index
+
+    } else {
+        // User scrolled upwards
+        // Evaluate to the nearest index
+        //        [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
+        
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    [self hydrateDataSetsForMonth:self.overlayView.text];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self hydrateDataSetsForMonth:self.overlayView.text];
+}
+
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    //Empty so it doesn't hide overlay from super
+}
+
+#pragma mark - PDTSimpleCalendarViewController Helper Methods
+
+- (NSString *)labelForDateAtIndex:(NSInteger)index {
+    NSDate *date = self.dateValues[index];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MM/dd";
+    NSString *label = [df stringFromDate:date];
+    return label;
+}
+
+-(NSDate *)zeroTimeDate:(NSDate *)date {
+    
+    unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth| NSCalendarUnitDay;
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:flags fromDate:date];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    NSDate* dateOnly = [calendar dateFromComponents:components];
+    
+    return dateOnly;
+}
 
 - (NSDate *)dateForCellAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -485,21 +463,14 @@
     return [self.calendar dateFromComponents:components];
 }
 
-
-
-#pragma mark - PDTSimpleCalendarViewController Helper Methods
-
--(NSDate *)zeroTimeDate:(NSDate *)date {
-    
-    unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth| NSCalendarUnitDay;
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    NSDateComponents* components = [calendar components:flags fromDate:date];
-    [components setHour:0];
-    [components setMinute:0];
-    [components setSecond:0];
-    NSDate* dateOnly = [calendar dateFromComponents:components];
-    
-    return dateOnly;
+- (NSDateFormatter *)headerDateFormatter;
+{
+    if (!_headerDateFormatter) {
+        _headerDateFormatter = [[NSDateFormatter alloc] init];
+        _headerDateFormatter.calendar = self.calendar;
+        _headerDateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy LLLL" options:0 locale:self.calendar.locale];
+    }
+    return _headerDateFormatter;
 }
 
 @end
