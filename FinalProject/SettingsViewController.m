@@ -39,6 +39,7 @@
 
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
+
     [self switchLogic];
     [self recommendationSwitchLogic];
     [self loadGoalFromUserDefaults];
@@ -74,6 +75,8 @@
     // this line check to see if a user has set up custom water containers
     [self customContainerSwitchLogic];
 }
+
+#pragma mark // Unwind from Segue
 
 - (IBAction)unwindFromSegue:(UIStoryboardSegue *)segue {
     if (self.recoTotal != nil) {

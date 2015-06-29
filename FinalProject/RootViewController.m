@@ -71,7 +71,6 @@
 
     self.consumptionEvents = [NSArray new];
     [self dateCheck];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {

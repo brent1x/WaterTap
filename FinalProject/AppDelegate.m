@@ -11,6 +11,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 
+
 @interface AppDelegate ()
 
 @end
@@ -19,6 +20,23 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:18.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+
+    [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                             [UIFont fontWithName:@"Calibre-Regular" size:16.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:24.0], NSFontAttributeName, nil]];
+
+    [[UINavigationBar appearance] setBarTintColor:myBlueColor];
+
+    [[UINavigationBar appearance] setTranslucent:NO];
+
+    [[UINavigationBar appearance] setTintColor:myGrayColor];
+    
     //  // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios_guide#localdatastore/iOS
     [Parse enableLocalDatastore];
