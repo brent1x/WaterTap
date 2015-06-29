@@ -31,6 +31,8 @@
 
 @property UILabel *overlayView;
 
+@property UIColor *cellColor;
+
 @end
 
 @implementation TrackerViewController
@@ -67,19 +69,19 @@
 
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
-    float placeholderViewHeight = 34;
-    float graphViewHeight = (screenHeight / 2.5) - 14;
+//    float placeholderViewHeight = 0;
+    float graphViewHeight = (screenHeight / 4);
 
     //Add constraints
     NSDictionary *viewsDictionary = @{@"overlayView": self.overlayView, @"topLayoutGuide": self.topLayoutGuide, @"graphView": self.graphView, @"placeholderView": placeholderView, @"navigationBar": self.navigationController.navigationBar};
-    NSDictionary *metricsDictionary = @{@"overlayViewHeight": @(PDTSimpleCalendarFlowLayoutHeaderHeight), @"placeholderViewHeight": @(placeholderViewHeight), @"graphViewHeight": @(graphViewHeight)};
+    NSDictionary *metricsDictionary = @{@"overlayViewHeight": @(PDTSimpleCalendarFlowLayoutHeaderHeight), @"graphViewHeight": @(graphViewHeight)};
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[placeholderView(==placeholderViewHeight)][overlayView(==overlayViewHeight)][graphView(==graphViewHeight)]" options:0 metrics:metricsDictionary views:viewsDictionary]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[overlayView(==overlayViewHeight)][graphView(==graphViewHeight)]" options:0 metrics:metricsDictionary views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[graphView]|" options:0 metrics:nil views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[placeholderView]|" options:0 metrics:nil views:viewsDictionary]];
 
     //Make collectionViews height dynamic
-    [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight + placeholderViewHeight + PDTSimpleCalendarFlowLayoutHeaderHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - placeholderViewHeight - PDTSimpleCalendarFlowLayoutHeaderHeight - 20))];
+    [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - PDTSimpleCalendarFlowLayoutHeaderHeight))];
     self.automaticallyAdjustsScrollViewInsets = NO;
 
 
@@ -99,12 +101,12 @@
     // Enable and disable various graph properties and axis displays
     self.graphView.enableTouchReport = YES;
     self.graphView.enablePopUpReport = YES;
-    self.graphView.enableYAxisLabel = YES;
-    self.graphView.autoScaleYAxis = YES;
-    self.graphView.alwaysDisplayDots = YES;
+//    self.graphView.enableYAxisLabel = YES;
+//    self.graphView.autoScaleYAxis = YES;
+//    self.graphView.alwaysDisplayDots = YES;
     //    self.graphView.enableReferenceXAxisLines = YES;
     //    self.graphView.enableRefe renceYAxisLines = YES;
-    self.graphView.enableReferenceAxisFrame = YES;
+//    self.graphView.enableReferenceAxisFrame = YES;
 
     // Draw an average line
     //    self.graphView.averageLine.enableAverageLine = YES;
@@ -114,7 +116,8 @@
     //    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
 
     // Set the graph's animation style to draw, fade, or none
-    self.graphView.animationGraphStyle = BEMLineAnimationDraw;
+    self.graphView.animationGraphStyle = BEMLineAnimationExpand;
+    self.graphView.widthLine = 3.;
 
     // Dash the y reference lines
     //    self.graphView.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
@@ -155,6 +158,13 @@
     self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
 
     self.delegate = self;
+
+    // Colors //
+    self.collectionView.backgroundColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0]; //Calendar
+    self.cellColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
+    self.graphView.colorLine = [UIColor colorWithRed:0./255. green:100./255. blue:148./255. alpha:.5];
+    self.graphView.colorBottom = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
+    self.graphView.colorTop = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
 
 }
 
@@ -305,10 +315,10 @@
 
     NSDate *date = [self dateForCellAtIndexPath:indexPath];
 
-    NSLog(@"date: %@", date);
-    NSLog(@"dateValuesBackup: %d", [self.dateValuesBackup containsObject:date]);
-    NSLog(@"3: %d", self.waterIntakeValuesBackup.count == self.dateValuesBackup.count);
-    NSLog(@"NO: %d", NO);
+//    NSLog(@"date: %@", date);
+//    NSLog(@"dateValuesBackup: %d", [self.dateValuesBackup containsObject:date]);
+//    NSLog(@"3: %d", self.waterIntakeValuesBackup.count == self.dateValuesBackup.count);
+//    NSLog(@"NO: %d", NO);
 
 
     NSArray *subviews = [cell subviews];
@@ -320,6 +330,10 @@
             }
         }
     }
+
+    cell.dayLabel.textColor = [UIColor blackColor];
+    cell.dayLabel.backgroundColor = self.cellColor;
+//    cell.circleDefaultColor =
 
     if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
 
@@ -401,7 +415,6 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-//    [self hydrateDataSetsForMonth:self.overlayView.text];
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -411,6 +424,10 @@
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     //Empty so it doesn't hide overlay from super
+}
+
+- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller isEnabledDate:(NSDate *)date {
+    return NO;
 }
 
 #pragma mark - PDTSimpleCalendarViewController Helper Methods
