@@ -57,6 +57,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <blurEffect style="light"/>
                             </visualEffectView>
+
                             <visualEffectView opaque="NO" alpha="0.33000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Fi-x3-KOZ">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8DS-HS-z9o">
@@ -68,6 +69,7 @@
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <view alpha="0.39999999999999963" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf" userLabel="waterLevel">
+>>>>>>> a061d4cdd1bd939bfd4806b3f78164d4cdb389c6
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" red="0.29365871659999998" green="0.67569728819999997" blue="0.99463775089999995" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -279,6 +281,8 @@
                                 <exclude reference="O2Q-ka-TXi"/>
                                 <exclude reference="shj-va-dmd"/>
                                 <exclude reference="b61-C4-XiP"/>
+<<<<<<< HEAD
+=======
                                 <exclude reference="qjW-QG-Yp4"/>
                                 <exclude reference="BBe-5x-5Ka"/>
                                 <exclude reference="dsk-Oi-T83"/>
@@ -289,6 +293,7 @@
                                 <exclude reference="ptT-xO-Xrk"/>
                                 <exclude reference="Ro2-zI-LcI"/>
                                 <exclude reference="tiG-49-LYe"/>
+>>>>>>> a061d4cdd1bd939bfd4806b3f78164d4cdb389c6
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
