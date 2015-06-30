@@ -21,17 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self styling];
-
-    UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-
-    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    [self.tableView reloadData];
-}
-
-- (void)styling {
 
     self.navigationController.navigationBarHidden = NO;
 
@@ -45,6 +34,18 @@
 
     self.view.backgroundColor = myGrayColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear All" style:UIBarButtonItemStylePlain target:self action:@selector(killAllReminders:)];
+
+    UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+
+    self.notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+    [self.datePicker setValue:myBlueColor forKeyPath:@"textColor"];
 }
 
 - (IBAction)setReminder:(id)sender {

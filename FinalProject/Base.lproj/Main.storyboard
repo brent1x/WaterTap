@@ -856,7 +856,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.070319615304470062" green="0.15919795632362366" blue="0.24229365587234497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="68Z-Z7-aHl"/>
@@ -871,6 +871,7 @@
                                         </variation>
                                         <connections>
                                             <action selector="onDailyGoalDidChange:" destination="0ka-N1-EvE" eventType="editingChanged" id="XHk-mt-o8O"/>
+                                            <outlet property="delegate" destination="0ka-N1-EvE" id="ZcD-cy-8pS"/>
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Goal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpm-L8-j6U">
@@ -978,11 +979,6 @@
                                 <exclude reference="cto-LA-rtH"/>
                                 <exclude reference="ipq-on-rfu"/>
                                 <exclude reference="vF6-CS-hF3"/>
-                                <exclude reference="HEm-H7-2yT"/>
-                                <exclude reference="KC2-Ze-gZE"/>
-                                <exclude reference="SbN-83-v6P"/>
-                                <exclude reference="e9u-2s-uAs"/>
-                                <exclude reference="kDL-7p-rMq"/>
                                 <exclude reference="8no-kb-bmX"/>
                                 <exclude reference="FpT-cZ-VN8"/>
                                 <exclude reference="hZ9-7J-Qq9"/>
@@ -993,6 +989,11 @@
                                 <exclude reference="kwC-tx-NpS"/>
                                 <exclude reference="pWT-rX-HIy"/>
                                 <exclude reference="vAg-qM-DV6"/>
+                                <exclude reference="HEm-H7-2yT"/>
+                                <exclude reference="KC2-Ze-gZE"/>
+                                <exclude reference="SbN-83-v6P"/>
+                                <exclude reference="e9u-2s-uAs"/>
+                                <exclude reference="kDL-7p-rMq"/>
                                 <exclude reference="IdE-2i-8Js"/>
                                 <exclude reference="KFy-vR-XeG"/>
                                 <exclude reference="NlT-g1-cjw"/>
@@ -1013,11 +1014,6 @@
                                 <include reference="cto-LA-rtH"/>
                                 <include reference="ipq-on-rfu"/>
                                 <include reference="vF6-CS-hF3"/>
-                                <include reference="HEm-H7-2yT"/>
-                                <include reference="KC2-Ze-gZE"/>
-                                <include reference="SbN-83-v6P"/>
-                                <include reference="e9u-2s-uAs"/>
-                                <include reference="kDL-7p-rMq"/>
                                 <include reference="8no-kb-bmX"/>
                                 <include reference="FpT-cZ-VN8"/>
                                 <include reference="hZ9-7J-Qq9"/>
@@ -1028,6 +1024,11 @@
                                 <include reference="kwC-tx-NpS"/>
                                 <include reference="pWT-rX-HIy"/>
                                 <include reference="vAg-qM-DV6"/>
+                                <include reference="HEm-H7-2yT"/>
+                                <include reference="KC2-Ze-gZE"/>
+                                <include reference="SbN-83-v6P"/>
+                                <include reference="e9u-2s-uAs"/>
+                                <include reference="kDL-7p-rMq"/>
                                 <include reference="IdE-2i-8Js"/>
                                 <include reference="KFy-vR-XeG"/>
                                 <include reference="NlT-g1-cjw"/>
@@ -1124,7 +1125,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.070319615304470062" green="0.15919795632362366" blue="0.24229365587234497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="Al1-rR-W5b"/>
@@ -1137,6 +1138,9 @@
                                                 <include reference="wJe-T3-WcX"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Yvk-Nt-GFE" id="Etx-Kc-AQG"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6k5-Vx-xl9">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -1213,7 +1217,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.070319615304470062" green="0.15919795632362366" blue="0.24229365587234497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="9XC-HO-F0P"/>
@@ -1226,6 +1230,9 @@
                                                 <include reference="oK2-Kg-S3B"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Yvk-Nt-GFE" id="i0l-TM-fXs"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwk-AB-wFN">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -1321,7 +1328,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.070319615304470062" green="0.15919795632362366" blue="0.24229365587234497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="2I2-2D-fY6"/>
@@ -1334,6 +1341,9 @@
                                                 <include reference="KSf-dm-B8m"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Yvk-Nt-GFE" id="v0y-jV-Nuz"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1935,7 +1945,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.070319615304470062" green="0.15919795632362366" blue="0.24229365587234497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="Am0-ZY-wpU"/>
@@ -1948,6 +1958,9 @@
                                                 <include reference="dAF-ED-kA1"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="vL5-Ca-gFJ" id="ovm-ZX-ZwZ"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Size of container" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEO-Se-oFV">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>

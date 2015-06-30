@@ -120,6 +120,7 @@
 		849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInAndSignUpViewController.m; sourceTree = "<group>"; };
 		849740821B338B3C0039DCA2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		84AAEFD21B432290001672E0 /* Water Tap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Water Tap.entitlements"; sourceTree = "<group>"; };
 		84F019E91B40C2080000377E /* Calibre-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calibre-Medium.ttf"; sourceTree = "<group>"; };
 		9A11AB311B3615D100F16CE5 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		9A8FDBE91B36620F00266247 /* ContainerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerButton.h; sourceTree = "<group>"; };
@@ -232,6 +233,7 @@
 		8493AD491B2BD11C0048A5B7 /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				84AAEFD21B432290001672E0 /* Water Tap.entitlements */,
 				8469FA011B33315B00D1FFA6 /* Other Views */,
 				8469F9F61B33247100D1FFA6 /* FinalProject.entitlements */,
 				8493AD4E1B2BD11C0048A5B7 /* AppDelegate.h */,
@@ -618,7 +620,7 @@
 			baseConfigurationReference = 36317A266E83B02497A37A83 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = "FinalProject/Water Tap.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -629,6 +631,7 @@
 					/Users/Anders/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";
@@ -641,7 +644,7 @@
 			baseConfigurationReference = C7E8A6640CFBD0DBAB544398 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = "FinalProject/Water Tap.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -652,6 +655,7 @@
 					/Users/Anders/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";

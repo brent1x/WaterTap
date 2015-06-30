@@ -11,7 +11,7 @@
 #define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 
-@interface CustomWaterContainerViewController ()
+@interface CustomWaterContainerViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *containerOneText;
 @property (weak, nonatomic) IBOutlet UIButton *containerOneAdd;
@@ -25,6 +25,23 @@
 
     self.navigationItem.title = @"Custom Container";
 
+    // running a check in VDL to determine if custom containers have been set. if they have, I prepopulate
+    // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *containerOneIntValue = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
+    NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+        self.containerOneText.placeholder = @"Size in mL";
+    } else {
+        self.containerOneText.placeholder = @"Size in ounces";
+    }
+
+    NSLog(@"%@", unitTypeSelected);
+
+    if ([containerOneIntValue intValue] > 0) {
+        self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
+    }
+
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
     self.view.backgroundColor = myGrayColor;
@@ -34,23 +51,11 @@
     self.containerOneText.layer.borderColor = myBlueColor.CGColor;
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(containerOneDeleted:)];
+}
 
-    // running a check in VDL to determine if custom containers have been set. if they have, I prepopulate
-    // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *containerOneIntValue = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
-    NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
-    NSLog(@"%@", unitTypeSelected);
-    if ([containerOneIntValue intValue] > 0) {
-        self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
-    } else {
-        if ([unitTypeSelected isEqualToString:@"ounce"]) {
-            self.containerOneText.placeholder = @"Size in ounces";
-        }
-        else if ([unitTypeSelected isEqualToString:@"milliliter"]) {
-            self.containerOneText.placeholder = @"Size in mL";
-        }
-    }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark // Update Custom Containers
