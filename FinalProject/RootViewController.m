@@ -88,6 +88,8 @@
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
 
