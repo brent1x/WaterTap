@@ -37,6 +37,8 @@
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterlevelTopConstraint;
 
+@property float initialViewHeight;
+
 @end
 
 @implementation RootViewController
@@ -46,17 +48,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self backgroundEffect];
 
-    //TODO: This should only be implemented if the user has not entered any water for the day
-    viewHeight = CGRectGetHeight(self.view.frame);
-    self.waterlevelTopConstraint.constant = viewHeight;
+    [self loadGoalFromUserDefaults];
+    if (self.currentDailyGoal == 0) {
+        self.currentDailyGoal = 64;
+        [self saveGoalToUserDefaults];
+    }
+
+    [self dateCheck];
 
     self.navigationController.navigationBarHidden = YES;
 
-    //TODO: Fix currentDailyGoal problem. It needs to be set to something. >=64. app crashes if user tries to set 0 as daily goal
-    self.currentDailyGoal = 64;
+    self.initialViewHeight = CGRectGetHeight(self.view.frame);
 
-    [self backgroundEffect];
 
     //animation for buttons
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -65,8 +70,6 @@
     for (ContainerButton *button in self.menuButtons) {
         button.center = self.addWaterButton.center;
     }
-
-    [self dateCheck];
 }
 
 - (BOOL)canBecomeFirstResponder {
@@ -75,7 +78,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    [self checkForZeroGoal];
+     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self loadGoalFromUserDefaults];
+    [self setWaterHeightFromTotalConsumedToday];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -84,26 +89,23 @@
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
     NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
-    self.menuButton1.customAmount = [bottleTwoAmount intValue];
-    self.menuButton2.customAmount = 8;
-    self.menuButton3.customAmount = [bottleOneAmount intValue];
+//    self.menuButton1.customAmount = [bottleTwoAmount intValue];
+    self.menuButton2.customAmount = 10;
+    self.menuButton1.customAmount = 10;
+    self.menuButton3.customAmount = 10;
+//    self.menuButton3.customAmount = [bottleOneAmount intValue];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 
-    [self.navigationController setNavigationBarHidden: YES animated:YES];
-
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
-//    [UIView animateWithDuration:1.0 animations:^{
-//        self.waterlevelTopConstraint.constant = 50.0;
-//        [self.view layoutIfNeeded];
-//    }];
+
 }
 
 - (void)viewDidLayoutSubviews {
 
-    [self checkForZeroGoal];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -169,11 +171,20 @@
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
+
+    [self loadGoalFromUserDefaults];
+    [self dateCheck];
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
     return (([totalConsumedToday floatValue] * self.view.frame.size.height)/self.currentDailyGoal);
 }
 
+- (void)setWaterHeightFromTotalConsumedToday {
+
+    float waterHeight =  [self getWaterHeightFromTotalConsumedToday];
+    self.waterlevelTopConstraint.constant = self.initialViewHeight - waterHeight;
+}
 
 #pragma mark // Date Check Methods
 
@@ -195,7 +206,10 @@
     NSString *todayStringFromUserDefaults = [userDefaults objectForKey:kNSUserDefaultsDateCheck];
 
     if (![todayStringToCheck isEqualToString:todayStringFromUserDefaults]) {
-        [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
+       // [userDefaults removeObjectForKey:kNSUserWaterLevelKey];
+        // may need to do below command, removeObjectForKey says that it does not reset the value.
+        NSNumber *reset = [NSNumber numberWithFloat:0.0];
+        [userDefaults setObject:reset forKey:kNSUserWaterLevelKey];
     }
 }
 
@@ -219,19 +233,20 @@
     self.currentDailyGoal = [goalFromDefault intValue];
 }
 
-- (void)checkForZeroGoal {
-    if (self.currentDailyGoal == 0) {
-        self.currentDailyGoal = 64;
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
-        }];
-
-        [alertController addAction:action];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-}
+//- (void)checkForZeroGoal {
+//    if (self.currentDailyGoal == 0) {
+//        self.currentDailyGoal = 64;
+//
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
+//
+//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
+//        }];
+//
+//        [alertController addAction:action];
+//        [self presentViewController:alertController animated:YES completion:nil];
+//    }
+//}
 #pragma mark // Segue Method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

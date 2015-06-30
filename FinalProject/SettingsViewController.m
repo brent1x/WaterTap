@@ -38,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationController.navigationBarHidden = NO;
+//    self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
 
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
@@ -61,6 +61,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     // this line checks to see if a user has set up custom reminders
     [self switchLogic];
 
@@ -106,6 +108,7 @@
 
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
     [self saveGoalToUserDefaults];
+
 }
 
 - (IBAction)onUnitTypeSelected:(UISegmentedControl *)sender {
@@ -238,5 +241,11 @@
     NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
     self.dailyGoalTextField.text = goalFromDefault;
 }
+
+//-(void)viewWillDisappear:(BOOL)animated {
+//    RootViewController *rVC = (RootViewController *) self.parentViewController;
+//    rVC.navigationController.navigationBarHidden = YES;
+//}
+
 
 @end
