@@ -84,7 +84,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self loadGoalFromUserDefaults];
     [self setWaterHeightFromTotalConsumedToday];
-    self.shouldShowGoalExceededAlert = NO;
+    self.shouldShowGoalExceededAlert = YES;
     self.goalExceededLabel.hidden = YES;
     [self dateCheck];
     [self checkIfGoalHasBeenMet];
@@ -258,10 +258,8 @@
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
     self.currentDailyGoal = dailyGoalAmount;
-    NSLog(@"daily goal changed");
     [self saveGoalToUserDefaults];
     self.shouldShowGoalExceededAlert = YES;
-    [self checkIfGoalHasBeenMet];
 }
 
 - (void)saveGoalToUserDefaults {

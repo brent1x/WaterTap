@@ -231,7 +231,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="Igw-DM-Azo" kind="show" identifier="settingsSegue" id="Lrt-CR-86G"/>
+                                    <segue destination="0ka-N1-EvE" kind="show" identifier="settingsSegue" id="f45-Fi-RPv"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1051,7 +1051,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QU-ae-3kH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1782" y="923"/>
+            <point key="canvasLocation" x="1557" y="969"/>
         </scene>
         <!--Health Kit View Controller-->
         <scene sceneID="yUP-Hh-eS7">
@@ -1780,6 +1780,9 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="348" width="400" height="252"/>
+                                </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="pFJ-k8-SsD" id="xz9-hb-DZm"/>
                                     <outlet property="delegate" destination="pFJ-k8-SsD" id="xWO-Zd-M0R"/>
@@ -1800,7 +1803,8 @@
                                         <exclude reference="QUD-5x-uwf"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="123" width="400" height="162"/>
                                     <mask key="constraints">
                                         <include reference="QUD-5x-uwf"/>
                                     </mask>
@@ -1819,7 +1823,8 @@
                                         <exclude reference="HqE-fE-vmm"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="89" width="368" height="30"/>
                                     <mask key="constraints">
                                         <include reference="HqE-fE-vmm"/>
                                     </mask>
@@ -1842,7 +1847,8 @@
                                         <exclude reference="yPI-e1-xS9"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="75" y="301" width="250" height="33"/>
                                     <mask key="constraints">
                                         <include reference="GQ4-Kr-xbl"/>
                                         <include reference="yPI-e1-xS9"/>
@@ -2145,24 +2151,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aub-xc-jug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-916.5" y="1113"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="uLx-Xs-qJ4">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Igw-DM-Azo" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BOb-OO-aPI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="0ka-N1-EvE" kind="relationship" relationship="rootViewController" id="OAS-xJ-0dK"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8bQ-oB-lZo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="864" y="923"/>
         </scene>
     </scenes>
     <resources>
