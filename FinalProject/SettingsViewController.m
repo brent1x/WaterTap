@@ -10,6 +10,7 @@
 #import "SettingsViewController.h"
 #import "HealthKitViewController.h"
 #import "QuartzCore/QuartzCore.h"
+#import "ConsumptionEvent.h"
 
 #define kNSUserDailyGoalKey @"kNSUserDailyGoalKey"
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
@@ -112,6 +113,14 @@
 
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
     [self saveGoalToUserDefaults];
+
+    //Save latest goal to DB with 0 Added water
+    ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
+    myConsumptionEvent.volumeConsumed = 0;
+    myConsumptionEvent.user = [PFUser currentUser];
+    myConsumptionEvent.consumptionGoal = [self.dailyGoalTextField.text intValue];
+    myConsumptionEvent.consumedAt = [NSDate date];
+    [myConsumptionEvent pinInBackground];
 
 }
 
