@@ -83,7 +83,7 @@
 		8469FA001B33313D00D1FFA6 /* HKHealthStore+AAPLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HKHealthStore+AAPLExtensions.h"; sourceTree = "<group>"; };
 		8469FA021B33319400D1FFA6 /* HealthKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthKitViewController.h; sourceTree = "<group>"; };
 		8469FA031B33319400D1FFA6 /* HealthKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthKitViewController.m; sourceTree = "<group>"; };
-		8493AD471B2BD11C0048A5B7 /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8493AD471B2BD11C0048A5B7 /* Water Tap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water Tap.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493AD4B1B2BD11C0048A5B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8493AD4C1B2BD11C0048A5B7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8493AD4E1B2BD11C0048A5B7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 		8493AD481B2BD11C0048A5B7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8493AD471B2BD11C0048A5B7 /* FinalProject.app */,
+				8493AD471B2BD11C0048A5B7 /* Water Tap.app */,
 				8493AD631B2BD11C0048A5B7 /* FinalProjectTests.xctest */,
 			);
 			name = Products;
@@ -344,7 +344,7 @@
 			);
 			name = FinalProject;
 			productName = FinalProject;
-			productReference = 8493AD471B2BD11C0048A5B7 /* FinalProject.app */;
+			productReference = 8493AD471B2BD11C0048A5B7 /* Water Tap.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8493AD621B2BD11C0048A5B7 /* FinalProjectTests */ = {
@@ -376,7 +376,7 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 875TN8947E;
+						DevelopmentTeam = N3P6V95JDD;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -630,7 +630,7 @@
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -653,7 +653,7 @@
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

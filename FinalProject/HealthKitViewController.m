@@ -136,7 +136,7 @@
             NSLog(@"Either an error occured fetching the user's height information or none has been stored yet.");
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.heightTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your height in inches.", nil);
+                self.heightTextField.text = @"";
             });
         }
 
@@ -171,7 +171,7 @@
         if (!mostRecentQuantity) {
             NSLog(@"Either an error occured fetching the user's height information or none has been stored yet.");
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.weightTextField.text = NSLocalizedString(@"Not available in HealthKit. Please enter your weight in pounds.", nil);
+                self.weightTextField.text = @"";
             });
         }
         else {

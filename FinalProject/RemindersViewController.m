@@ -69,9 +69,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
     UILocalNotification *notification = [self.notifications objectAtIndex:indexPath.row];
-    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
-    cell.textLabel.textColor = myBlueColor;
-    cell.detailTextLabel.textColor = myBlueColor;
+    UIColor *myDarkBlueColor = [UIColor colorWithRed:19.0/255.0 green:41.0/255.0 blue:61.0/255.0 alpha:1];
+    cell.textLabel.textColor = myDarkBlueColor;
+    cell.detailTextLabel.textColor = myDarkBlueColor;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"hh:mm a"];
