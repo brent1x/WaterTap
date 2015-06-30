@@ -18,7 +18,7 @@
 #define kNSUserDefaultsContainerOneSize @"kNSUserDefaultsContainerOneSize"
 #define kNSUserDefaultsContainerTwoSize @"kNSUserDefaultsContainerTwoSize"
 
-@interface SettingsViewController () 
+@interface SettingsViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedUnitSelector;
 @property (weak, nonatomic) IBOutlet UITextField *dailyGoalTextField;
@@ -59,6 +59,11 @@
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
         self.dailyGoalTextField.placeholder = @"Set a goal";
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

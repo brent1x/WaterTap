@@ -13,7 +13,7 @@
 #define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
 #define kNSUserReceivedRecommendation @"kNSUserReceivedRecommendation"
 
-@interface HealthKitViewController ()
+@interface HealthKitViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *heightTextField;
 @property (weak, nonatomic) IBOutlet UITextField *weightTextField;
@@ -59,6 +59,11 @@
             });
         }];
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)styling {
