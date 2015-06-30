@@ -77,7 +77,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 
-    [self.navigationController setNavigationBarHidden: YES animated:YES];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
@@ -90,6 +90,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 
     [self checkForZeroGoal];
+
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
