@@ -39,6 +39,9 @@
 
 @property float initialViewHeight;
 
+@property (weak, nonatomic) IBOutlet UILabel *goalExceededLabel;
+@property BOOL shouldShowGoalExceededAlert;
+
 @end
 
 @implementation RootViewController
@@ -78,16 +81,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self loadGoalFromUserDefaults];
     [self setWaterHeightFromTotalConsumedToday];
+    self.shouldShowGoalExceededAlert = NO;
+    self.goalExceededLabel.hidden = YES;
+    [self dateCheck];
+    [self checkIfGoalHasBeenMet];
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-
+    
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -102,6 +104,8 @@
     self.menuButton1.customAmount = 10;
     self.menuButton3.customAmount = 10;
 //    self.menuButton3.customAmount = [bottleOneAmount intValue];
+
+
 
 }
 
@@ -161,21 +165,26 @@
     totalConsumedToday = [NSNumber numberWithFloat:([totalConsumedToday floatValue] + (amountConsumed))];
     [userDefaults setObject:totalConsumedToday forKey:kNSUserWaterLevelKey];
 
+
     float waterConstant = [self convertAmountToAddAndReturnWaterConstant:amountConsumed];
 
     [UIView animateWithDuration:0.5 animations:^{
             self.waterlevelTopConstraint.constant += waterConstant;
         [self.view layoutIfNeeded];
+
     }];
+
+    self.shouldShowGoalExceededAlert = YES;
+    [self checkIfGoalHasBeenMet];
+
+
+
 
 //            NSString *messageString = @"Get thirsty and get to gulpin'";
 //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
 //            [alert show];
 
-
-//            NSString *messageString = @"You've reached your water intake goal for the day.";
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
-//            [alert show];
+//
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
@@ -186,14 +195,35 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
     return (([totalConsumedToday floatValue] * self.view.frame.size.height)/self.currentDailyGoal);
+
 }
 
 - (void)setWaterHeightFromTotalConsumedToday {
 
     float waterHeight =  [self getWaterHeightFromTotalConsumedToday];
     self.waterlevelTopConstraint.constant = self.initialViewHeight - waterHeight;
+
 }
 
+- (void)checkIfGoalHasBeenMet {
+
+    [self loadGoalFromUserDefaults];
+    [self dateCheck];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
+
+    if ((([totalConsumedToday floatValue]/self.currentDailyGoal) >= 1) && (self.shouldShowGoalExceededAlert)) {
+
+        NSString *messageString = @"You've reached your water intake goal for the day.";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice work!" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+        [alert show];
+        self.goalExceededLabel.hidden = NO;
+    }
+
+    else if (([totalConsumedToday floatValue]/self.currentDailyGoal) >= 1) {
+        self.goalExceededLabel.hidden = NO;
+    }
+}
 #pragma mark // Date Check Methods
 
 - (void)logDate {
@@ -218,6 +248,8 @@
         // may need to do below command, removeObjectForKey says that it does not reset the value.
         NSNumber *reset = [NSNumber numberWithFloat:0.0];
         [userDefaults setObject:reset forKey:kNSUserWaterLevelKey];
+        self.shouldShowGoalExceededAlert = YES;
+        self.goalExceededLabel.hidden = YES;
     }
 }
 
@@ -226,7 +258,10 @@
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
     self.currentDailyGoal = dailyGoalAmount;
+    NSLog(@"daily goal changed");
     [self saveGoalToUserDefaults];
+    self.shouldShowGoalExceededAlert = YES;
+    [self checkIfGoalHasBeenMet];
 }
 
 - (void)saveGoalToUserDefaults {
@@ -261,6 +296,7 @@
     if ([segue.identifier isEqualToString:@"settingsSegue"]) {
         SettingsViewController *sVC = segue.destinationViewController;
         sVC.delegate = self;
+        NSLog(@"Delegate is %@", sVC.delegate);
     }
 }
 

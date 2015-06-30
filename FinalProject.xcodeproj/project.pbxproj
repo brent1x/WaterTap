@@ -376,7 +376,7 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 8ACVWC32HP;
+						DevelopmentTeam = 875TN8947E;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -388,7 +388,7 @@
 					};
 					8493AD621B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N3P6V95JDD;
+						DevelopmentTeam = 875TN8947E;
 						TestTargetID = 8493AD461B2BD11C0048A5B7;
 					};
 				};
@@ -569,7 +569,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -607,7 +607,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f0422478-3a94-4a4b-baca-41098f53d382";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
