@@ -36,8 +36,6 @@
         self.containerOneText.placeholder = @"Size in ounces";
     }
 
-    NSLog(@"%@", unitTypeSelected);
-
     if ([containerOneIntValue intValue] > 0) {
         self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
     }

@@ -76,9 +76,8 @@
 
     // this section checks whether mL has been set as the default unit type; if so, it lights up the correct segment in the UISegCtrl
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserUnitTypeSelected];
-    NSLog(@"user defaults type: %@", goalFromDefault);
-    if ([goalFromDefault isEqualToString:@"milliliter"]) {
+    NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
         self.segmentedUnitSelector.selectedSegmentIndex = 1;
     }
 

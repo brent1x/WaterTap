@@ -51,6 +51,7 @@
     [self backgroundEffect];
 
     [self loadGoalFromUserDefaults];
+    
     if (self.currentDailyGoal == 0) {
         self.currentDailyGoal = 64;
         [self saveGoalToUserDefaults];
@@ -61,7 +62,6 @@
     self.navigationController.navigationBarHidden = YES;
 
     self.initialViewHeight = CGRectGetHeight(self.view.frame);
-
 
     //animation for buttons
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -78,7 +78,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self loadGoalFromUserDefaults];
     [self setWaterHeightFromTotalConsumedToday];
 
@@ -318,16 +318,12 @@
     AVCaptureDevice *backCamera;
 
     for (AVCaptureDevice *device in devices) {
-
         NSLog(@"Device name: %@", [device localizedName]);
-
         if ([device hasMediaType:AVMediaTypeVideo]) {
-
             if ([device position] == AVCaptureDevicePositionBack) {
                 NSLog(@"Device position : back");
                 backCamera = device;
-            }
-            else {
+            } else {
                 NSLog(@"Device position : front");
                 frontCamera = device;
             }
@@ -360,7 +356,5 @@
     // Kick off capture session
     [session startRunning];
 }
-
-
 
 @end

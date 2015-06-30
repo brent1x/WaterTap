@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="T8i-JU-lG9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="T8i-JU-lG9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -948,6 +948,11 @@
                                 <exclude reference="cto-LA-rtH"/>
                                 <exclude reference="ipq-on-rfu"/>
                                 <exclude reference="vF6-CS-hF3"/>
+                                <exclude reference="HEm-H7-2yT"/>
+                                <exclude reference="KC2-Ze-gZE"/>
+                                <exclude reference="SbN-83-v6P"/>
+                                <exclude reference="e9u-2s-uAs"/>
+                                <exclude reference="kDL-7p-rMq"/>
                                 <exclude reference="8no-kb-bmX"/>
                                 <exclude reference="FpT-cZ-VN8"/>
                                 <exclude reference="hZ9-7J-Qq9"/>
@@ -958,11 +963,6 @@
                                 <exclude reference="kwC-tx-NpS"/>
                                 <exclude reference="pWT-rX-HIy"/>
                                 <exclude reference="vAg-qM-DV6"/>
-                                <exclude reference="HEm-H7-2yT"/>
-                                <exclude reference="KC2-Ze-gZE"/>
-                                <exclude reference="SbN-83-v6P"/>
-                                <exclude reference="e9u-2s-uAs"/>
-                                <exclude reference="kDL-7p-rMq"/>
                                 <exclude reference="IdE-2i-8Js"/>
                                 <exclude reference="KFy-vR-XeG"/>
                                 <exclude reference="NlT-g1-cjw"/>
@@ -983,6 +983,11 @@
                                 <include reference="cto-LA-rtH"/>
                                 <include reference="ipq-on-rfu"/>
                                 <include reference="vF6-CS-hF3"/>
+                                <include reference="HEm-H7-2yT"/>
+                                <include reference="KC2-Ze-gZE"/>
+                                <include reference="SbN-83-v6P"/>
+                                <include reference="e9u-2s-uAs"/>
+                                <include reference="kDL-7p-rMq"/>
                                 <include reference="8no-kb-bmX"/>
                                 <include reference="FpT-cZ-VN8"/>
                                 <include reference="hZ9-7J-Qq9"/>
@@ -993,11 +998,6 @@
                                 <include reference="kwC-tx-NpS"/>
                                 <include reference="pWT-rX-HIy"/>
                                 <include reference="vAg-qM-DV6"/>
-                                <include reference="HEm-H7-2yT"/>
-                                <include reference="KC2-Ze-gZE"/>
-                                <include reference="SbN-83-v6P"/>
-                                <include reference="e9u-2s-uAs"/>
-                                <include reference="kDL-7p-rMq"/>
                                 <include reference="IdE-2i-8Js"/>
                                 <include reference="KFy-vR-XeG"/>
                                 <include reference="NlT-g1-cjw"/>
