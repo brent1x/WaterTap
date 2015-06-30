@@ -25,6 +25,8 @@
 @property NSMutableArray *goalPrecentageValuesBackup;
 @property int totalNumber;
 
+@property NSMutableDictionary *waterHeightProportionsForDays;
+
 @property BEMSimpleLineGraphView *graphView;
 
 @property (nonatomic, strong) NSDateFormatter *headerDateFormatter; //Will be used to format date in header view and on scroll.
@@ -42,12 +44,12 @@
 
 @implementation TrackerViewController
 
-- (void)viewDidLoad {
+-(void)viewDidLoad {
     [super viewDidLoad];
 
     // View Settings //
 
-//            [self.navigationController setNavigationBarHidden:NO animated:YES];
+//  [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBarHidden = NO;
 
     //Remove existing constraints made by super
@@ -185,6 +187,49 @@
     self.waterFillTextColor = myDarkBlueColor;
     self.cellCoverColor = myGrayColor;
     self.cellBorderColor = myBlueColor;
+
+
+
+    //Load all events to a dictionary key:day value:amountConsumed/goal
+    self.waterHeightProportionsForDays = [NSMutableDictionary new];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(%@ <= consumedAt) && (consumedAt < %@)", self.firstDate, self.lastDate];
+//    PFQuery *query2 = [PFQuery queryWithClassName:@"ConsumptionEvent" predicate:predicate];
+    PFQuery *query2 = [PFQuery queryWithClassName:@"ConsumptionEvent"];
+    [query2 fromLocalDatastore];
+    [query2 orderByDescending:@"consumedAt"];
+    [query2 findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
+        if (!error) {
+            ConsumptionEvent *firstEvent = [events firstObject];
+            NSDate *previousEventDate = firstEvent.consumedAt;
+            previousEventDate = [self zeroTimeDate:previousEventDate];
+            int goal = firstEvent.consumptionGoal;
+            NSNumber *proportion = [NSNumber numberWithFloat:((float)firstEvent.volumeConsumed / (float)goal)];
+            [self.waterHeightProportionsForDays setObject:proportion forKey:previousEventDate];
+            for (ConsumptionEvent *event in events) {
+                NSDate *currentEventDate = event.consumedAt;
+                currentEventDate = [self zeroTimeDate:currentEventDate];
+                if (currentEventDate == previousEventDate) {
+                    float singularProportion = (float)event.volumeConsumed / (float)goal;
+                    proportion = [self.waterHeightProportionsForDays objectForKeyedSubscript:currentEventDate];
+                    proportion = [NSNumber numberWithFloat:[proportion floatValue] + singularProportion];
+                    [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
+                } else {
+                    goal = event.consumptionGoal;
+                    proportion = [NSNumber numberWithFloat:((float)event.volumeConsumed / (float)goal)];
+                    [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
+                    previousEventDate = event.consumedAt;
+                }
+            }
+            [self.collectionView reloadData];
+            NSLog(@"Magic Dictionary: %@", self.waterHeightProportionsForDays);
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+
+    NSLog(@"Magic Dictionary: %@", self.waterHeightProportionsForDays);
+
 
 }
 
@@ -340,13 +385,10 @@
 {
     PDTSimpleCalendarViewCell *cell = (PDTSimpleCalendarViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 
+    cell.dayLabel.textColor = self.cellTextColor;
+    cell.dayLabel.backgroundColor = self.cellColor;
+
     NSDate *date = [self dateForCellAtIndexPath:indexPath];
-
-//    NSLog(@"date: %@", date);
-//    NSLog(@"dateValuesBackup: %d", [self.dateValuesBackup containsObject:date]);
-//    NSLog(@"3: %d", self.waterIntakeValuesBackup.count == self.dateValuesBackup.count);
-//    NSLog(@"NO: %d", NO);
-
 
     NSArray *subviews = [cell subviews];
     if (subviews.count > 1) {
@@ -358,14 +400,7 @@
         }
     }
 
-    cell.dayLabel.textColor = self.cellTextColor;
-    cell.dayLabel.backgroundColor = self.cellColor;
-
-//    if ([date.description isEqualToString:@"2015-06-29 07:00:00 +0000"]) {
-//        NSLog(@"yo popy");
-//    }
-
-    if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
+    if ([self.waterHeightProportionsForDays objectForKey:date]) {
 
         cell.dayLabel.textColor = self.waterFillTextColor;
 
@@ -382,8 +417,9 @@
 
         //Dynamic frame for cover based on waterIntake and goal for that date
         CGRect coverFrame = backgroundRectangle.frame;
-        float proportion = [[self.goalPrecentageValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] floatValue];
-        coverFrame.size.height = backgroundRectangle.frame.size.height * proportion;
+        NSNumber *proportion = [self.waterHeightProportionsForDays objectForKey:date];
+
+        coverFrame.size.height = ((float)backgroundRectangle.frame.size.height - (float)backgroundRectangle.frame.size.height * [proportion floatValue]);
 
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
         coverRectangle.backgroundColor = self.cellCoverColor;
@@ -407,8 +443,9 @@
         [cell sendSubviewToBack:backgroundRectangle];
         [cell insertSubview:coverRectangle aboveSubview:backgroundRectangle];
         [cell bringSubviewToFront:cell.dayLabel];
-        
     }
+
+
     return cell;
 }
 
@@ -418,50 +455,52 @@
     if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
         self.navigationItem.title = self.overlayView.text;
     }
+
+
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if (velocity.y == 0.f) {
-        // A 0 velocity means the user dragged and stopped (no flick)
-        // In this case, tell the scroll view to animate to the closest index
-        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
-        NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
-        UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
-
-        PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
-        CGRect rect = [lastSection frame];
-        if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
-            [UIView animateWithDuration:0.5 animations:^{
-                [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
-            } completion:^(BOOL finished) {
-                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
-                [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
-            }];
-        }
-    } else if (velocity.y > 0.f) {
-        // User scrolled downwards
-        // Evaluate to the nearest index
-
-    } else {
-        // User scrolled upwards
-        // Evaluate to the nearest index
-        //        [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
-        
-    }
+//    if (velocity.y == 0.f) {
+//        // A 0 velocity means the user dragged and stopped (no flick)
+//        // In this case, tell the scroll view to animate to the closest index
+//        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
+//        NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
+//        UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
+//
+//        PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
+//        CGRect rect = [lastSection frame];
+//        if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
+//            [UIView animateWithDuration:0.5 animations:^{
+//                [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
+//            } completion:^(BOOL finished) {
+//                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
+//                [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
+//            }];
+//        }
+//    } else if (velocity.y > 0.f) {
+//        // User scrolled downwards
+//        // Evaluate to the nearest index
+//
+//    } else {
+//        // User scrolled upwards
+//        // Evaluate to the nearest index
+//        //        [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
+//        
+//    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self hydrateDataSetsForMonth:self.navigationController.title];
+//    [self hydrateDataSetsForMonth:self.navigationController.title];
 }
 
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     //Empty so it doesn't hide overlay from super
-//    [self hydrateDataSetsForMonth:self.overlayView.text];
+    [self hydrateDataSetsForMonth:self.overlayView.text];
 }
 
 - (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller isEnabledDate:(NSDate *)date {
