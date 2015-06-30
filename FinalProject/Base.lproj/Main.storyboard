@@ -51,7 +51,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QD2-l5-JFT">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QD2-l5-JFT">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="kYZ-pQ-wbi">
                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -59,6 +59,28 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've met 100% of your goal today!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fv-w6-ECc" userLabel="GoalExceededLabel">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="WBH-d6-exg"/>
+                                    <constraint firstAttribute="width" constant="294" id="dF9-b4-cYf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" red="0.3042737277691086" green="0.88078703703703698" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="WBH-d6-exg"/>
+                                        <exclude reference="dF9-b4-cYf"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="WBH-d6-exg"/>
+                                        <include reference="dF9-b4-cYf"/>
+                                    </mask>
+                                </variation>
+                            </label>
                             <view alpha="0.39999999999999963" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf" userLabel="waterLevel">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" red="0.29365871659999998" green="0.67569728819999997" blue="0.99463775089999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -209,7 +231,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="Igw-DM-Azo" kind="show" identifier="settingsSegue" id="Lrt-CR-86G"/>
+                                    <segue destination="0ka-N1-EvE" kind="show" identifier="settingsSegue" id="f45-Fi-RPv"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -226,6 +248,7 @@
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="600" id="NAc-On-hYs"/>
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="QaG-KW-Xr5"/>
                             <constraint firstAttribute="centerX" secondItem="eqb-UO-Xah" secondAttribute="centerX" id="UXP-zr-uxi"/>
+                            <constraint firstAttribute="centerY" secondItem="1Fv-w6-ECc" secondAttribute="centerY" id="Ux8-9x-sxG"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="dBc-Dg-bWV" secondAttribute="bottom" constant="20" id="YU3-6S-ret"/>
                             <constraint firstAttribute="centerX" secondItem="r1Q-hY-c2P" secondAttribute="centerX" id="b2W-BZ-jXP"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="QD2-l5-JFT" secondAttribute="bottom" id="bhk-Gf-UyD"/>
@@ -237,10 +260,12 @@
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="LrZ-B5-DFh" secondAttribute="bottom" constant="35" id="tLt-7f-5HH"/>
                             <constraint firstItem="QD2-l5-JFT" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="woG-9t-Ycw"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Nyi-sx-6mm" secondAttribute="bottom" constant="20" id="xRF-NP-ayB"/>
+                            <constraint firstAttribute="centerX" secondItem="1Fv-w6-ECc" secondAttribute="centerX" id="yHg-8R-lZj"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="QD2-l5-JFT"/>
+                                <exclude reference="1Fv-w6-ECc"/>
                                 <exclude reference="VTJ-k2-lQf"/>
                                 <exclude reference="r1Q-hY-c2P"/>
                                 <exclude reference="Nyi-sx-6mm"/>
@@ -250,6 +275,8 @@
                                 <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="Ux8-9x-sxG"/>
+                                <exclude reference="yHg-8R-lZj"/>
                                 <exclude reference="7iY-Qo-hkz"/>
                                 <exclude reference="YU3-6S-ret"/>
                                 <exclude reference="bhk-Gf-UyD"/>
@@ -278,6 +305,7 @@
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="QD2-l5-JFT"/>
+                                <include reference="1Fv-w6-ECc"/>
                                 <include reference="VTJ-k2-lQf"/>
                                 <include reference="r1Q-hY-c2P"/>
                                 <include reference="Nyi-sx-6mm"/>
@@ -287,6 +315,8 @@
                                 <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="Ux8-9x-sxG"/>
+                                <include reference="yHg-8R-lZj"/>
                                 <include reference="7iY-Qo-hkz"/>
                                 <include reference="YU3-6S-ret"/>
                                 <include reference="bhk-Gf-UyD"/>
@@ -317,6 +347,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="addWaterButton" destination="eqb-UO-Xah" id="Mdx-Ng-hLk"/>
+                        <outlet property="goalExceededLabel" destination="1Fv-w6-ECc" id="Lpi-b8-Rhz"/>
                         <outlet property="menuButton1" destination="r1Q-hY-c2P" id="JRi-rG-M0i"/>
                         <outlet property="menuButton2" destination="Nyi-sx-6mm" id="ufd-bd-3FO"/>
                         <outlet property="menuButton3" destination="dBc-Dg-bWV" id="W7N-WN-nte"/>
@@ -1020,7 +1051,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QU-ae-3kH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1782" y="923"/>
+            <point key="canvasLocation" x="1557" y="969"/>
         </scene>
         <!--Health Kit View Controller-->
         <scene sceneID="yUP-Hh-eS7">
@@ -1749,6 +1780,9 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="348" width="400" height="252"/>
+                                </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="pFJ-k8-SsD" id="xz9-hb-DZm"/>
                                     <outlet property="delegate" destination="pFJ-k8-SsD" id="xWO-Zd-M0R"/>
@@ -1769,7 +1803,8 @@
                                         <exclude reference="QUD-5x-uwf"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="123" width="400" height="162"/>
                                     <mask key="constraints">
                                         <include reference="QUD-5x-uwf"/>
                                     </mask>
@@ -1788,7 +1823,8 @@
                                         <exclude reference="HqE-fE-vmm"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="89" width="368" height="30"/>
                                     <mask key="constraints">
                                         <include reference="HqE-fE-vmm"/>
                                     </mask>
@@ -1811,7 +1847,8 @@
                                         <exclude reference="yPI-e1-xS9"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="75" y="301" width="250" height="33"/>
                                     <mask key="constraints">
                                         <include reference="GQ4-Kr-xbl"/>
                                         <include reference="yPI-e1-xS9"/>
@@ -2114,24 +2151,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aub-xc-jug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-916.5" y="1113"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="uLx-Xs-qJ4">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Igw-DM-Azo" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BOb-OO-aPI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="0ka-N1-EvE" kind="relationship" relationship="rootViewController" id="OAS-xJ-0dK"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8bQ-oB-lZo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="864" y="923"/>
         </scene>
     </scenes>
     <resources>

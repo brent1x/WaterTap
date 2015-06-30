@@ -378,7 +378,7 @@
 				TargetAttributes = {
 					8493AD461B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N3P6V95JDD;
+						DevelopmentTeam = 875TN8947E;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -390,7 +390,7 @@
 					};
 					8493AD621B2BD11C0048A5B7 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N3P6V95JDD;
+						DevelopmentTeam = 875TN8947E;
 						TestTargetID = 8493AD461B2BD11C0048A5B7;
 					};
 				};
@@ -620,7 +620,7 @@
 			baseConfigurationReference = 36317A266E83B02497A37A83 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "FinalProject/Water Tap.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -631,7 +631,7 @@
 					/Users/Anders/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";
@@ -644,7 +644,7 @@
 			baseConfigurationReference = C7E8A6640CFBD0DBAB544398 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "FinalProject/Water Tap.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -655,7 +655,7 @@
 					/Users/Anders/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = FinalProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Water Tap";
 				PROVISIONING_PROFILE = "";

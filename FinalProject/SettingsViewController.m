@@ -39,6 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+
 //    self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
 
@@ -49,6 +50,7 @@
     self.dailyGoalTextField.layer.cornerRadius = 3.0f;
     self.dailyGoalTextField.layer.borderWidth = 1;
     self.dailyGoalTextField.layer.borderColor = myBlueColor.CGColor;
+
 
 
     [self switchLogic];
@@ -112,6 +114,7 @@
     // this method checks whether or not the daily goal changed. if it did, it lets its delegate (RootVC) know
 
     [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+    NSLog(@"%@", self.delegate);
     [self saveGoalToUserDefaults];
 
     //Save latest goal to DB with 0 Added water
