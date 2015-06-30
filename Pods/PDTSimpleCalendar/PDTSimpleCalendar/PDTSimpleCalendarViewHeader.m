@@ -57,7 +57,9 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         return _textColor;
     }
 
-    return [UIColor grayColor];
+    //Custom setting
+    UIColor *myDarkBlueColor = [UIColor colorWithRed:19./255. green:41./255. blue:61./255. alpha:1];
+    return myDarkBlueColor;
 }
 
 - (UIFont *)textFont
@@ -83,7 +85,9 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         return _separatorColor;
     }
 
-    return [UIColor lightGrayColor];
+    //Custom setting
+    UIColor *myDarkBlueColor = [UIColor colorWithRed:19./255. green:41./255. blue:61./255. alpha:1];
+    return myDarkBlueColor;
 }
 
 

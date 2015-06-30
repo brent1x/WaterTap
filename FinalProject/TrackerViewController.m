@@ -32,6 +32,11 @@
 @property UILabel *overlayView;
 
 @property UIColor *cellColor;
+@property UIColor *cellTextColor;
+@property UIColor *waterFillColor;
+@property UIColor *waterFillTextColor;
+@property UIColor *cellCoverColor;
+@property UIColor *cellBorderColor;
 
 @end
 
@@ -42,6 +47,7 @@
 
     // View Settings //
 
+//            [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBarHidden = NO;
 
     //Remove existing constraints made by super
@@ -81,7 +87,7 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[placeholderView]|" options:0 metrics:nil views:viewsDictionary]];
 
     //Make collectionViews height dynamic
-    [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - PDTSimpleCalendarFlowLayoutHeaderHeight))];
+    [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - 20))];
     self.automaticallyAdjustsScrollViewInsets = NO;
 
 
@@ -89,10 +95,14 @@
     // Create a gradient to apply to the bottom portion of the graph
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     size_t num_locations = 2;
-    CGFloat locations[2] = { 0.0, 1.0 };
+    CGFloat locations[2] = { 0.5,1.0 };
+//    CGFloat components[8] = {
+//        1.0, 1.0, 1.0, 1.0,
+//        1.0, 1.0, 1.0, 0.0
+//    };
     CGFloat components[8] = {
-        1.0, 1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0, 0.0
+        27./255., 152./255., 224./255., 1.0,
+        27./255., 152./255., 224./255., 0.0
     };
 
     // Apply the gradient to the bottom portion of the graph
@@ -155,20 +165,31 @@
         }
     }];
 
-    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
 
     self.delegate = self;
 
     // Colors //
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+    UIColor *myDarkBlueColor = [UIColor colorWithRed:19./255. green:41./255. blue:61./255. alpha:1];
+    UIColor *myMediumBlueColor = [UIColor colorWithRed:0 green:100./255. blue:148./255. alpha:.5];
     self.collectionView.backgroundColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0]; //Calendar
-    self.cellColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
-    self.graphView.colorLine = [UIColor colorWithRed:0./255. green:100./255. blue:148./255. alpha:.5];
-    self.graphView.colorBottom = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
-    self.graphView.colorTop = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0];
+    self.collectionView.backgroundColor = myGrayColor; //Calendar
+    self.cellColor = myGrayColor;
+    self.graphView.colorLine = myBlueColor;
+    self.graphView.colorBottom = myGrayColor;
+    self.graphView.colorTop = myGrayColor;
+    self.cellTextColor = myBlueColor;
+    self.waterFillColor = myBlueColor;
+    self.waterFillTextColor = myDarkBlueColor;
+    self.cellCoverColor = myGrayColor;
+    self.cellBorderColor = myBlueColor;
 
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+
 
     NSInteger section = [self numberOfSectionsInCollectionView:self.collectionView] - 1;
     NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
@@ -176,6 +197,12 @@
     UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:lastIndexPath];
     CGRect rect = [attributes frame];
     [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, rect.origin.y)];
+
+    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+
+
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -331,17 +358,22 @@
         }
     }
 
-    cell.dayLabel.textColor = [UIColor blackColor];
+    cell.dayLabel.textColor = self.cellTextColor;
     cell.dayLabel.backgroundColor = self.cellColor;
-//    cell.circleDefaultColor =
+
+//    if ([date.description isEqualToString:@"2015-06-29 07:00:00 +0000"]) {
+//        NSLog(@"yo popy");
+//    }
 
     if ([self.dateValuesBackup containsObject:date] && self.waterIntakeValuesBackup.count == self.dateValuesBackup.count && [[self.waterIntakeValuesBackup objectAtIndex:[self.dateValuesBackup indexOfObject:date]] integerValue] > 0) {
+
+        cell.dayLabel.textColor = self.waterFillTextColor;
 
         //Static backgroundRectangle
         UIView *backgroundRectangle = [[UILabel alloc]initWithFrame:cell.dayLabel.frame];
 
-        backgroundRectangle.backgroundColor = [UIColor colorWithRed:0.49 green:0.81 blue:0.95 alpha:1];
-        backgroundRectangle.layer.borderColor = [UIColor blackColor].CGColor;
+        backgroundRectangle.backgroundColor = self.waterFillColor;
+        backgroundRectangle.layer.borderColor = self.cellBorderColor.CGColor;
         backgroundRectangle.layer.borderWidth = 1;
 
         [cell bringSubviewToFront:cell.dayLabel];
@@ -354,19 +386,19 @@
         coverFrame.size.height = backgroundRectangle.frame.size.height * proportion;
 
         UIView *coverRectangle = [[UILabel alloc] initWithFrame:coverFrame];
-        coverRectangle.backgroundColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
+        coverRectangle.backgroundColor = self.cellCoverColor;
 
         //Borders for cover
         UIView *topBorder = [UIView new];
-        topBorder.backgroundColor = [UIColor blackColor];
+        topBorder.backgroundColor = self.cellBorderColor;
         topBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, coverRectangle.frame.size.width, 1.0f);
         [cell addSubview:topBorder];
         UIView *leftBorder = [UIView new];
-        leftBorder.backgroundColor = [UIColor blackColor];
+        leftBorder.backgroundColor = self.cellBorderColor;
         leftBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
         [cell addSubview:leftBorder];
         UIView *rightBorder = [UIView new];
-        rightBorder.backgroundColor = [UIColor blackColor];
+        rightBorder.backgroundColor = self.cellBorderColor;
         rightBorder.frame = CGRectMake(backgroundRectangle.frame.origin.x +backgroundRectangle.frame.size.width - 1.0f, backgroundRectangle.frame.origin.y, 1.0f, backgroundRectangle.frame.size.height);
         [cell addSubview:rightBorder];
 
@@ -393,14 +425,19 @@
     if (velocity.y == 0.f) {
         // A 0 velocity means the user dragged and stopped (no flick)
         // In this case, tell the scroll view to animate to the closest index
-        //         [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
-        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height /2));
+        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
         NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
         UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
+
+        PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
         CGRect rect = [lastSection frame];
         if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
-            [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
-            [self hydrateDataSetsForMonth:self.navigationItem.title];
+            [UIView animateWithDuration:0.5 animations:^{
+                [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
+            } completion:^(BOOL finished) {
+                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
+                [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
+            }];
         }
     } else if (velocity.y > 0.f) {
         // User scrolled downwards
@@ -418,12 +455,13 @@
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self hydrateDataSetsForMonth:self.overlayView.text];
+    [self hydrateDataSetsForMonth:self.navigationController.title];
 }
 
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     //Empty so it doesn't hide overlay from super
+//    [self hydrateDataSetsForMonth:self.overlayView.text];
 }
 
 - (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller isEnabledDate:(NSDate *)date {
