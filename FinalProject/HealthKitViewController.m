@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
 @property double mlMultiplier;
+@property (weak, nonatomic) IBOutlet UILabel *suggestedGoalLabel;
+@property (weak, nonatomic) IBOutlet UIView *suggestedGoalView;
 
 @end
 
@@ -31,9 +33,9 @@
     [super viewDidLoad];
 
     self.goButton.hidden = YES;
-    self.navigationController.navigationBarHidden = NO;
-    self.navigationItem.title = @"Custom Goal";
-
+    self.suggestedGoalLabel.hidden = YES;
+    self.suggestedGoalView.hidden = YES;
+    [self styling];
 
     // this initializes the healthStore (db provided by HealthKit)
     self.healthStore = [[HKHealthStore alloc] init];
@@ -57,6 +59,24 @@
             });
         }];
     }
+}
+
+- (void)styling {
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.title = @"Custom Goal";
+
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
+    self.view.backgroundColor = myGrayColor;
+    self.heightTextField.layer.cornerRadius = 3.0f;
+    self.heightTextField.layer.borderWidth = 1;
+    self.heightTextField.layer.borderColor = myBlueColor.CGColor;
+    self.weightTextField.layer.cornerRadius = 3.0f;
+    self.weightTextField.layer.borderWidth = 1;
+    self.weightTextField.layer.borderColor = myBlueColor.CGColor;
+    self.strenousActivityTextField.layer.cornerRadius = 3.0f;
+    self.strenousActivityTextField.layer.borderWidth = 1;
+    self.strenousActivityTextField.layer.borderColor = myBlueColor.CGColor;
 }
 
 #pragma mark // Write Data Permissions to HealthKit
@@ -217,6 +237,14 @@
     int myInt = (int)(goal + (goal > 0 ? 0.5 : -0.5));
     self.calculateTextField.text = [NSString stringWithFormat:@"%i", myInt];
 
+    if ([goalFromDefault isEqualToString:@"milliliter"]) {
+        self.suggestedGoalLabel.text = @"Suggested goal (mL):";
+    } else {
+        self.suggestedGoalLabel.text = @"Suggested goal (oz):";
+    }
+
+    self.suggestedGoalLabel.hidden = FALSE;
+    self.suggestedGoalView.hidden = FALSE;
     self.goButton.hidden = FALSE;
 }
 
