@@ -82,6 +82,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self saveGoalToUserDefaults];
     [self loadGoalFromUserDefaults];
     [self setWaterHeightFromTotalConsumedToday];
     self.shouldShowGoalExceededAlert = YES;
@@ -110,14 +111,11 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
-
 }
 
 - (void)viewDidLayoutSubviews {
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
