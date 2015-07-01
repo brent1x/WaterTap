@@ -282,17 +282,8 @@
                                 <exclude reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Mbs-fm-B3M"/>
-                                <exclude reference="g42-yr-FXo"/>
-                                <exclude reference="o4Y-Fc-uBO"/>
                                 <exclude reference="Ux8-9x-sxG"/>
                                 <exclude reference="yHg-8R-lZj"/>
-                                <exclude reference="dI8-mt-e7P"/>
-                                <exclude reference="faF-9A-Dtx"/>
-                                <exclude reference="BbI-4a-f1F"/>
-                                <exclude reference="rtn-de-2Pj"/>
-                                <exclude reference="UXP-zr-uxi"/>
-                                <exclude reference="b2W-BZ-jXP"/>
                                 <exclude reference="7iY-Qo-hkz"/>
                                 <exclude reference="F3l-7E-hvC"/>
                                 <exclude reference="Uso-5J-e4C"/>
@@ -300,6 +291,16 @@
                                 <exclude reference="dOD-sC-F0E"/>
                                 <exclude reference="vjL-Ux-gMh"/>
                                 <exclude reference="xRF-NP-ayB"/>
+                                <exclude reference="dI8-mt-e7P"/>
+                                <exclude reference="faF-9A-Dtx"/>
+                                <exclude reference="BbI-4a-f1F"/>
+                                <exclude reference="rtn-de-2Pj"/>
+                                <exclude reference="iQA-24-3Rs"/>
+                                <exclude reference="UXP-zr-uxi"/>
+                                <exclude reference="b2W-BZ-jXP"/>
+                                <exclude reference="Mbs-fm-B3M"/>
+                                <exclude reference="g42-yr-FXo"/>
+                                <exclude reference="o4Y-Fc-uBO"/>
                                 <exclude reference="2aL-Mf-Ong"/>
                                 <exclude reference="43G-Sa-CrC"/>
                                 <exclude reference="5wJ-QA-WHd"/>
@@ -308,7 +309,6 @@
                                 <exclude reference="HKQ-fU-7cH"/>
                                 <exclude reference="NAc-On-hYs"/>
                                 <exclude reference="QaG-KW-Xr5"/>
-                                <exclude reference="iQA-24-3Rs"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -325,17 +325,8 @@
                                 <include reference="eSi-zi-Z6M"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Mbs-fm-B3M"/>
-                                <include reference="g42-yr-FXo"/>
-                                <include reference="o4Y-Fc-uBO"/>
                                 <include reference="Ux8-9x-sxG"/>
                                 <include reference="yHg-8R-lZj"/>
-                                <include reference="dI8-mt-e7P"/>
-                                <exclude reference="faF-9A-Dtx"/>
-                                <include reference="BbI-4a-f1F"/>
-                                <include reference="rtn-de-2Pj"/>
-                                <include reference="UXP-zr-uxi"/>
-                                <include reference="b2W-BZ-jXP"/>
                                 <include reference="7iY-Qo-hkz"/>
                                 <include reference="F3l-7E-hvC"/>
                                 <include reference="Uso-5J-e4C"/>
@@ -343,6 +334,16 @@
                                 <include reference="dOD-sC-F0E"/>
                                 <include reference="vjL-Ux-gMh"/>
                                 <include reference="xRF-NP-ayB"/>
+                                <include reference="dI8-mt-e7P"/>
+                                <exclude reference="faF-9A-Dtx"/>
+                                <include reference="BbI-4a-f1F"/>
+                                <include reference="rtn-de-2Pj"/>
+                                <include reference="iQA-24-3Rs"/>
+                                <include reference="UXP-zr-uxi"/>
+                                <include reference="b2W-BZ-jXP"/>
+                                <include reference="Mbs-fm-B3M"/>
+                                <include reference="g42-yr-FXo"/>
+                                <include reference="o4Y-Fc-uBO"/>
                                 <exclude reference="2aL-Mf-Ong"/>
                                 <exclude reference="43G-Sa-CrC"/>
                                 <include reference="5wJ-QA-WHd"/>
@@ -351,7 +352,6 @@
                                 <include reference="HKQ-fU-7cH"/>
                                 <include reference="NAc-On-hYs"/>
                                 <include reference="QaG-KW-Xr5"/>
-                                <include reference="iQA-24-3Rs"/>
                             </mask>
                         </variation>
                     </view>
