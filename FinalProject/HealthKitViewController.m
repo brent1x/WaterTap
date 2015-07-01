@@ -21,9 +21,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *climateSelectedSegment;
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
-@property double mlMultiplier;
 @property (weak, nonatomic) IBOutlet UILabel *suggestedGoalLabel;
 @property (weak, nonatomic) IBOutlet UIView *suggestedGoalView;
+@property double mlMultiplier;
 
 @end
 
@@ -207,7 +207,11 @@
 
     // normalizing for weight
     double weightMultiplier;
-    if ([self.weightTextField.text doubleValue] <= 100) {
+
+    if ([self.weightTextField.text doubleValue] < 1) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh noes!" message:@"Please enter actual numbers to calculate your daily goal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    } else if ([self.weightTextField.text doubleValue] <= 100) {
         weightMultiplier = 1.1;
     } else if ([self.weightTextField.text doubleValue] > 100 && [self.weightTextField.text doubleValue] <= 125) {
         weightMultiplier = 1.075;
@@ -225,6 +229,12 @@
         weightMultiplier = 0.925;
     } else if ([self.weightTextField.text doubleValue] > 300) {
         weightMultiplier = 0.9;
+    }
+
+    // the following 2 checks are implemented to prevent jokers from trying to break the app with negative numbers
+    if ([self.heightTextField.text doubleValue] < 0 || [self.strenousActivityTextField.text doubleValue] < 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh noes!" message:@"Please enter actual numbers to calculate your daily goal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
     }
 
     // this section checks whether they have mL set as the preferred unit type; if so I convert from ounces to mLs
