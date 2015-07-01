@@ -179,7 +179,7 @@
     UIColor *myDarkBlueColor = [UIColor colorWithRed:19./255. green:41./255. blue:61./255. alpha:1];
     // UIColor *myMediumBlueColor = [UIColor colorWithRed:0 green:100./255. blue:148./255. alpha:.5];
     self.collectionView.backgroundColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0]; //Calendar
-    // self.collectionView.backgroundColor = myGrayColor; //Calendar
+     self.collectionView.backgroundColor = myGrayColor; //Calendar
     self.cellColor = myGrayColor;
     self.graphView.colorLine = myBlueColor;
     self.graphView.colorBottom = myGrayColor;
