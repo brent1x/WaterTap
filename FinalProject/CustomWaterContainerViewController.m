@@ -68,7 +68,7 @@
 - (IBAction)containerOneAdded:(id)sender {
     // these 2 methods save, as an integer, the value entered into the text box for a container's volume into NSUserDefaults
 
-    if (![self.containerOneText.text intValue] > 0) {
+    if ([self.containerOneText.text intValue] < 1) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You've broken physics!" message:@"Please enter a real size (greater than 0) for your custom container." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
