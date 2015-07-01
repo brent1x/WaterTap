@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *containerOneText;
 @property (weak, nonatomic) IBOutlet UIButton *containerOneAdd;
+@property (weak, nonatomic) IBOutlet UILabel *explainerLabel;
 
 @end
 
@@ -32,6 +33,7 @@
     NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
     if ([unitTypeSelected isEqualToString:@"milliliter"]) {
         self.containerOneText.placeholder = @"Size in mL";
+        self.explainerLabel.text = @"Here you can set the size of your water container. The default size is set to 236.5 milliliters.";
         if ([containerOneIntValue intValue] > 0) {
             int containerOneIntValueMLConversion = ([containerOneIntValue intValue] * 29.5735);
             NSString *containerOneIntValueMLConversionString = [NSString stringWithFormat:@"%i", containerOneIntValueMLConversion];
@@ -39,11 +41,12 @@
         }
     } else {
         self.containerOneText.placeholder = @"Size in ounces";
+        self.explainerLabel.text = @"Here you can set the size of your water container. The default size is set to 8 ounces.";
         if ([containerOneIntValue intValue] > 0) {
             self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
         }
     }
-    
+
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
     self.view.backgroundColor = myGrayColor;
@@ -65,9 +68,14 @@
 - (IBAction)containerOneAdded:(id)sender {
     // these 2 methods save, as an integer, the value entered into the text box for a container's volume into NSUserDefaults
 
-    int containerOneIntValue = [self.containerOneText.text intValue];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:containerOneIntValue forKey:kNSUserDefaultsContainerOneSize];
+    if (![self.containerOneText.text intValue] > 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You've broken physics!" message:@"Please enter a real size (greater than 0) for your custom container." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    } else {
+        int containerOneIntValue = [self.containerOneText.text intValue];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:containerOneIntValue forKey:kNSUserDefaultsContainerOneSize];
+    }
 }
 
 #pragma mark // Delete Custom Containers
