@@ -272,20 +272,6 @@
     self.currentDailyGoal = [goalFromDefault intValue];
 }
 
-//- (void)checkForZeroGoal {
-//    if (self.currentDailyGoal == 0) {
-//        self.currentDailyGoal = 64;
-//
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
-//
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
-//        }];
-//
-//        [alertController addAction:action];
-//        [self presentViewController:alertController animated:YES completion:nil];
-//    }
-//}
 #pragma mark // Segue Method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

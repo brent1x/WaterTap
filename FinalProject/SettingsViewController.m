@@ -62,9 +62,22 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+
     [textField resignFirstResponder];
+
     return YES;
 }
+
+////if ([self.dailyGoalTextField.text isEqualToString:@""] || ([self.dailyGoalTextField.text intValue]== 0)) {
+//
+//UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
+//
+//UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal" style:UIAlertActionStyleDefault handler:nil];
+//
+//[alertController addAction:action];
+//[self presentViewController:alertController animated:YES completion:nil];
+//}
+
 
 - (void)viewWillAppear:(BOOL)animated {
 
