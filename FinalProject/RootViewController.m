@@ -101,7 +101,7 @@
     if ([bottleOneAmount intValue] > 0) {
         self.menuButton1.customAmount = [bottleOneAmount intValue];
     } else {
-        self.menuButton1.customAmount = 10;
+        self.menuButton1.customAmount = 8;
     }
 
     //    self.menuButton1.customAmount = [bottleTwoAmount intValue];

@@ -43,9 +43,7 @@
             self.containerOneText.text = [NSString stringWithFormat:@"%@", containerOneIntValue];
         }
     }
-
-
-
+    
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
     self.view.backgroundColor = myGrayColor;
@@ -80,7 +78,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
     NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
-    self.containerOneText.text = @"";
+
     if ([unitTypeSelected isEqualToString:@"ounce"]) {
         self.containerOneText.placeholder = @"Size in ounces";
     }
