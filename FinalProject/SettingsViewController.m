@@ -96,10 +96,10 @@
     }
 
     // this line checks to see if a user has previously received a recommendation
-    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
-    if (self.recoReceived == TRUE) {
-        self.dailyGoalTextField.enabled = FALSE;
-    }
+//    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
+//    if (self.recoReceived == TRUE) {
+//        self.dailyGoalTextField.enabled = FALSE;
+//    }
 
     [self recommendationSwitchLogic];
 
@@ -197,7 +197,7 @@
     } else {
         self.recoSwitch.on = FALSE;
         [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
-        self.dailyGoalTextField.enabled = YES;
+        // self.dailyGoalTextField.enabled = YES;
         self.recoButton.hidden = TRUE;
     }
 }

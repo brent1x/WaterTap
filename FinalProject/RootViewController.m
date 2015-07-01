@@ -89,7 +89,6 @@
     self.goalExceededLabel.hidden = YES;
     [self dateCheck];
     [self checkIfGoalHasBeenMet];
-
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
@@ -98,16 +97,17 @@
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
-    NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
-//    self.menuButton1.customAmount = [bottleTwoAmount intValue];
+    if ([bottleOneAmount intValue] > 0) {
+        self.menuButton1.customAmount = [bottleOneAmount intValue];
+    } else {
+        self.menuButton1.customAmount = 8;
+    }
+
+    //    self.menuButton1.customAmount = [bottleTwoAmount intValue];
     self.menuButton2.customAmount = 10;
-    self.menuButton1.customAmount = 10;
     self.menuButton3.customAmount = 10;
-//    self.menuButton3.customAmount = [bottleOneAmount intValue];
-
-
-
+    //    self.menuButton3.customAmount = [bottleOneAmount intValue];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
