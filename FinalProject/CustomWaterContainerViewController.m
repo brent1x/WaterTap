@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Custom Container";
+    self.navigationItem.title = @"Container";
 
     // running a check in VDL to determine if custom containers have been set. if they have, I prepopulate
     // the text boxes with the saved values. if they haven't been set, I prompt user to create the containers

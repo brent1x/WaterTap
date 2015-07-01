@@ -23,12 +23,12 @@
 @interface RootViewController () <SettingsViewControllerDelegate>
 
 //the button pressed to bring up the container buttons
-@property (weak, nonatomic) IBOutlet UIButton *addWaterButton;
-@property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
-@property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
-@property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
-@property (weak, nonatomic) IBOutlet UIImageView *blurredBackground;
-@property NSMutableArray *menuButtons;
+@property (weak, nonatomic) IBOutlet ContainerButton *addWaterButton;
+//@property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
+//@property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
+//@property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
+
+//@property NSMutableArray *menuButtons;
 
 //properties for animation for the button
 @property UIDynamicAnimator *animator;
@@ -37,12 +37,10 @@
 //water level properties
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *waterlevelTopConstraint;
-
+@property (weak, nonatomic) IBOutlet UIImageView *blurredBackground;
 @property float initialViewHeight;
-
 @property (weak, nonatomic) IBOutlet UILabel *goalExceededLabel;
 @property BOOL shouldShowGoalExceededAlert;
-
 
 //this property is to check if the goal has changed in the settings view controller
 @property BOOL didGoalChange;
@@ -57,8 +55,6 @@
     [super viewDidLoad];
     [self backgroundEffect];
 
-    self.blurredBackground.hidden = TRUE;
-
     [self loadGoalFromUserDefaults];
     
     if (self.currentDailyGoal == 0) {
@@ -71,14 +67,14 @@
     self.navigationController.navigationBarHidden = TRUE;
 
     self.initialViewHeight = CGRectGetHeight(self.view.frame);
-
-    //animation for buttons
-    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
-    [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
-    self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
-    for (ContainerButton *button in self.menuButtons) {
-        button.center = self.addWaterButton.center;
-    }
+//
+//    //animation for buttons
+//    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+//    [self.addWaterButton addTarget:self action:@selector(toggleFan) forControlEvents:UIControlEventTouchUpInside];
+//    self.menuButtons = [NSMutableArray arrayWithObjects:self.menuButton1, self.menuButton2, self.menuButton3, nil];
+//    for (ContainerButton *button in self.menuButtons) {
+//        button.center = self.addWaterButton.center;
+//    }
 }
 
 - (BOOL)canBecomeFirstResponder {
@@ -105,15 +101,15 @@
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
 
     if ([bottleOneAmount intValue] > 0) {
-        self.menuButton1.customAmount = [bottleOneAmount intValue];
+        self.addWaterButton.customAmount = [bottleOneAmount intValue];
     } else {
-        self.menuButton1.customAmount = 8;
+        self.addWaterButton.customAmount = 8;
     }
-
-    //    self.menuButton1.customAmount = [bottleTwoAmount intValue];
-    self.menuButton2.customAmount = 10;
-    self.menuButton3.customAmount = 10;
-    //    self.menuButton3.customAmount = [bottleOneAmount intValue];
+//
+//    //    self.menuButton1.customAmount = [bottleTwoAmount intValue];
+//    self.menuButton2.customAmount = 10;
+//    self.menuButton3.customAmount = 10;
+//    //    self.menuButton3.customAmount = [bottleOneAmount intValue];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -153,7 +149,7 @@
 
 
     //check and switch the state of the animation so the buttons pop back in
-     [self toggleFan];
+//     [self toggleFan];
 }
 
 -(float)convertAmountToAddAndReturnWaterConstant:(float)amountConsumed {
@@ -300,41 +296,41 @@
 #pragma mark // Button Animation Methods
 //checks the state of the buttons, whether they are "fanned out" or "fanned in," then switches the state
 
-- (void)toggleFan {
-
-    [self.animator removeAllBehaviors];
-    if (self.isFannedOut){
-        [self fanIn];
-    }
-    else {
-        [self fanOut];
-    }
-    self.isFannedOut = !self.isFannedOut;
-}
-
--(void)fanOut {
-    CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
-    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-    point = CGPointMake(self.addWaterButton.frame.origin.x+30, self.addWaterButton.frame.origin.y - 50);
-    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-    point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
-    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-}
-
-- (void)fanIn {
-
-    CGPoint point = self.addWaterButton.center;
-
-    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
-    [self.animator addBehavior:snapBehavior];
-}
+//- (void)toggleFan {
+//
+//    [self.animator removeAllBehaviors];
+//    if (self.isFannedOut){
+//        [self fanIn];
+//    }
+//    else {
+//        [self fanOut];
+//    }
+//    self.isFannedOut = !self.isFannedOut;
+//}
+//
+//-(void)fanOut {
+//    CGPoint point = CGPointMake(self.addWaterButton.frame.origin.x + 100, self.addWaterButton.frame.origin.y - 50);
+//    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//    point = CGPointMake(self.addWaterButton.frame.origin.x+30, self.addWaterButton.frame.origin.y - 50);
+//    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//    point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
+//    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//}
+//
+//- (void)fanIn {
+//
+//    CGPoint point = self.addWaterButton.center;
+//
+//    UISnapBehavior *snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton1 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton2 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//    snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
+//    [self.animator addBehavior:snapBehavior];
+//}
 
 #pragma mark // Background Effect Method
 - (void)backgroundEffect {
@@ -365,10 +361,10 @@
     AVCaptureDeviceInput *frontFacingCameraDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:frontCamera error:&error];
 
     if (!error) {
-        if ([session canAddInput:frontFacingCameraDeviceInput])
+        if ([session canAddInput:frontFacingCameraDeviceInput]) {
             [session addInput:frontFacingCameraDeviceInput];
-        else {
-            NSLog(@"swapping to background image");
+            self.blurredBackground.hidden = TRUE;
+        } else {
             self.blurredBackground.hidden = FALSE;
         }
     }

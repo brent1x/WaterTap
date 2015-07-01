@@ -34,7 +34,7 @@
     [[UISegmentedControl appearance] setTintColor:myBlueColor];
 
     // nav bar settings
-    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Regular" size:24.0], NSFontAttributeName, nil]];
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:myGrayColor, NSForegroundColorAttributeName, [UIFont fontWithName:@"Calibre-Medium" size:22.0], NSFontAttributeName, nil]];
     [[UINavigationBar appearance] setBarTintColor:myBlueColor];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTintColor:myGrayColor];
