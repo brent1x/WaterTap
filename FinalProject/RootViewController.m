@@ -149,6 +149,7 @@
     [self addWaterLevel:[NSNumber numberWithFloat:(amountToAdd)]];
     [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:[NSNumber numberWithFloat:-1*amountToAdd]];
 
+
     //check and switch the state of the animation so the buttons pop back in
     [self toggleFan];
 }
@@ -179,6 +180,12 @@
 
     self.shouldShowGoalExceededAlert = YES;
     [self checkIfGoalHasBeenMet];
+
+    if ([amountFloat intValue] <= 0) {
+
+        NSNumber *redoAmount = [NSNumber numberWithFloat:([amountFloat intValue] * -1)];
+        [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:redoAmount];
+    }
 
 
 //            NSString *messageString = @"Get thirsty and get to gulpin'";
