@@ -196,7 +196,7 @@
 
 - (IBAction)onCalculateTapped:(id)sender {
     // this method calculates the recommended amount of water the user should consume per day
-
+    [self.goButton setUserInteractionEnabled:YES];
     // normalizing for climate
     double climateMultiplier = 1;
     if (self.climateSelectedSegment.selectedSegmentIndex == 0) {
@@ -211,7 +211,9 @@
     if ([self.weightTextField.text doubleValue] < 1) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh noes!" message:@"Please enter actual numbers to calculate your daily goal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([self.weightTextField.text doubleValue] <= 100) {
+        [self.goButton setUserInteractionEnabled:NO];
+    }
+    else if ([self.weightTextField.text doubleValue] <= 100) {
         weightMultiplier = 1.1;
     } else if ([self.weightTextField.text doubleValue] > 100 && [self.weightTextField.text doubleValue] <= 125) {
         weightMultiplier = 1.075;
