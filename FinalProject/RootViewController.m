@@ -357,8 +357,6 @@
                 NSLog(@"Device position : front");
                 frontCamera = device;
             }
-        } else {
-            self.blurredBackground.hidden = FALSE;
         }
     }
 
@@ -367,10 +365,11 @@
     AVCaptureDeviceInput *frontFacingCameraDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:frontCamera error:&error];
 
     if (!error) {
-        if ([session canAddInput:frontFacingCameraDeviceInput])
+        if ([session canAddInput:frontFacingCameraDeviceInput]) {
             [session addInput:frontFacingCameraDeviceInput];
-        else {
-            // NSLog(@"swapping to background image");
+            self.blurredBackground.hidden = TRUE;
+        } else {
+            self.blurredBackground.hidden = FALSE;
         }
     }
 
