@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		038A1FB311C8F3D3CF741D5C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F209540F572FF538EA6D0CC /* libPods.a */; };
+		1284BD201B434B9E004ACF6E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1284BD1F1B434B9E004ACF6E /* HealthKit.framework */; };
 		1288532B1B33382A00E2CA6D /* TrackerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1288532A1B33382A00E2CA6D /* TrackerViewController.m */; };
 		12CD3CC11B33911C005A0291 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CD3CBE1B33911B005A0291 /* FBSDKMessengerShareKit.framework */; };
 		12CD3CC41B3393D7005A0291 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CD3CC31B3393D7005A0291 /* User.m */; };
@@ -46,7 +47,6 @@
 		849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */; };
 		849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740831B338B3C0039DCA2 /* SettingsViewController.m */; };
 		84F019EA1B40C2080000377E /* Calibre-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84F019E91B40C2080000377E /* Calibre-Medium.ttf */; };
-		9A11AB321B3615D100F16CE5 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A11AB311B3615D100F16CE5 /* HealthKit.framework */; };
 		9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FDBEA1B36620F00266247 /* ContainerButton.m */; };
 		9A9719DE1B33BCC80046A7E1 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */; };
 		9A9719DF1B33BCC80046A7E1 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DC1B33BCC80046A7E1 /* FBSDKLoginKit.framework */; };
@@ -65,6 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1284BD1F1B434B9E004ACF6E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		128853291B33382A00E2CA6D /* TrackerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackerViewController.h; sourceTree = "<group>"; };
 		1288532A1B33382A00E2CA6D /* TrackerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackerViewController.m; sourceTree = "<group>"; };
 		12CD3CBE1B33911B005A0291 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		84AAEFD21B432290001672E0 /* Water Tap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Water Tap.entitlements"; sourceTree = "<group>"; };
 		84F019E91B40C2080000377E /* Calibre-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calibre-Medium.ttf"; sourceTree = "<group>"; };
-		9A11AB311B3615D100F16CE5 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		9A8FDBE91B36620F00266247 /* ContainerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerButton.h; sourceTree = "<group>"; };
 		9A8FDBEA1B36620F00266247 /* ContainerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerButton.m; sourceTree = "<group>"; };
 		9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -143,6 +143,7 @@
 				8497406E1B3350E50039DCA2 /* Social.framework in Frameworks */,
 				9A9719DE1B33BCC80046A7E1 /* FBSDKCoreKit.framework in Frameworks */,
 				8497406C1B3350E00039DCA2 /* Accounts.framework in Frameworks */,
+				1284BD201B434B9E004ACF6E /* HealthKit.framework in Frameworks */,
 				9A9719DF1B33BCC80046A7E1 /* FBSDKLoginKit.framework in Frameworks */,
 				8497406A1B3350CD0039DCA2 /* libsqlite3.0.dylib in Frameworks */,
 				12CD3CC11B33911C005A0291 /* FBSDKMessengerShareKit.framework in Frameworks */,
@@ -158,7 +159,6 @@
 				849740531B33504A0039DCA2 /* ParseCrashReporting.framework in Frameworks */,
 				849740551B33504A0039DCA2 /* ParseFacebookUtilsV4.framework in Frameworks */,
 				849740521B33504A0039DCA2 /* Parse.framework in Frameworks */,
-				9A11AB321B3615D100F16CE5 /* HealthKit.framework in Frameworks */,
 				849740561B33504A0039DCA2 /* ParseUI.framework in Frameworks */,
 				038A1FB311C8F3D3CF741D5C /* libPods.a in Frameworks */,
 			);
@@ -300,7 +300,7 @@
 		CB5EF5A014DC981F5A5C9B07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9A11AB311B3615D100F16CE5 /* HealthKit.framework */,
+				1284BD1F1B434B9E004ACF6E /* HealthKit.framework */,
 				849740771B335AA30039DCA2 /* libstdc++.6.0.9.dylib */,
 				849740751B3358780039DCA2 /* libz.1.1.3.dylib */,
 				9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */,
