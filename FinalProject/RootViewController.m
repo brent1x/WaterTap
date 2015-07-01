@@ -42,6 +42,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *goalExceededLabel;
 @property BOOL shouldShowGoalExceededAlert;
 
+
+//this property is to check if the goal has changed in the settings view controller
+@property BOOL didGoalChange;
 @end
 
 @implementation RootViewController
@@ -81,21 +84,21 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self saveGoalToUserDefaults];
-    [self loadGoalFromUserDefaults];
-    [self setWaterHeightFromTotalConsumedToday];
-    self.shouldShowGoalExceededAlert = YES;
-    self.goalExceededLabel.hidden = YES;
-    [self dateCheck];
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
+
     [self checkIfGoalHasBeenMet];
-    
+
+    [self loadGoalFromUserDefaults];
+    [self dateCheck];
+    [self setWaterHeightFromTotalConsumedToday];
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
 
     if ([bottleOneAmount intValue] > 0) {
@@ -123,6 +126,8 @@
     [self resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    self.shouldShowGoalExceededAlert = NO;
+    self.goalExceededLabel.hidden = YES;
 }
 
 
@@ -176,8 +181,6 @@
     [self checkIfGoalHasBeenMet];
 
 
-
-
 //            NSString *messageString = @"Get thirsty and get to gulpin'";
 //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
 //            [alert show];
@@ -221,6 +224,10 @@
     else if (([totalConsumedToday floatValue]/self.currentDailyGoal) >= 1) {
         self.goalExceededLabel.hidden = NO;
     }
+
+    else {
+        self.goalExceededLabel.hidden = YES;
+    }
 }
 #pragma mark // Date Check Methods
 
@@ -255,6 +262,7 @@
 #pragma mark // Daily Goal Methods
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
+
     self.currentDailyGoal = dailyGoalAmount;
     [self saveGoalToUserDefaults];
     self.shouldShowGoalExceededAlert = YES;
