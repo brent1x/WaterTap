@@ -127,11 +127,11 @@
     NSLengthFormatter *lengthFormatter = [[NSLengthFormatter alloc] init];
     lengthFormatter.unitStyle = NSFormattingUnitStyleLong;
 
-    NSLengthFormatterUnit heightFormatterUnit = NSLengthFormatterUnitInch;
-    NSString *heightUnitString = [lengthFormatter unitStringFromValue:10 unit:heightFormatterUnit];
-    NSString *localizedHeightUnitDescriptionFormat = NSLocalizedString(@"Height (%@)", nil);
+    // NSLengthFormatterUnit heightFormatterUnit = NSLengthFormatterUnitInch;
+    // NSString *heightUnitString = [lengthFormatter unitStringFromValue:10 unit:heightFormatterUnit];
+    // NSString *localizedHeightUnitDescriptionFormat = NSLocalizedString(@"Height (%@)", nil);
 
-    self.heightTextField.text = [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
+    self.heightTextField.text = @"Importing..."; // [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
 
     HKQuantityType *heightType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
 
@@ -163,11 +163,11 @@
     NSMassFormatter *massFormatter = [[NSMassFormatter alloc] init];
     massFormatter.unitStyle = NSFormattingUnitStyleLong;
 
-    NSMassFormatterUnit weightFormatterUnit = NSMassFormatterUnitPound;
-    NSString *weightUnitString = [massFormatter unitStringFromValue:10 unit:weightFormatterUnit];
-    NSString *localizedWeightUnitDescriptionFormat = NSLocalizedString(@"Weight (%@)", nil);
+    // NSMassFormatterUnit weightFormatterUnit = NSMassFormatterUnitPound;
+    // NSString *weightUnitString = [massFormatter unitStringFromValue:10 unit:weightFormatterUnit];
+    // NSString *localizedWeightUnitDescriptionFormat = NSLocalizedString(@"Weight (%@)", nil);
 
-    self.weightTextField.text = [NSString stringWithFormat:localizedWeightUnitDescriptionFormat, weightUnitString];
+    self.weightTextField.text = @"Importing..."; // [NSString stringWithFormat:localizedWeightUnitDescriptionFormat, weightUnitString];
 
     // Query to get the user's latest weight, if it exists.
     HKQuantityType *weightType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
