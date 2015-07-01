@@ -157,7 +157,7 @@
     [query orderByDescending:@"consumedAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
         if (!error) {
-            if ([events firstObject] < self.firstDate) {
+            if ([events firstObject] && [events firstObject] < self.firstDate) {
                 self.firstDate = [events firstObject];
                 [self.collectionView reloadData];
             }
@@ -167,7 +167,11 @@
         }
     }];
 
-    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+    if(screenHeight < 667) {
+         self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 110, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+    } else {
+         self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 130, 0);//Extra space on bottom because it wouldn't scroll all the way down and the navigation title wouldn't change for current month
+    }
 
     self.delegate = self;
 
@@ -228,25 +232,26 @@
         }
     }];
 
-    NSLog(@"Magic Dictionary: %@", self.waterHeightProportionsForDays);
-
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
 
 
+//    NSInteger section = [self numberOfSectionsInCollectionView:self.collectionView] - 1;
+//    NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
+//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+//    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:lastIndexPath];
+//    CGRect rect = [attributes frame];
+//    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, rect.origin.y)];
+//
+//    self.navigationController.navigationBarHidden = YES;
+//    [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+
     NSInteger section = [self numberOfSectionsInCollectionView:self.collectionView] - 1;
     NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
     NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
-    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:lastIndexPath];
-    CGRect rect = [attributes frame];
-    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.origin.x, rect.origin.y)];
-
-    self.navigationController.navigationBarHidden = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-
-
+    [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
 
 }
 
@@ -264,6 +269,10 @@
 
 - (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSInteger)index {
     return [[self.waterIntakeValues objectAtIndex:index] doubleValue];
+}
+
+- (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph {
+    return @" ml";
 }
 
 #pragma mark - PDTSimpleLineGraph methods to override
@@ -452,49 +461,55 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
 
     [super scrollViewDidScroll:scrollView];
-    if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
-        self.navigationItem.title = self.overlayView.text;
+//    if (![self.navigationItem.title isEqualToString:self.overlayView.text]) {
+//        self.navigationItem.title = self.overlayView.text;
+//    }
+
+    CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
+    NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
+    UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
+    PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
+    if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
+        self.navigationItem.title = [header.titleLabel.text capitalizedString];
     }
-
-
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-//    if (velocity.y == 0.f) {
-//        // A 0 velocity means the user dragged and stopped (no flick)
-//        // In this case, tell the scroll view to animate to the closest index
-//        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
-//        NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
-//        UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
-//
-//        PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
-//        CGRect rect = [lastSection frame];
-//        if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
-//            [UIView animateWithDuration:0.5 animations:^{
-//                [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
-//            } completion:^(BOOL finished) {
-//                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
-//                [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
-//            }];
-//        }
-//    } else if (velocity.y > 0.f) {
-//        // User scrolled downwards
-//        // Evaluate to the nearest index
-//
-//    } else {
-//        // User scrolled upwards
-//        // Evaluate to the nearest index
-//        //        [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
-//        
-//    }
+    if (velocity.y == 0.f) {
+        // A 0 velocity means the user dragged and stopped (no flick)
+        // In this case, tell the scroll view to animate to the closest index
+        CGRect serachRect = CGRectMake(self.collectionView.bounds.origin.x, self.collectionView.bounds.origin.y, self.collectionView.bounds.size.width, (self.collectionView.bounds.size.height / 1.5));
+        NSArray *layoutsInSearchRect = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:serachRect];
+        UICollectionViewLayoutAttributes *lastSection = [layoutsInSearchRect lastObject];
+
+        PDTSimpleCalendarViewHeader *header = (PDTSimpleCalendarViewHeader *)[super collectionView:self.collectionView viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:lastSection.indexPath];
+        CGRect rect = [lastSection frame];
+        if (lastSection.representedElementKind == UICollectionElementKindSectionHeader) {
+            [UIView animateWithDuration:0.5 animations:^{
+                [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
+            } completion:^(BOOL finished) {
+                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
+                [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
+            }];
+        }
+    } else if (velocity.y > 0.f) {
+        // User scrolled downwards
+        // Evaluate to the nearest index
+
+    } else {
+        // User scrolled upwards
+        // Evaluate to the nearest index
+        //        [scrollView setContentOffset:CGPointMake(0, self.sectionHeaderViewDisplayed.frame.origin.y) animated:YES];
+        
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    [self hydrateDataSetsForMonth:self.navigationController.title];
+    [self hydrateDataSetsForMonth:self.navigationController.title];
 }
 
 
