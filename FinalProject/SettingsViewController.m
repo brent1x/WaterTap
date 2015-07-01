@@ -88,7 +88,6 @@
     // this line checks to see if a user has set up custom reminders
     [self switchLogic];
 
-
     // this line will load the daily goal saved from the Recommendation (aka HealthKit) view controller
     [self loadGoalFromUserDefaults];
 
@@ -99,16 +98,16 @@
         self.segmentedUnitSelector.selectedSegmentIndex = 1;
     }
 
-    // this line checks to see if a user has previously received a recommendation
-//    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
-//    if (self.recoReceived == TRUE) {
-//        self.dailyGoalTextField.enabled = FALSE;
-//    }
-
     [self recommendationSwitchLogic];
 
     // this line check to see if a user has set up custom water containers
     [self customContainerSwitchLogic];
+
+    // this line checks to see if a user has previously received a recommendation
+    //    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
+    //    if (self.recoReceived == TRUE) {
+    //        self.dailyGoalTextField.enabled = FALSE;
+    //    }
 }
 
 #pragma mark // Unwind from Segue

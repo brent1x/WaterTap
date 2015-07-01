@@ -221,7 +221,6 @@
                 }
             }
             [self.collectionView reloadData];
-            NSLog(@"Magic Dictionary: %@", self.waterHeightProportionsForDays);
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -250,13 +249,13 @@
     [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
 
 //    NSLog(@"graphView datevaluesbackup: %@", self.dateValuesBackup);
-    NSLog(@"graphView datevalues: %@", self.dateValues);
+//    NSLog(@"graphView datevalues: %@", self.dateValues);
 //    NSLog(@"graphView waterIntakeValuesbackup: %@", self.waterIntakeValuesBackup);
-    NSLog(@"graphView waterIntakeValues: %@", self.waterIntakeValues);
+//    NSLog(@"graphView waterIntakeValues: %@", self.waterIntakeValues);
 
 
 
-    NSLog(@"dictionary: %@" , self.waterHeightProportionsForDays);
+//    NSLog(@"dictionary: %@" , self.waterHeightProportionsForDays);
 
 }
 
@@ -356,12 +355,6 @@
             [self.waterIntakeValues addObject:[NSNumber numberWithFloat:dayTotal]];
             self.totalNumber += (int)dayTotal;
             if (shouldReload) {
-                if (self.waterIntakeValues.count == 1) {
-                    NSLog(@"PROBELEEEM");
-                    NSLog(@"waterintakeValues %@", self.waterIntakeValues);
-                    NSLog(@"datevalues %@", self.dateValues);
-                }
-
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
                 if ([unitTypeSelected isEqualToString:@"milliliter"]) {
@@ -505,7 +498,6 @@
             [UIView animateWithDuration:0.5 animations:^{
                 [scrollView setContentOffset:CGPointMake(0, rect.origin.y) animated:YES];
             } completion:^(BOOL finished) {
-                NSLog(@"header title: %@", [header.titleLabel.text capitalizedString]);
                 [self hydrateDataSetsForMonth:[header.titleLabel.text capitalizedString]];
             }];
         }

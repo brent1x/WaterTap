@@ -188,22 +188,19 @@
         [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:redoAmount];
     }
 
-
-//            NSString *messageString = @"Get thirsty and get to gulpin'";
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
-//            [alert show];
-
-//
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
 
     [self loadGoalFromUserDefaults];
+
+//    NSLog(@"loadGoalFromUserDefaults %@", [self loadGoalFromUserDefaults]);
     [self dateCheck];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    return (([totalConsumedToday floatValue] * self.view.frame.size.height)/self.currentDailyGoal);
+    NSLog(@"totalConsumedToday %@", totalConsumedToday);
+    return (([totalConsumedToday floatValue] * self.initialViewHeight)/self.currentDailyGoal);
 
 }
 
@@ -211,7 +208,9 @@
 
     float waterHeight =  [self getWaterHeightFromTotalConsumedToday];
     self.waterlevelTopConstraint.constant = self.initialViewHeight - waterHeight;
-
+    NSLog(@"waterLevelTopConstraint.constant %f", self.waterlevelTopConstraint.constant);
+    NSLog(@"initialViewHeight %f", self.initialViewHeight);
+    NSLog(@"waterheight %f", waterHeight);
 }
 
 - (void)checkIfGoalHasBeenMet {
