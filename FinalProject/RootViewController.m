@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
+@property (weak, nonatomic) IBOutlet UIImageView *blurredBackground;
 @property NSMutableArray *menuButtons;
 
 //properties for animation for the button
@@ -53,6 +54,8 @@
     [super viewDidLoad];
     [self backgroundEffect];
 
+    self.blurredBackground.hidden = TRUE;
+
     [self loadGoalFromUserDefaults];
     
     if (self.currentDailyGoal == 0) {
@@ -62,7 +65,7 @@
 
     [self dateCheck];
 
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = TRUE;
 
     self.initialViewHeight = CGRectGetHeight(self.view.frame);
 
@@ -125,7 +128,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
-
 #pragma mark // Water Level Methods
 
 - (IBAction)onAddWaterButtonTapped:(id)sender {
@@ -145,11 +147,10 @@
     [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:[NSNumber numberWithFloat:-1*amountToAdd]];
 
     //check and switch the state of the animation so the buttons pop back in
-    [self toggleFan];
+     [self toggleFan];
 }
 
 -(float)convertAmountToAddAndReturnWaterConstant:(float)amountConsumed {
-
     return (-1*(amountConsumed * self.view.frame.size.height)/self.currentDailyGoal);
 }
 
@@ -308,7 +309,6 @@
     point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
 }
 
 - (void)fanIn {
@@ -321,7 +321,6 @@
     [self.animator addBehavior:snapBehavior];
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-    
 }
 
 #pragma mark // Background Effect Method
@@ -356,7 +355,8 @@
         if ([session canAddInput:frontFacingCameraDeviceInput])
             [session addInput:frontFacingCameraDeviceInput];
         else {
-            NSLog(@"Couldn't add front facing video input");
+            NSLog(@"swapping to background image");
+            self.blurredBackground.hidden = FALSE;
         }
     }
 
