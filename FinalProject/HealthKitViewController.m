@@ -21,9 +21,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *climateSelectedSegment;
 @property (weak, nonatomic) IBOutlet UILabel *calculateTextField;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
-@property double mlMultiplier;
 @property (weak, nonatomic) IBOutlet UILabel *suggestedGoalLabel;
 @property (weak, nonatomic) IBOutlet UIView *suggestedGoalView;
+@property double mlMultiplier;
 
 @end
 
@@ -127,11 +127,11 @@
     NSLengthFormatter *lengthFormatter = [[NSLengthFormatter alloc] init];
     lengthFormatter.unitStyle = NSFormattingUnitStyleLong;
 
-    NSLengthFormatterUnit heightFormatterUnit = NSLengthFormatterUnitInch;
-    NSString *heightUnitString = [lengthFormatter unitStringFromValue:10 unit:heightFormatterUnit];
-    NSString *localizedHeightUnitDescriptionFormat = NSLocalizedString(@"Height (%@)", nil);
+    // NSLengthFormatterUnit heightFormatterUnit = NSLengthFormatterUnitInch;
+    // NSString *heightUnitString = [lengthFormatter unitStringFromValue:10 unit:heightFormatterUnit];
+    // NSString *localizedHeightUnitDescriptionFormat = NSLocalizedString(@"Height (%@)", nil);
 
-    self.heightTextField.text = [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
+    self.heightTextField.text = @"Importing..."; // [NSString stringWithFormat:localizedHeightUnitDescriptionFormat, heightUnitString];
 
     HKQuantityType *heightType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
 
@@ -163,11 +163,11 @@
     NSMassFormatter *massFormatter = [[NSMassFormatter alloc] init];
     massFormatter.unitStyle = NSFormattingUnitStyleLong;
 
-    NSMassFormatterUnit weightFormatterUnit = NSMassFormatterUnitPound;
-    NSString *weightUnitString = [massFormatter unitStringFromValue:10 unit:weightFormatterUnit];
-    NSString *localizedWeightUnitDescriptionFormat = NSLocalizedString(@"Weight (%@)", nil);
+    // NSMassFormatterUnit weightFormatterUnit = NSMassFormatterUnitPound;
+    // NSString *weightUnitString = [massFormatter unitStringFromValue:10 unit:weightFormatterUnit];
+    // NSString *localizedWeightUnitDescriptionFormat = NSLocalizedString(@"Weight (%@)", nil);
 
-    self.weightTextField.text = [NSString stringWithFormat:localizedWeightUnitDescriptionFormat, weightUnitString];
+    self.weightTextField.text = @"Importing..."; // [NSString stringWithFormat:localizedWeightUnitDescriptionFormat, weightUnitString];
 
     // Query to get the user's latest weight, if it exists.
     HKQuantityType *weightType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
@@ -196,7 +196,7 @@
 
 - (IBAction)onCalculateTapped:(id)sender {
     // this method calculates the recommended amount of water the user should consume per day
-
+    [self.goButton setUserInteractionEnabled:YES];
     // normalizing for climate
     double climateMultiplier = 1;
     if (self.climateSelectedSegment.selectedSegmentIndex == 0) {
@@ -207,7 +207,13 @@
 
     // normalizing for weight
     double weightMultiplier;
-    if ([self.weightTextField.text doubleValue] <= 100) {
+
+    if ([self.weightTextField.text doubleValue] < 1) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh noes!" message:@"Please enter actual numbers to calculate your daily goal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.goButton setUserInteractionEnabled:NO];
+    }
+    else if ([self.weightTextField.text doubleValue] <= 100) {
         weightMultiplier = 1.1;
     } else if ([self.weightTextField.text doubleValue] > 100 && [self.weightTextField.text doubleValue] <= 125) {
         weightMultiplier = 1.075;
@@ -225,6 +231,12 @@
         weightMultiplier = 0.925;
     } else if ([self.weightTextField.text doubleValue] > 300) {
         weightMultiplier = 0.9;
+    }
+
+    // the following 2 checks are implemented to prevent jokers from trying to break the app with negative numbers
+    if ([self.heightTextField.text doubleValue] < 0 || [self.strenousActivityTextField.text doubleValue] < 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh noes!" message:@"Please enter actual numbers to calculate your daily goal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
     }
 
     // this section checks whether they have mL set as the preferred unit type; if so I convert from ounces to mLs

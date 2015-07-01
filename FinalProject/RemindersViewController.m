@@ -26,10 +26,8 @@
     self.navigationItem.title = @"Reminders";
 
     UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
-    UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
 
     self.datePicker.backgroundColor = [UIColor whiteColor];
-    [self.datePicker setValue:myBlueColor forKeyPath:@"textColor"];
 
     self.view.backgroundColor = myGrayColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear All" style:UIBarButtonItemStylePlain target:self action:@selector(killAllReminders:)];

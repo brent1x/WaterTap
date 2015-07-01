@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 @property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
+@property (weak, nonatomic) IBOutlet UIImageView *blurredBackground;
 @property NSMutableArray *menuButtons;
 
 //properties for animation for the button
@@ -42,6 +43,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *goalExceededLabel;
 @property BOOL shouldShowGoalExceededAlert;
 
+
+//this property is to check if the goal has changed in the settings view controller
+@property BOOL didGoalChange;
 @end
 
 @implementation RootViewController
@@ -53,6 +57,8 @@
     [super viewDidLoad];
     [self backgroundEffect];
 
+    self.blurredBackground.hidden = TRUE;
+
     [self loadGoalFromUserDefaults];
     
     if (self.currentDailyGoal == 0) {
@@ -62,7 +68,7 @@
 
     [self dateCheck];
 
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = TRUE;
 
     self.initialViewHeight = CGRectGetHeight(self.view.frame);
 
@@ -81,33 +87,33 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self saveGoalToUserDefaults];
-    [self loadGoalFromUserDefaults];
-    [self setWaterHeightFromTotalConsumedToday];
-    self.shouldShowGoalExceededAlert = YES;
-    self.goalExceededLabel.hidden = YES;
-    [self dateCheck];
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
+
     [self checkIfGoalHasBeenMet];
 
-    
+    [self loadGoalFromUserDefaults];
+    [self dateCheck];
+    [self setWaterHeightFromTotalConsumedToday];
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateCheck) name:UIApplicationWillEnterForegroundNotification object:nil];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
     NSString *bottleOneAmount = [userDefaults objectForKey:kNSUserDefaultsContainerOneSize];
-    NSString *bottleTwoAmount = [userDefaults objectForKey:kNSUserDefaultsContainerTwoSize];
 
-//    self.menuButton1.customAmount = [bottleTwoAmount intValue];
+    if ([bottleOneAmount intValue] > 0) {
+        self.menuButton1.customAmount = [bottleOneAmount intValue];
+    } else {
+        self.menuButton1.customAmount = 8;
+    }
+
+    //    self.menuButton1.customAmount = [bottleTwoAmount intValue];
     self.menuButton2.customAmount = 10;
-    self.menuButton1.customAmount = 10;
     self.menuButton3.customAmount = 10;
-//    self.menuButton3.customAmount = [bottleOneAmount intValue];
-
-
-
+    //    self.menuButton3.customAmount = [bottleOneAmount intValue];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -123,8 +129,9 @@
     [self resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    self.shouldShowGoalExceededAlert = NO;
+    self.goalExceededLabel.hidden = YES;
 }
-
 
 #pragma mark // Water Level Methods
 
@@ -144,12 +151,12 @@
     [self addWaterLevel:[NSNumber numberWithFloat:(amountToAdd)]];
     [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:[NSNumber numberWithFloat:-1*amountToAdd]];
 
+
     //check and switch the state of the animation so the buttons pop back in
-    [self toggleFan];
+     [self toggleFan];
 }
 
 -(float)convertAmountToAddAndReturnWaterConstant:(float)amountConsumed {
-
     return (-1*(amountConsumed * self.view.frame.size.height)/self.currentDailyGoal);
 }
 
@@ -175,6 +182,18 @@
     self.shouldShowGoalExceededAlert = YES;
     [self checkIfGoalHasBeenMet];
 
+    if ([amountFloat intValue] <= 0) {
+
+        NSNumber *redoAmount = [NSNumber numberWithFloat:([amountFloat intValue] * -1)];
+        [self.undoManager registerUndoWithTarget:self selector:@selector(addWaterLevel:) object:redoAmount];
+    }
+
+
+//            NSString *messageString = @"Get thirsty and get to gulpin'";
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
+//            [alert show];
+
+//
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
@@ -213,6 +232,10 @@
     else if (([totalConsumedToday floatValue]/self.currentDailyGoal) >= 1) {
         self.goalExceededLabel.hidden = NO;
     }
+
+    else {
+        self.goalExceededLabel.hidden = YES;
+    }
 }
 #pragma mark // Date Check Methods
 
@@ -246,6 +269,7 @@
 #pragma mark // Daily Goal Methods
 
 - (void)dailyGoalChanged:(int)dailyGoalAmount {
+
     self.currentDailyGoal = dailyGoalAmount;
     [self saveGoalToUserDefaults];
     self.shouldShowGoalExceededAlert = YES;
@@ -263,20 +287,6 @@
     self.currentDailyGoal = [goalFromDefault intValue];
 }
 
-//- (void)checkForZeroGoal {
-//    if (self.currentDailyGoal == 0) {
-//        self.currentDailyGoal = 64;
-//
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"You can't have a goal of zero." preferredStyle:UIAlertControllerStyleAlert];
-//
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Go set a goal." style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//            [self performSegueWithIdentifier:@"settingsSegue" sender:self];
-//        }];
-//
-//        [alertController addAction:action];
-//        [self presentViewController:alertController animated:YES completion:nil];
-//    }
-//}
 #pragma mark // Segue Method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -313,7 +323,6 @@
     point = CGPointMake(self.addWaterButton.frame.origin.x - 40, self.addWaterButton.frame.origin.y - 50);
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-
 }
 
 - (void)fanIn {
@@ -326,7 +335,6 @@
     [self.animator addBehavior:snapBehavior];
     snapBehavior = [[UISnapBehavior alloc] initWithItem:self.menuButton3 snapToPoint:point];
     [self.animator addBehavior:snapBehavior];
-    
 }
 
 #pragma mark // Background Effect Method
@@ -361,7 +369,8 @@
         if ([session canAddInput:frontFacingCameraDeviceInput])
             [session addInput:frontFacingCameraDeviceInput];
         else {
-            NSLog(@"Couldn't add front facing video input");
+            NSLog(@"swapping to background image");
+            self.blurredBackground.hidden = FALSE;
         }
     }
 

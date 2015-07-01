@@ -62,15 +62,32 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
+
+    if ([self.dailyGoalTextField.text isEqualToString:@""] || ([self.dailyGoalTextField.text intValue] <= 0)) {
+
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"Please set a real goal. Kthx." preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+
+        [alertController addAction:action];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+
+    else {
+        [textField resignFirstResponder];
+    }
+
     return YES;
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated {
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     // this line checks to see if a user has set up custom reminders
     [self switchLogic];
+
 
     // this line will load the daily goal saved from the Recommendation (aka HealthKit) view controller
     [self loadGoalFromUserDefaults];
@@ -83,10 +100,10 @@
     }
 
     // this line checks to see if a user has previously received a recommendation
-    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
-    if (self.recoReceived == TRUE) {
-        self.dailyGoalTextField.enabled = FALSE;
-    }
+//    self.recoReceived = [userDefaults boolForKey:kNSUserReceivedRecommendation];
+//    if (self.recoReceived == TRUE) {
+//        self.dailyGoalTextField.enabled = FALSE;
+//    }
 
     [self recommendationSwitchLogic];
 
@@ -107,6 +124,33 @@
 }
 
 #pragma mark // Business Logic
+
+- (IBAction)onDailyGoalEditingDidBegin:(UITextField *)sender {
+    self.navigationItem.hidesBackButton = YES;
+    [self.segmentedUnitSelector setUserInteractionEnabled:NO];
+    [self.customContainerSwitch setUserInteractionEnabled:NO];
+    [self.customContainerButton setUserInteractionEnabled:NO];
+    [self.notificationButton setUserInteractionEnabled:NO];
+    [self.notifSwitch setUserInteractionEnabled:NO];
+    [self.recoButton setUserInteractionEnabled:NO];
+    [self.recoSwitch setUserInteractionEnabled:NO];
+//      [self setEditing:YES animated:YES];
+//    [self.view setUserInteractionEnabled:NO];
+
+}
+
+- (IBAction)onDailyGoalEditingDidFinish:(UITextField *)sender {
+       self.navigationItem.hidesBackButton = NO;
+//     [self setEditing:NO animated:YES];
+//     [self.view setUserInteractionEnabled:YES];
+    [self.segmentedUnitSelector setUserInteractionEnabled:YES];
+    [self.customContainerSwitch setUserInteractionEnabled:YES];
+    [self.customContainerButton setUserInteractionEnabled:YES];
+    [self.notificationButton setUserInteractionEnabled:YES];
+    [self.notifSwitch setUserInteractionEnabled:YES];
+    [self.recoButton setUserInteractionEnabled:YES];
+    [self.recoSwitch setUserInteractionEnabled:YES];
+}
 
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     // this method checks whether or not the daily goal changed. if it did, it lets its delegate (RootVC) know
@@ -200,7 +244,7 @@
     } else {
         self.recoSwitch.on = FALSE;
         [userDefaults setBool:FALSE forKey:kNSUserReceivedRecommendation];
-        self.dailyGoalTextField.enabled = YES;
+        // self.dailyGoalTextField.enabled = YES;
         self.recoButton.hidden = TRUE;
     }
 }
