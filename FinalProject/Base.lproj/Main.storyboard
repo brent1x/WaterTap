@@ -878,6 +878,8 @@
                                         </variation>
                                         <connections>
                                             <action selector="onDailyGoalDidChange:" destination="0ka-N1-EvE" eventType="editingChanged" id="XHk-mt-o8O"/>
+                                            <action selector="onDailyGoalEditingDidBegin:" destination="0ka-N1-EvE" eventType="editingDidBegin" id="tGd-ys-s6h"/>
+                                            <action selector="onDailyGoalEditingDidFinish:" destination="0ka-N1-EvE" eventType="editingDidEnd" id="LbN-5D-6ZF"/>
                                             <outlet property="delegate" destination="0ka-N1-EvE" id="ZcD-cy-8pS"/>
                                         </connections>
                                     </textField>
