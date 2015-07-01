@@ -2033,25 +2033,6 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Here you can change your default container size." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mgl-Uf-m2n">
-                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="HhA-bU-gMx"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Calibre-Medium" family="Calibre" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.38832387328147888" blue="0.58781170845031738" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="HhA-bU-gMx"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="HhA-bU-gMx"/>
-                                    </mask>
-                                </variation>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Br-VI-pbB">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <constraints>
@@ -2060,7 +2041,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Calibre-Regular" family="Calibre" pointSize="17"/>
                                 <state key="normal" title="Tap to Update Container">
-                                    <color key="titleColor" red="0.020108245313167572" green="0.5902026891708374" blue="0.88936710357666016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -2079,56 +2060,76 @@
                                     <action selector="containerOneAdded:" destination="vL5-Ca-gFJ" eventType="touchUpInside" id="5Lb-6z-F9z"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Here you can set the size of your water container. The default size is set to 8 ounces." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mgl-Uf-m2n">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Dcf-Ox-BJg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Calibre-Medium" family="Calibre" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.38832387328147888" blue="0.58781170845031738" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Dcf-Ox-BJg"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Dcf-Ox-BJg"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="trailing" secondItem="f8O-sa-6vA" secondAttribute="trailingMargin" id="1XL-f0-OXU"/>
-                            <constraint firstItem="JIj-wk-TZL" firstAttribute="top" secondItem="mgl-Uf-m2n" secondAttribute="bottom" constant="4" id="9FC-uH-Qia"/>
+                            <constraint firstItem="JIj-wk-TZL" firstAttribute="top" secondItem="mgl-Uf-m2n" secondAttribute="bottom" constant="4" id="004-Kz-p9W"/>
+                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="top" secondItem="P6i-fU-y6P" secondAttribute="bottom" constant="25" id="1ha-Le-fjQ"/>
                             <constraint firstItem="4Br-VI-pbB" firstAttribute="top" secondItem="JIj-wk-TZL" secondAttribute="bottom" constant="16" id="B7m-Vd-Tvs"/>
-                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="top" secondItem="P6i-fU-y6P" secondAttribute="bottom" constant="25" id="Q4V-r2-Pc2"/>
                             <constraint firstAttribute="centerX" secondItem="4Br-VI-pbB" secondAttribute="centerX" id="S6B-bL-bOD"/>
+                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="trailing" secondItem="f8O-sa-6vA" secondAttribute="trailingMargin" id="Wtq-8z-spr"/>
                             <constraint firstAttribute="trailing" secondItem="JIj-wk-TZL" secondAttribute="trailing" id="ZED-nf-NMO"/>
                             <constraint firstItem="JIj-wk-TZL" firstAttribute="leading" secondItem="f8O-sa-6vA" secondAttribute="leading" id="uIt-uL-CYQ"/>
-                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="leading" secondItem="f8O-sa-6vA" secondAttribute="leadingMargin" id="yle-mK-PTK"/>
+                            <constraint firstItem="mgl-Uf-m2n" firstAttribute="leading" secondItem="f8O-sa-6vA" secondAttribute="leadingMargin" id="vjU-NB-u2L"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="JIj-wk-TZL"/>
-                                <exclude reference="mgl-Uf-m2n"/>
                                 <exclude reference="4Br-VI-pbB"/>
+                                <exclude reference="mgl-Uf-m2n"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="1XL-f0-OXU"/>
-                                <exclude reference="Q4V-r2-Pc2"/>
-                                <exclude reference="yle-mK-PTK"/>
-                                <exclude reference="B7m-Vd-Tvs"/>
-                                <exclude reference="S6B-bL-bOD"/>
-                                <exclude reference="9FC-uH-Qia"/>
+                                <exclude reference="1ha-Le-fjQ"/>
+                                <exclude reference="Wtq-8z-spr"/>
+                                <exclude reference="vjU-NB-u2L"/>
+                                <exclude reference="004-Kz-p9W"/>
                                 <exclude reference="ZED-nf-NMO"/>
                                 <exclude reference="uIt-uL-CYQ"/>
+                                <exclude reference="B7m-Vd-Tvs"/>
+                                <exclude reference="S6B-bL-bOD"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="JIj-wk-TZL"/>
-                                <include reference="mgl-Uf-m2n"/>
                                 <include reference="4Br-VI-pbB"/>
+                                <include reference="mgl-Uf-m2n"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="1XL-f0-OXU"/>
-                                <include reference="Q4V-r2-Pc2"/>
-                                <include reference="yle-mK-PTK"/>
-                                <include reference="B7m-Vd-Tvs"/>
-                                <include reference="S6B-bL-bOD"/>
-                                <include reference="9FC-uH-Qia"/>
+                                <include reference="1ha-Le-fjQ"/>
+                                <include reference="Wtq-8z-spr"/>
+                                <include reference="vjU-NB-u2L"/>
+                                <include reference="004-Kz-p9W"/>
                                 <include reference="ZED-nf-NMO"/>
                                 <include reference="uIt-uL-CYQ"/>
+                                <include reference="B7m-Vd-Tvs"/>
+                                <include reference="S6B-bL-bOD"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="containerOneAdd" destination="4Br-VI-pbB" id="6r4-Sq-SN9"/>
                         <outlet property="containerOneText" destination="INF-af-Oob" id="UgI-jW-OeI"/>
+                        <outlet property="explainerLabel" destination="mgl-Uf-m2n" id="i5Y-yE-nCX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ngq-g8-9dv" userLabel="First Responder" sceneMemberID="firstResponder"/>
