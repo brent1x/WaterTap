@@ -175,14 +175,6 @@
     self.shouldShowGoalExceededAlert = YES;
     [self checkIfGoalHasBeenMet];
 
-
-
-
-//            NSString *messageString = @"Get thirsty and get to gulpin'";
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"U cant undo anymore, breh" message:messageString delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil, nil];
-//            [alert show];
-
-//
 }
 
 - (float)getWaterHeightFromTotalConsumedToday {
@@ -250,7 +242,6 @@
         self.goalExceededLabel.hidden = YES;
     }
 }
-
 
 #pragma mark // Daily Goal Methods
 

@@ -31,6 +31,7 @@
 @property NSArray *notificationCheck;
 @property bool recoReceived;
 @property int dailyGoal;
+@property double realGoal;
 
 @end
 
@@ -38,7 +39,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
 
 //    self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = @"Settings";
@@ -111,7 +111,16 @@
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
     // this method checks whether or not the daily goal changed. if it did, it lets its delegate (RootVC) know
 
-    [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+
+    int dailyGoal = [self.dailyGoalTextField.text intValue];
+
+    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+        dailyGoal = (int)((double)dailyGoal * 29.5735);
+    }
+
+    [self.delegate dailyGoalChanged:dailyGoal];
     NSLog(@"%@", self.delegate);
     [self saveGoalToUserDefaults];
 
@@ -128,17 +137,24 @@
     // this piece of logic checks whether the user has selected imperial or metric unit types. if they choose metric, I convert from ounces (default) to milliliters and round the result to the nearest whole number, then I update the daily goal text field and call the delegate method that is listening for any changes to the daily goal finally, I save the selected unit type to NSUserDefaults so it persists across the app without having to query Parse
 
     if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
-        double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735;
+//        double goalInML = [self.dailyGoalTextField.text doubleValue] * 29.5735296875;
+//        self.realGoal = goalInML;
+//        self.dailyGoalTextField.text = [NSString stringWithFormat:@"%d", (int)goalInML];
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setObject:@"milliliter" forKey:kNSUserUnitTypeSelected];
+
+        double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735296875;
         int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
-        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+//        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"milliliter" forKey:kNSUserUnitTypeSelected];
+
     } else if (self.segmentedUnitSelector.selectedSegmentIndex == 0) {
-        double convertMLToCounce = [self.dailyGoalTextField.text doubleValue] * 0.0338;
+        double convertMLToCounce = [self.dailyGoalTextField.text doubleValue] * 0.03381402255892;
         int convToInt = (int)(convertMLToCounce + (convertMLToCounce > 0 ? 0.5 : -0.5));
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
-        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
+//        [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"ounce" forKey:kNSUserUnitTypeSelected];
     }

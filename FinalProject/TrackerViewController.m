@@ -14,15 +14,13 @@
 #import "ConsumptionEvent.h"
 #import "PDTSimpleCalendarViewCell.h"
 
+#define kNSUserUnitTypeSelected @"kNSUserUnitTypeSelected"
+
 @interface TrackerViewController () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, PDTSimpleCalendarViewDelegate>
 
 @property NSMutableArray *waterIntakeValues;
 @property NSMutableArray *dateValues;
-@property NSMutableArray *goalPrecentageValues;
 
-@property NSMutableArray *waterIntakeValuesBackup;
-@property NSMutableArray *dateValuesBackup;
-@property NSMutableArray *goalPrecentageValuesBackup;
 @property int totalNumber;
 
 @property NSMutableDictionary *waterHeightProportionsForDays;
@@ -192,17 +190,13 @@
     self.cellCoverColor = myGrayColor;
     self.cellBorderColor = myBlueColor;
 
-
-
     //Load all events to a dictionary key:day value:amountConsumed/goal
     self.waterHeightProportionsForDays = [NSMutableDictionary new];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(%@ <= consumedAt) && (consumedAt < %@)", self.firstDate, self.lastDate];
-//    PFQuery *query2 = [PFQuery queryWithClassName:@"ConsumptionEvent" predicate:predicate];
     PFQuery *query2 = [PFQuery queryWithClassName:@"ConsumptionEvent"];
     [query2 fromLocalDatastore];
     [query2 orderByDescending:@"consumedAt"];
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *events, NSError *error) {
-        if (!error) {
+        if (!error && events.count > 0) {
             ConsumptionEvent *firstEvent = [events firstObject];
             NSDate *previousEventDate = firstEvent.consumedAt;
             previousEventDate = [self zeroTimeDate:previousEventDate];
@@ -210,18 +204,20 @@
             NSNumber *proportion = [NSNumber numberWithFloat:((float)firstEvent.volumeConsumed / (float)goal)];
             [self.waterHeightProportionsForDays setObject:proportion forKey:previousEventDate];
             for (ConsumptionEvent *event in events) {
-                NSDate *currentEventDate = event.consumedAt;
-                currentEventDate = [self zeroTimeDate:currentEventDate];
-                if (currentEventDate == previousEventDate) {
-                    float singularProportion = (float)event.volumeConsumed / (float)goal;
-                    proportion = [self.waterHeightProportionsForDays objectForKeyedSubscript:currentEventDate];
-                    proportion = [NSNumber numberWithFloat:[proportion floatValue] + singularProportion];
-                    [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
-                } else {
-                    goal = event.consumptionGoal;
-                    proportion = [NSNumber numberWithFloat:((float)event.volumeConsumed / (float)goal)];
-                    [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
-                    previousEventDate = event.consumedAt;
+                if (event != [events firstObject]) {
+                    NSDate *currentEventDate = event.consumedAt;
+                    currentEventDate = [self zeroTimeDate:currentEventDate];
+                    if (currentEventDate == previousEventDate) {
+                        float singularProportion = (float)event.volumeConsumed / (float)goal;
+                        proportion = [self.waterHeightProportionsForDays objectForKeyedSubscript:currentEventDate];
+                        proportion = [NSNumber numberWithFloat:[proportion floatValue] + singularProportion];
+                        [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
+                    } else {
+                        goal = event.consumptionGoal;
+                        proportion = [NSNumber numberWithFloat:((float)event.volumeConsumed / (float)goal)];
+                        [self.waterHeightProportionsForDays setObject:proportion forKey:currentEventDate];
+                        previousEventDate = event.consumedAt;
+                    }
                 }
             }
             [self.collectionView reloadData];
@@ -253,6 +249,15 @@
     NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
     [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
 
+//    NSLog(@"graphView datevaluesbackup: %@", self.dateValuesBackup);
+    NSLog(@"graphView datevalues: %@", self.dateValues);
+//    NSLog(@"graphView waterIntakeValuesbackup: %@", self.waterIntakeValuesBackup);
+    NSLog(@"graphView waterIntakeValues: %@", self.waterIntakeValues);
+
+
+
+    NSLog(@"dictionary: %@" , self.waterHeightProportionsForDays);
+
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -272,7 +277,13 @@
 }
 
 - (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph {
-    return @" ml";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+        return @" ml";
+    }else {
+        return @" oz";
+    }
 }
 
 #pragma mark - PDTSimpleLineGraph methods to override
@@ -287,10 +298,8 @@
     //Initialize data arrays and totalNumber
     if (!self.waterIntakeValues) self.waterIntakeValues = [[NSMutableArray alloc] init];
     if (!self.dateValues) self.dateValues = [[NSMutableArray alloc] init];
-    if (!self.goalPrecentageValues) self.goalPrecentageValues = [[NSMutableArray alloc] init];
     [self.waterIntakeValues removeAllObjects];
     [self.dateValues removeAllObjects];
-    [self.goalPrecentageValues removeAllObjects];
     self.totalNumber = 0;
 
     //Load dateValues and waterIntakeValues in loadWaterIntakeForADay
@@ -299,12 +308,12 @@
     NSDate *dateOfInterest = [NSDate new];
     NSDateComponents* dayComponent = [NSDateComponents new];
     NSInteger amountOfDaysInMonth  = 0;
-    //Edge case current month
-    if ([month isEqualToString:[self.headerDateFormatter stringFromDate:[NSDate date]]]) {
-        dateOfInterest = [NSDate date];
-        dayComponent = [calendar components:comps fromDate:dateOfInterest];
-        amountOfDaysInMonth = [dayComponent day]; //Last Day
-    } else {
+////    Edge case current month
+//    if ( NO && [month isEqualToString:[self.headerDateFormatter stringFromDate:[NSDate date]]]) {
+//        dateOfInterest = [NSDate date];
+//        dayComponent = [calendar components:comps fromDate:dateOfInterest];
+//        amountOfDaysInMonth = [dayComponent day]; //Last Day
+//    } else {
         //Get month NSDate from overlayView.text
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
         [dateFormatter setDateFormat:@"MMMM yyyy"];
@@ -313,7 +322,7 @@
         NSRange rng = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:dateOfInterest];
         amountOfDaysInMonth = rng.length;
         dayComponent = [calendar components:comps fromDate:dateOfInterest];
-    }
+//    }
     for (int i = 1; i <= amountOfDaysInMonth; i++) {
         [dayComponent setDay:i];
         if (i == amountOfDaysInMonth) {
@@ -346,20 +355,27 @@
             }
             [self.waterIntakeValues addObject:[NSNumber numberWithFloat:dayTotal]];
             self.totalNumber += (int)dayTotal;
-            float goalPrecentage = 0;
-            if (dayTotal != 0 && goal != 0) {
-                goalPrecentage = dayTotal/goal;
-            }
-            [self.goalPrecentageValues addObject:[NSNumber numberWithFloat:goalPrecentage]];
             if (shouldReload) {
+                if (self.waterIntakeValues.count == 1) {
+                    NSLog(@"PROBELEEEM");
+                    NSLog(@"waterintakeValues %@", self.waterIntakeValues);
+                    NSLog(@"datevalues %@", self.dateValues);
+                }
+
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+                if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+                    for (int i = 0; i < self.waterIntakeValues.count; i++) {
+                        NSNumber *number = [self.waterIntakeValues objectAtIndex:i];
+                        float floatNumber = [number floatValue];
+                        floatNumber = floatNumber * 29.5735;
+                        number = [NSNumber numberWithFloat:floatNumber];
+                        [self.waterIntakeValues setObject:number atIndexedSubscript:i];
+                    }
+                }
                 [self.graphView reloadGraph];
-                [self.collectionView reloadData];
-                self.waterIntakeValuesBackup = [NSMutableArray arrayWithArray:self.waterIntakeValues];
-                self.dateValuesBackup = [NSMutableArray arrayWithArray:self.dateValues];
-                self.goalPrecentageValuesBackup = [NSMutableArray arrayWithArray:self.goalPrecentageValues];
                 [self.waterIntakeValues removeAllObjects];
                 [self.dateValues removeAllObjects];
-                [self.goalPrecentageValues removeAllObjects];
             }
         } else {
             // Log details of the failure
@@ -409,7 +425,7 @@
         }
     }
 
-    if ([self.waterHeightProportionsForDays objectForKey:date]) {
+    if ([self.waterHeightProportionsForDays objectForKey:date] && ![cell.dayLabel.text isEqualToString:@""]) {
 
         cell.dayLabel.textColor = self.waterFillTextColor;
 
@@ -515,7 +531,7 @@
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     //Empty so it doesn't hide overlay from super
-    [self hydrateDataSetsForMonth:self.overlayView.text];
+//    [self hydrateDataSetsForMonth:self.overlayView.text];
 }
 
 - (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller isEnabledDate:(NSDate *)date {
