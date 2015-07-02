@@ -47,6 +47,11 @@
 
     // View Settings //
 
+    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
+    UIView *hugePlaceholder = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+    hugePlaceholder.backgroundColor = myGrayColor;
+    [self.view insertSubview:hugePlaceholder belowSubview:self.collectionView];
+
 //  [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBarHidden = NO;
 
@@ -54,7 +59,7 @@
     [self.view removeConstraints:self.view.constraints];
 
     //Get overlayView
-    self.overlayView = [self.view.subviews objectAtIndex:1];
+    self.overlayView = [self.view.subviews objectAtIndex:2];
     self.overlayView.alpha = 1;
     self.overlayView.backgroundColor = [UIColor grayColor];
     self.overlayView.text = [self.headerDateFormatter stringFromDate:[NSDate date]];
@@ -85,6 +90,15 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[overlayView(==overlayViewHeight)][graphView(==graphViewHeight)]" options:0 metrics:metricsDictionary views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[graphView]|" options:0 metrics:nil views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[placeholderView]|" options:0 metrics:nil views:viewsDictionary]];
+
+    //Add placeholder view behind GraphView
+//    UIView *placeholderForGraph = [[UIView alloc] initWithFrame:self.graphView.frame];
+//    placeholderForGraph.backgroundColor = [UIColor magentaColor];
+//    [self.graphView addSubview:placeholderForGraph];
+//    [self.graphView bringSubviewToFront:self.graphView];
+//    [self.graphView sendSubviewToBack:placeholderForGraph];
+//    [self.graphView sendSubviewToBack:placeholderForGraph];
+//    [self.graphView sendSubviewToBack:placeholderForGraph];
 
     //Make collectionViews height dynamic
     [self.collectionView setFrame:CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + graphViewHeight), self.collectionView.frame.size.width, (screenHeight - graphViewHeight - 20))];
@@ -126,7 +140,7 @@
     //    self.graphView.averageLine.dashPattern = @[@(2),@(2)];
 
     // Set the graph's animation style to draw, fade, or none
-    self.graphView.animationGraphStyle = BEMLineAnimationExpand;
+    self.graphView.animationGraphStyle = BEMLineAnimationDraw;
     self.graphView.widthLine = 3.;
 
     // Dash the y reference lines
@@ -175,15 +189,10 @@
 
     // Colors //
     UIColor *myBlueColor = [UIColor colorWithRed:27.0/255.0 green:152.0/255.0 blue:224.0/255.0 alpha:1];
-    UIColor *myGrayColor = [UIColor colorWithRed:232.0/255.0 green:241.0/255.0 blue:242.0/255.0 alpha:1];
     UIColor *myDarkBlueColor = [UIColor colorWithRed:19./255. green:41./255. blue:61./255. alpha:1];
     // UIColor *myMediumBlueColor = [UIColor colorWithRed:0 green:100./255. blue:148./255. alpha:.5];
     self.collectionView.backgroundColor = [UIColor colorWithRed:27./255. green:152./255. blue:224./255. alpha:1.0]; //Calendar
-<<<<<<< HEAD
     self.collectionView.backgroundColor = myGrayColor; //Calendar
-=======
-     self.collectionView.backgroundColor = myGrayColor; //Calendar
->>>>>>> ae4b2c3354f94c6e21bf84030b12a6187db25fbd
     self.cellColor = myGrayColor;
     self.graphView.colorLine = myBlueColor;
     self.graphView.colorBottom = myGrayColor;
@@ -224,6 +233,16 @@
                     }
                 }
             }
+//            //For display Demo purposes
+//            for (int i = 0; i < 200; i++) {
+//                NSTimeInterval timeInterval = (60*60*24) * arc4random_uniform(30*6);
+//                NSDate *randomDate = [[NSDate alloc]initWithTimeInterval:-timeInterval sinceDate:firstEvent.consumedAt];
+//                randomDate = [self zeroTimeDate:randomDate];
+//                if (![self.waterHeightProportionsForDays objectForKey:randomDate]) {
+//                    NSNumber *proportion = [NSNumber numberWithFloat:arc4random_uniform(101) / 100.0];
+//                    [self.waterHeightProportionsForDays setObject:proportion forKey:randomDate];
+//                }
+//            }
             [self.collectionView reloadData];
         } else {
             // Log details of the failure
@@ -231,6 +250,11 @@
         }
     }];
 
+}
+
+- (float)getRandomFloat {
+    float i1 = (float)(arc4random() % 1000000) / 100 ;
+    return i1;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -257,14 +281,17 @@
 //    NSLog(@"graphView waterIntakeValuesbackup: %@", self.waterIntakeValuesBackup);
 //    NSLog(@"graphView waterIntakeValues: %@", self.waterIntakeValues);
 
-
-
 //    NSLog(@"dictionary: %@" , self.waterHeightProportionsForDays);
 
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     self.navigationItem.title = [self.headerDateFormatter stringFromDate:[NSDate date]]; //Fixes initial title mismatch
+    [self performSelector:@selector(changeGraphAnimationStyle) withObject:nil afterDelay:1.5];
+}
+
+-(void)changeGraphAnimationStyle{
+    self.graphView.animationGraphStyle = BEMLineAnimationExpand;
 }
 
 //////////// Graph ////////////
@@ -289,6 +316,10 @@
     }
 }
 
+- (BOOL)noDataLabelEnableForLineGraph:(BEMSimpleLineGraphView *)graph {
+    return NO;
+}
+
 #pragma mark - PDTSimpleLineGraph methods to override
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
     NSString *label = @"";
@@ -311,21 +342,13 @@
     NSDate *dateOfInterest = [NSDate new];
     NSDateComponents* dayComponent = [NSDateComponents new];
     NSInteger amountOfDaysInMonth  = 0;
-////    Edge case current month
-//    if ( NO && [month isEqualToString:[self.headerDateFormatter stringFromDate:[NSDate date]]]) {
-//        dateOfInterest = [NSDate date];
-//        dayComponent = [calendar components:comps fromDate:dateOfInterest];
-//        amountOfDaysInMonth = [dayComponent day]; //Last Day
-//    } else {
-        //Get month NSDate from overlayView.text
-        NSDateFormatter *dateFormatter = [NSDateFormatter new];
-        [dateFormatter setDateFormat:@"MMMM yyyy"];
-        dateOfInterest = [dateFormatter dateFromString:self.navigationItem.title];
-        //Get how many days there are in that month from calendar
-        NSRange rng = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:dateOfInterest];
-        amountOfDaysInMonth = rng.length;
-        dayComponent = [calendar components:comps fromDate:dateOfInterest];
-//    }
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MMMM yyyy"];
+    dateOfInterest = [dateFormatter dateFromString:self.navigationItem.title];
+    //Get how many days there are in that month from calendar
+    NSRange rng = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:dateOfInterest];
+    amountOfDaysInMonth = rng.length;
+    dayComponent = [calendar components:comps fromDate:dateOfInterest];
     for (int i = 1; i <= amountOfDaysInMonth; i++) {
         [dayComponent setDay:i];
         if (i == amountOfDaysInMonth) {
@@ -370,6 +393,19 @@
                         [self.waterIntakeValues setObject:number atIndexedSubscript:i];
                     }
                 }
+
+                //For display Demo purposes (does not work this way)
+//                [self.waterIntakeValues removeAllObjects];
+//                for (int i = 0; i < self.dateValues.count; i++) {
+//                    if ([self.waterHeightProportionsForDays objectForKey:day]) {
+//                        NSNumber *proportion = [self.waterHeightProportionsForDays objectForKey:day];
+//                        float waterIntake = [proportion floatValue] * 400;
+//                        [self.waterIntakeValues addObject:[NSNumber numberWithFloat:waterIntake]];
+//                    } else{
+//                        [self.waterIntakeValues addObject:[NSNumber numberWithFloat:0]];
+//                    }
+//                }
+
                 [self.graphView reloadGraph];
                 [self.waterIntakeValues removeAllObjects];
                 [self.dateValues removeAllObjects];
@@ -379,6 +415,8 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+
+
 }
 
 -(NSDate *)makeDayNextStartOfDay:(NSDate *)day {

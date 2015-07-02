@@ -153,7 +153,7 @@
 }
 
 -(float)convertAmountToAddAndReturnWaterConstant:(float)amountConsumed {
-    return (-1*(amountConsumed * self.view.frame.size.height)/self.currentDailyGoal);
+    return (-1*(amountConsumed * self.initialViewHeight)/self.currentDailyGoal);
 }
 
 - (void)addWaterLevel:(NSNumber *)amountFloat {
@@ -195,10 +195,6 @@
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-<<<<<<< HEAD
-    NSLog(@"totalConsumedToday %@", totalConsumedToday);
-=======
->>>>>>> ae4b2c3354f94c6e21bf84030b12a6187db25fbd
     return (([totalConsumedToday floatValue] * self.initialViewHeight)/self.currentDailyGoal);
 
 }

@@ -31,7 +31,7 @@
 @property NSArray *notificationCheck;
 @property bool recoReceived;
 @property int dailyGoal;
-@property double realGoal;
+
 
 @end
 
@@ -59,28 +59,8 @@
     if ([self.dailyGoalTextField.text isEqualToString:@""]) {
         self.dailyGoalTextField.placeholder = @"Set a goal";
     }
+
 }
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-
-    if ([self.dailyGoalTextField.text isEqualToString:@""] || ([self.dailyGoalTextField.text intValue] <= 0)) {
-
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"Please set a real goal. Kthx." preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-
-        [alertController addAction:action];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-
-    else {
-        [textField resignFirstResponder];
-    }
-
-    return YES;
-}
-
-
 
 - (void)viewWillAppear:(BOOL)animated {
 
@@ -96,6 +76,9 @@
     NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
     if ([unitTypeSelected isEqualToString:@"milliliter"]) {
         self.segmentedUnitSelector.selectedSegmentIndex = 1;
+        double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735296875;
+        int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
+        self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
     }
 
     [self recommendationSwitchLogic];
@@ -108,6 +91,9 @@
     //    if (self.recoReceived == TRUE) {
     //        self.dailyGoalTextField.enabled = FALSE;
     //    }
+
+    NSString *goalFromDefault = [userDefaults objectForKey:kNSUserDailyGoalKey];
+    NSLog(@"goalFromDefault %@", goalFromDefault);
 }
 
 #pragma mark // Unwind from Segue
@@ -116,13 +102,27 @@
     if (self.recoTotal != nil) {
         // this method checks, upon the unwind from the Recommendation (aka HealthKit) view controller, if we received a recoomendation if it does have a recommendation, it loads it into the daily goal and calls the delegate method
 
+        self.dailyGoal = [self.recoTotal intValue];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
+        if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+            self.dailyGoal = self.dailyGoal * 0.03381402255892;
+        }
         self.dailyGoalTextField.text = self.recoTotal;
         [self.delegate dailyGoalChanged:[self.dailyGoalTextField.text intValue]];
         [self saveGoalToUserDefaults];
+
+        //Save latest goal to DB with 0 Added water
+        ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
+        myConsumptionEvent.volumeConsumed = 0;
+        myConsumptionEvent.user = [PFUser currentUser];
+        myConsumptionEvent.consumptionGoal = [self.dailyGoalTextField.text intValue];
+        myConsumptionEvent.consumedAt = [NSDate date];
+        [myConsumptionEvent pinInBackground];
     }
 }
 
-#pragma mark // Business Logic
+#pragma mark // Settings changed logic
 
 - (IBAction)onDailyGoalEditingDidBegin:(UITextField *)sender {
     self.navigationItem.hidesBackButton = YES;
@@ -149,9 +149,52 @@
     [self.notifSwitch setUserInteractionEnabled:YES];
     [self.recoButton setUserInteractionEnabled:YES];
     [self.recoSwitch setUserInteractionEnabled:YES];
+
+
+    self.dailyGoal = [self.dailyGoalTextField.text intValue];
+
+    //AlWAYS save goal as ounces
+    if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
+        self.dailyGoal = self.dailyGoal * 0.03381402255892;
+    }
+    [self saveGoalToUserDefaults];
+
+//    [self.delegate dailyGoalChanged:self.dailyGoal];
+//    NSLog(@"%@", self.delegate);
+
+
+    //Save latest goal to DB with 0 Added water
+    ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
+    myConsumptionEvent.volumeConsumed = 0;
+    myConsumptionEvent.user = [PFUser currentUser];
+    myConsumptionEvent.consumptionGoal = [self.dailyGoalTextField.text intValue];
+    myConsumptionEvent.consumedAt = [NSDate date];
+    [myConsumptionEvent pinInBackground];
+
 }
 
 - (IBAction)onDailyGoalDidChange:(UITextField *)sender {
+
+//    self.dailyGoal = [self.dailyGoalTextField.text intValue];
+//
+//    //AlWAYS save goal as ounces
+//    if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
+//        self.dailyGoal = self.dailyGoal * 0.03381402255892;
+//    }
+//
+//    [self.delegate dailyGoalChanged:self.dailyGoal];
+//    NSLog(@"%@", self.delegate);
+//    [self saveGoalToUserDefaults];
+//
+//    //Save latest goal to DB with 0 Added water
+//    ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
+//    myConsumptionEvent.volumeConsumed = 0;
+//    myConsumptionEvent.user = [PFUser currentUser];
+//    myConsumptionEvent.consumptionGoal = [self.dailyGoalTextField.text intValue];
+//    myConsumptionEvent.consumedAt = [NSDate date];
+//    [myConsumptionEvent pinInBackground];
+
+
     // this method checks whether or not the daily goal changed. if it did, it lets its delegate (RootVC) know
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -159,9 +202,9 @@
 
     int dailyGoal = [self.dailyGoalTextField.text intValue];
 
-    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
-        dailyGoal = (int)((double)dailyGoal * 29.5735);
-    }
+//    if ([unitTypeSelected isEqualToString:@"milliliter"]) {
+//        dailyGoal = (int)((double)dailyGoal * 29.5735);
+//    }
 
     [self.delegate dailyGoalChanged:dailyGoal];
     NSLog(@"%@", self.delegate);
@@ -180,12 +223,6 @@
     // this piece of logic checks whether the user has selected imperial or metric unit types. if they choose metric, I convert from ounces (default) to milliliters and round the result to the nearest whole number, then I update the daily goal text field and call the delegate method that is listening for any changes to the daily goal finally, I save the selected unit type to NSUserDefaults so it persists across the app without having to query Parse
 
     if (self.segmentedUnitSelector.selectedSegmentIndex == 1) {
-//        double goalInML = [self.dailyGoalTextField.text doubleValue] * 29.5735296875;
-//        self.realGoal = goalInML;
-//        self.dailyGoalTextField.text = [NSString stringWithFormat:@"%d", (int)goalInML];
-//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        [userDefaults setObject:@"milliliter" forKey:kNSUserUnitTypeSelected];
-
         double convertOunceToML = [self.dailyGoalTextField.text doubleValue] * 29.5735296875;
         int convToInt = (int)(convertOunceToML + (convertOunceToML > 0 ? 0.5 : -0.5));
         self.dailyGoalTextField.text = [NSString stringWithFormat:@"%i", convToInt];
@@ -201,6 +238,22 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"ounce" forKey:kNSUserUnitTypeSelected];
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+    if ([self.dailyGoalTextField.text isEqualToString:@""] || ([self.dailyGoalTextField.text intValue] <= 0)) {
+
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Yo." message:@"Please set a real goal. Kthx." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:action];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+
+    else {
+        [textField resignFirstResponder];
+    }
+    return YES;
 }
 
 #pragma mark // Reminder Switch Logic
@@ -295,7 +348,7 @@
 
 - (void)saveGoalToUserDefaults {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:self.dailyGoalTextField.text forKey:kNSUserDailyGoalKey];
+    [userDefaults setObject:[NSString stringWithFormat:@"%d", self.dailyGoal] forKey:kNSUserDailyGoalKey];
 }
 
 - (void)loadGoalFromUserDefaults {
