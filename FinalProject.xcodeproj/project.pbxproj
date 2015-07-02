@@ -46,6 +46,7 @@
 		8497407E1B335D6C0039DCA2 /* CustomWaterLevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8497407D1B335D6C0039DCA2 /* CustomWaterLevelView.m */; };
 		849740811B335FB10039DCA2 /* LogInAndSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740801B335FB10039DCA2 /* LogInAndSignUpViewController.m */; };
 		849740841B338B3C0039DCA2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849740831B338B3C0039DCA2 /* SettingsViewController.m */; };
+		84C1AC341B44E0BB00254199 /* OldCustomContainerButtonClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1AC331B44E0BB00254199 /* OldCustomContainerButtonClass.m */; };
 		84F019EA1B40C2080000377E /* Calibre-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84F019E91B40C2080000377E /* Calibre-Medium.ttf */; };
 		9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FDBEA1B36620F00266247 /* ContainerButton.m */; };
 		9A9719DE1B33BCC80046A7E1 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9719DB1B33BCC80046A7E1 /* FBSDKCoreKit.framework */; };
@@ -122,6 +123,8 @@
 		849740821B338B3C0039DCA2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		849740831B338B3C0039DCA2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		84AAEFD21B432290001672E0 /* Water Tap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Water Tap.entitlements"; sourceTree = "<group>"; };
+		84C1AC321B44E0BB00254199 /* OldCustomContainerButtonClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OldCustomContainerButtonClass.h; sourceTree = "<group>"; };
+		84C1AC331B44E0BB00254199 /* OldCustomContainerButtonClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OldCustomContainerButtonClass.m; sourceTree = "<group>"; };
 		84F019E91B40C2080000377E /* Calibre-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Calibre-Medium.ttf"; sourceTree = "<group>"; };
 		9A8FDBE91B36620F00266247 /* ContainerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerButton.h; sourceTree = "<group>"; };
 		9A8FDBEA1B36620F00266247 /* ContainerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerButton.m; sourceTree = "<group>"; };
@@ -245,6 +248,8 @@
 				9AD0B2701B37630200345F55 /* Main.storyboard */,
 				9A8FDBE91B36620F00266247 /* ContainerButton.h */,
 				9A8FDBEA1B36620F00266247 /* ContainerButton.m */,
+				84C1AC321B44E0BB00254199 /* OldCustomContainerButtonClass.h */,
+				84C1AC331B44E0BB00254199 /* OldCustomContainerButtonClass.m */,
 				849740791B335CF90039DCA2 /* ConsumptionEvent.h */,
 				8497407A1B335CF90039DCA2 /* ConsumptionEvent.m */,
 				8497407C1B335D6C0039DCA2 /* CustomWaterLevelView.h */,
@@ -484,6 +489,7 @@
 				8469F9FD1B3326EB00D1FFA6 /* RemindersViewController.m in Sources */,
 				8469F9FF1B33311400D1FFA6 /* HKHealthStore+AAPLExtensions.m in Sources */,
 				1288532B1B33382A00E2CA6D /* TrackerViewController.m in Sources */,
+				84C1AC341B44E0BB00254199 /* OldCustomContainerButtonClass.m in Sources */,
 				8469FA041B33319400D1FFA6 /* HealthKitViewController.m in Sources */,
 				9A8FDBEB1B36620F00266247 /* ContainerButton.m in Sources */,
 				8497407E1B335D6C0039DCA2 /* CustomWaterLevelView.m in Sources */,

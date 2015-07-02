@@ -10,6 +10,7 @@
 #import "ConsumptionEvent.h"
 #import "CustomWaterLevelView.h"
 #import "ContainerButton.h"
+#import "OldCustomContainerButtonClass.h"
 #import "SettingsViewController.h"
 @import AVFoundation;
 
@@ -23,16 +24,19 @@
 @interface RootViewController () <SettingsViewControllerDelegate>
 
 //the button pressed to bring up the container buttons
-@property (weak, nonatomic) IBOutlet ContainerButton *addWaterButton;
+// @property (weak, nonatomic) IBOutlet ContainerButton *addWaterButton;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
+
 
 //@property NSMutableArray *menuButtons;
 
 //properties for animation for the button
 @property UIDynamicAnimator *animator;
 @property BOOL isFannedOut;
+
+@property (weak, nonatomic) IBOutlet OldCustomContainerButtonClass *addWaterButton;
 
 //water level properties
 @property (weak, nonatomic) IBOutlet UIView *waterLevel;
@@ -105,7 +109,7 @@
     } else {
         self.addWaterButton.customAmount = 8;
     }
-//
+
 //    //    self.menuButton1.customAmount = [bottleTwoAmount intValue];
 //    self.menuButton2.customAmount = 10;
 //    self.menuButton3.customAmount = 10;
