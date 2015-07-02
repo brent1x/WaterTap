@@ -199,7 +199,7 @@
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *totalConsumedToday = [userDefaults objectForKey:kNSUserWaterLevelKey];
-    return (([totalConsumedToday floatValue] * self.view.frame.size.height)/self.currentDailyGoal);
+    return (([totalConsumedToday floatValue] * self.initialViewHeight)/self.currentDailyGoal);
 
 }
 
