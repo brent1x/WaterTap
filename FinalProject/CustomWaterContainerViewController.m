@@ -87,6 +87,8 @@
     [userDefaults removeObjectForKey:kNSUserDefaultsContainerOneSize];
     NSString *unitTypeSelected = [userDefaults objectForKey:kNSUserUnitTypeSelected];
 
+    self.containerOneText.text = @"";
+
     if ([unitTypeSelected isEqualToString:@"ounce"]) {
         self.containerOneText.placeholder = @"Size in ounces";
     }

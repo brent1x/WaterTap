@@ -60,11 +60,8 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Blurred_BG" translatesAutoresizingMaskIntoConstraints="NO" id="AcM-s5-lYf">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Blurred_BG" translatesAutoresizingMaskIntoConstraints="NO" id="AcM-s5-lYf">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
-                                </variation>
                             </imageView>
                             <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-k2-lQf" userLabel="waterLevel">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -187,8 +184,11 @@
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Z0I-XI-ycC" secondAttribute="bottom" constant="20" id="Djh-jy-JEU"/>
                             <constraint firstAttribute="centerY" secondItem="1Fv-w6-ECc" secondAttribute="centerY" id="FPQ-wV-5am"/>
                             <constraint firstItem="LrZ-B5-DFh" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="20" id="Ifh-bO-0fH"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="AcM-s5-lYf" secondAttribute="bottom" id="Mxf-dO-c1c"/>
                             <constraint firstAttribute="bottom" secondItem="VTJ-k2-lQf" secondAttribute="bottom" id="PFJ-p8-S71"/>
                             <constraint firstAttribute="trailing" secondItem="BJI-FZ-0Xb" secondAttribute="trailing" id="Qa5-w7-Jj5"/>
+                            <constraint firstAttribute="trailing" secondItem="AcM-s5-lYf" secondAttribute="trailing" id="U2L-bK-Vka"/>
+                            <constraint firstItem="AcM-s5-lYf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="a2f-HF-EvO"/>
                             <constraint firstItem="BJI-FZ-0Xb" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="boL-8V-PCm"/>
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="600" id="gST-xV-uMk"/>
                             <constraint firstItem="BJI-FZ-0Xb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="l7X-Zv-92C"/>
@@ -197,6 +197,7 @@
                             <constraint firstAttribute="trailing" secondItem="VTJ-k2-lQf" secondAttribute="trailing" id="ma8-uE-tKB"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="BJI-FZ-0Xb" secondAttribute="bottom" id="nhx-H0-B6B"/>
                             <constraint firstItem="VTJ-k2-lQf" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="600" id="nlk-SA-4h6"/>
+                            <constraint firstItem="AcM-s5-lYf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="qTk-2f-20D"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VTJ-k2-lQf" secondAttribute="trailing" constant="16" id="rsg-nR-4VP"/>
                             <constraint firstAttribute="centerX" secondItem="Z0I-XI-ycC" secondAttribute="centerX" id="sMv-PU-WJs"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="LrZ-B5-DFh" secondAttribute="bottom" constant="30" id="wFp-Vw-IlZ"/>
@@ -215,6 +216,9 @@
                                 <exclude reference="Z0I-XI-ycC"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="U2L-bK-Vka"/>
+                                <exclude reference="a2f-HF-EvO"/>
+                                <exclude reference="qTk-2f-20D"/>
                                 <exclude reference="Qa5-w7-Jj5"/>
                                 <exclude reference="boL-8V-PCm"/>
                                 <exclude reference="l7X-Zv-92C"/>
@@ -223,6 +227,7 @@
                                 <exclude reference="sMv-PU-WJs"/>
                                 <exclude reference="Ifh-bO-0fH"/>
                                 <exclude reference="Djh-jy-JEU"/>
+                                <exclude reference="Mxf-dO-c1c"/>
                                 <exclude reference="nhx-H0-B6B"/>
                                 <exclude reference="wFp-Vw-IlZ"/>
                                 <exclude reference="yda-dA-pjG"/>
@@ -248,6 +253,9 @@
                                 <include reference="Z0I-XI-ycC"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="U2L-bK-Vka"/>
+                                <include reference="a2f-HF-EvO"/>
+                                <include reference="qTk-2f-20D"/>
                                 <include reference="Qa5-w7-Jj5"/>
                                 <include reference="boL-8V-PCm"/>
                                 <include reference="l7X-Zv-92C"/>
@@ -256,6 +264,7 @@
                                 <include reference="sMv-PU-WJs"/>
                                 <include reference="Ifh-bO-0fH"/>
                                 <include reference="Djh-jy-JEU"/>
+                                <include reference="Mxf-dO-c1c"/>
                                 <include reference="nhx-H0-B6B"/>
                                 <include reference="wFp-Vw-IlZ"/>
                                 <include reference="yda-dA-pjG"/>
@@ -2083,6 +2092,7 @@
                         <viewControllerLayoutGuide type="bottom" id="TqP-0e-Ysx"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6wz-Qp-8vn">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
