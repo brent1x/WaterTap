@@ -8,8 +8,6 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 
 @interface AppDelegate ()
 
@@ -59,24 +57,12 @@
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 
     //    [Parse setApplicationId:@"parseAppId" clientKey:@"parseClientKey"];
-    [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
     return YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FBSDKAppEvents activateApp];
 
     
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                          openURL:url
-                                                sourceApplication:sourceApplication
-                                                         annotation:annotation];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

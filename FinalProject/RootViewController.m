@@ -24,12 +24,10 @@
 @interface RootViewController () <SettingsViewControllerDelegate>
 
 //the button pressed to bring up the container buttons
-// @property (weak, nonatomic) IBOutlet ContainerButton *addWaterButton;
+//@property (weak, nonatomic) IBOutlet ContainerButton *addWaterButton;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton1;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton2;
 //@property (weak, nonatomic) IBOutlet ContainerButton *menuButton3;
-
-
 //@property NSMutableArray *menuButtons;
 
 //properties for animation for the button
@@ -140,6 +138,12 @@
     ConsumptionEvent *myConsumptionEvent = [ConsumptionEvent new];
     ContainerButton *button = sender;
     myConsumptionEvent.volumeConsumed = button.customAmount;
+
+    // I BELIEVE HEALTHKIT WILL HAVE TO GO HERE. WE WILL PASS OVER THE button.customAmount BUT WILL HAVE TO CHECK FOR ML OR OUNCES
+    // WILL ALSO NEED TO ADD A SHARESHEET HERE ASKING FOR HEALTHKIT ACCESS TO POST TO WATER
+    // FOLLOW THE STRUCTURE FROM HealthKitViewController.m TO SEE HOW TO REQUEST HK ACCESS AND TO POST TO HK
+
+
     myConsumptionEvent.user = [PFUser currentUser];
     myConsumptionEvent.consumptionGoal = self.currentDailyGoal;
     myConsumptionEvent.consumedAt = [NSDate date];
@@ -153,7 +157,7 @@
 
 
     //check and switch the state of the animation so the buttons pop back in
-//     [self toggleFan];
+    //     [self toggleFan];
 }
 
 -(float)convertAmountToAddAndReturnWaterConstant:(float)amountConsumed {

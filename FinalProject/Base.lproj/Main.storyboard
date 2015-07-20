@@ -216,21 +216,22 @@
                                 <exclude reference="Z0I-XI-ycC"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="FPQ-wV-5am"/>
+                                <exclude reference="yiw-tp-zBe"/>
+                                <exclude reference="Djh-jy-JEU"/>
+                                <exclude reference="Mxf-dO-c1c"/>
+                                <exclude reference="nhx-H0-B6B"/>
+                                <exclude reference="wFp-Vw-IlZ"/>
+                                <exclude reference="yda-dA-pjG"/>
+                                <exclude reference="Ifh-bO-0fH"/>
+                                <exclude reference="sMv-PU-WJs"/>
+                                <exclude reference="llW-jK-cgb"/>
                                 <exclude reference="U2L-bK-Vka"/>
                                 <exclude reference="a2f-HF-EvO"/>
                                 <exclude reference="qTk-2f-20D"/>
                                 <exclude reference="Qa5-w7-Jj5"/>
                                 <exclude reference="boL-8V-PCm"/>
                                 <exclude reference="l7X-Zv-92C"/>
-                                <exclude reference="FPQ-wV-5am"/>
-                                <exclude reference="yiw-tp-zBe"/>
-                                <exclude reference="sMv-PU-WJs"/>
-                                <exclude reference="Ifh-bO-0fH"/>
-                                <exclude reference="Djh-jy-JEU"/>
-                                <exclude reference="Mxf-dO-c1c"/>
-                                <exclude reference="nhx-H0-B6B"/>
-                                <exclude reference="wFp-Vw-IlZ"/>
-                                <exclude reference="yda-dA-pjG"/>
                                 <exclude reference="5VK-to-aX7"/>
                                 <exclude reference="PFJ-p8-S71"/>
                                 <exclude reference="gST-xV-uMk"/>
@@ -239,7 +240,6 @@
                                 <exclude reference="nlk-SA-4h6"/>
                                 <exclude reference="rsg-nR-4VP"/>
                                 <exclude reference="zZh-bu-xGm"/>
-                                <exclude reference="llW-jK-cgb"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -253,21 +253,22 @@
                                 <include reference="Z0I-XI-ycC"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="FPQ-wV-5am"/>
+                                <include reference="yiw-tp-zBe"/>
+                                <include reference="Djh-jy-JEU"/>
+                                <include reference="Mxf-dO-c1c"/>
+                                <include reference="nhx-H0-B6B"/>
+                                <include reference="wFp-Vw-IlZ"/>
+                                <include reference="yda-dA-pjG"/>
+                                <include reference="Ifh-bO-0fH"/>
+                                <include reference="sMv-PU-WJs"/>
+                                <include reference="llW-jK-cgb"/>
                                 <include reference="U2L-bK-Vka"/>
                                 <include reference="a2f-HF-EvO"/>
                                 <include reference="qTk-2f-20D"/>
                                 <include reference="Qa5-w7-Jj5"/>
                                 <include reference="boL-8V-PCm"/>
                                 <include reference="l7X-Zv-92C"/>
-                                <include reference="FPQ-wV-5am"/>
-                                <include reference="yiw-tp-zBe"/>
-                                <include reference="sMv-PU-WJs"/>
-                                <include reference="Ifh-bO-0fH"/>
-                                <include reference="Djh-jy-JEU"/>
-                                <include reference="Mxf-dO-c1c"/>
-                                <include reference="nhx-H0-B6B"/>
-                                <include reference="wFp-Vw-IlZ"/>
-                                <include reference="yda-dA-pjG"/>
                                 <include reference="5VK-to-aX7"/>
                                 <exclude reference="PFJ-p8-S71"/>
                                 <exclude reference="gST-xV-uMk"/>
@@ -276,7 +277,6 @@
                                 <include reference="nlk-SA-4h6"/>
                                 <exclude reference="rsg-nR-4VP"/>
                                 <exclude reference="zZh-bu-xGm"/>
-                                <include reference="llW-jK-cgb"/>
                             </mask>
                         </variation>
                     </view>
@@ -2082,23 +2082,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aub-xc-jug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-634.5" y="1113"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="aFp-a2-6Kw">
-            <objects>
-                <viewController id="ans-4p-h79" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="De5-15-c7i"/>
-                        <viewControllerLayoutGuide type="bottom" id="TqP-0e-Ysx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6wz-Qp-8vn">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oef-l7-ktp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>
